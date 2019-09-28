@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import org.firstinspires.ftc.teamcode.robot.ClawPositionInner;
+import org.firstinspires.ftc.teamcode.robot.ClawPositionOuter;
+import org.firstinspires.ftc.teamcode.robot.Position;
+import org.firstinspires.ftc.teamcode.robot.Robot;
+
 public class TeleTest extends Robot {
     double deadzone = .05;
     float xPow, yPow, zPow;
