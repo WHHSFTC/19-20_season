@@ -11,6 +11,7 @@ public class Robot {
         drive = new DriveTrain(hwmap);
         intake = new Intake(hwmap);
         output = new Output(hwmap);
-        sensors = new Sensors(hwmap);
+        //sensors = new Sensors(hwmap);
+        
     }
 }
