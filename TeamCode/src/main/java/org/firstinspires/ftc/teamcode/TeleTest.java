@@ -27,6 +27,11 @@ public class TeleTest extends Robot {
             if (gamepad2.b) {setWristPosition(Position.RIGHT);}
             if (gamepad2.x) {setWristPosition(Position.OUTER);}
 
+            if (gamepad2.dpad_down) {setArmPosition(Position.INNER);}
+            if (gamepad2.dpad_up) {setArmPosition(Position.LEFT);}
+            if (gamepad2.dpad_right) {setArmPosition(Position.RIGHT);}
+            if (gamepad2.dpad_left) {setArmPosition(Position.OUTER);}
+
             if (gamepad2.right_bumper && !pOut) {
                 out = !out;
                 setClawPositionO(out ? ClawPositionOuter.CLOSE : ClawPositionOuter.OPEN);
@@ -42,6 +47,19 @@ public class TeleTest extends Robot {
             if (gamepad1.b) {setServoPower(0);}
             if (gamepad1.y) {setServoPower(-.5);}
 
+            pwr = -gamepad2.right_stick_y;
+            m = Math.max(Math.abs(pwr), 1.0);
+
+            pwr /= m;
+
+            setSpoolPower(pwr);
+
+            setDrivePowers(
+                    power * (-y+x) + zPower*z,
+                    power * (-y-x) + zPower*z,
+                    power * (y-x) + zPower*z,
+                    power * (y+x) + zPower*z
+            );
 
         }
     }
