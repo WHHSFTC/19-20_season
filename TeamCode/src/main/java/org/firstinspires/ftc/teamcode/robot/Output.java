@@ -13,10 +13,10 @@ public class Output {
         inner = hwmap.servo.get("inner");
         outer = hwmap.servo.get("outer");
 
-        spool1 = hwmap.dcMotor.get("1");
-        spool2 = hwmap.dcMotor.get("2");
-        spool3 = hwmap.dcMotor.get("3");
-        spool4 = hwmap.dcMotor.get("4");
+        spool1 = hwmap.dcMotor.get("spool1");
+        spool2 = hwmap.dcMotor.get("spool2");
+        spool3 = hwmap.dcMotor.get("spool3");
+        spool4 = hwmap.dcMotor.get("spool4");
     }
     public void setSpoolPower(double power) {
         spool1.setPower(power);
