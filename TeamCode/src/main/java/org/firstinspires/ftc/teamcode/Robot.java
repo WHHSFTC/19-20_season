@@ -46,6 +46,16 @@ public abstract class Robot extends LinearOpMode {
     void setWristPosition(Position position) {
         wrist.setPosition(position.pos);
     }
+    void setClawPositionI(ClawPositionInner pos) {
+        inner.setPosition(pos.pos);
+    }
+    void setClawPositionO(ClawPositionOuter pos) {
+        outer.setPosition(pos.pos);
+    }
+    void setServoPower(double power) {
+        flyL.setPower(power);
+        flyR.setPower(power*-1);
+    }
 }
 
 enum Position {
@@ -54,4 +64,14 @@ enum Position {
     Position(double pos) {
         this.pos = pos;
     }
+}
+enum ClawPositionInner {
+    OPEN(0), CLOSE(.5);
+    double pos;
+    ClawPositionInner(double pos) {this.pos = pos;}
+}
+enum ClawPositionOuter {
+    OPEN(.5), CLOSE(0);
+    double pos;
+    ClawPositionOuter(double pos) {this.pos = pos;}
 }
