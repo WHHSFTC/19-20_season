@@ -1,16 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.robot.ClawPositionInner;
-import org.firstinspires.ftc.teamcode.robot.ClawPositionOuter;
-import org.firstinspires.ftc.teamcode.robot.Position;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.robot.Output.ClawPositionInner;
+import org.firstinspires.ftc.teamcode.robot.Output.ClawPositionOuter;
+import org.firstinspires.ftc.teamcode.robot.Output.ServoPosition;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
-public class TeleTest extends Robot {
+public class TeleTest extends LinearOpMode {
     double deadzone = .05;
     float xPow, yPow, zPow;
+    Robot bot;
     @Override
     public void runOpMode() {
-        super.runOpMode();
+        bot = new Robot(hardwareMap);
         boolean in = false, out = false, pIn = false, pOut = false;
         waitForStart();
         while (opModeIsActive()) {
@@ -27,39 +32,39 @@ public class TeleTest extends Robot {
 
             double z = Math.signum(zPow);
 
-            if (gamepad2.a) {setWristPosition(Position.INNER);}
-            if (gamepad2.y) {setWristPosition(Position.LEFT);}
-            if (gamepad2.b) {setWristPosition(Position.RIGHT);}
-            if (gamepad2.x) {setWristPosition(Position.OUTER);}
+            if (gamepad2.a) {bot.output.setWristPosition(ServoPosition.INNER);}
+            if (gamepad2.y) {bot.output.setWristPosition(ServoPosition.LEFT);}
+            if (gamepad2.b) {bot.output.setWristPosition(ServoPosition.RIGHT);}
+            if (gamepad2.x) {bot.output.setWristPosition(ServoPosition.OUTER);}
 
-            if (gamepad2.dpad_down) {setArmPosition(Position.INNER);}
-            if (gamepad2.dpad_up) {setArmPosition(Position.LEFT);}
-            if (gamepad2.dpad_right) {setArmPosition(Position.RIGHT);}
-            if (gamepad2.dpad_left) {setArmPosition(Position.OUTER);}
+            if (gamepad2.dpad_down) {bot.output.setArmPosition(ServoPosition.INNER);}
+            if (gamepad2.dpad_up) {bot.output.setArmPosition(ServoPosition.LEFT);}
+            if (gamepad2.dpad_right) {bot.output.setArmPosition(ServoPosition.RIGHT);}
+            if (gamepad2.dpad_left) {bot.output.setArmPosition(ServoPosition.OUTER);}
 
             if (gamepad2.right_bumper && !pOut) {
                 out = !out;
-                setClawPositionO(out ? ClawPositionOuter.CLOSE : ClawPositionOuter.OPEN);
+                bot.output.setOuterPosition(out ? ClawPositionOuter.CLOSE : ClawPositionOuter.OPEN);
             }
             if (gamepad2.left_bumper && !pIn) {
                 in = !in;
-                setClawPositionI(in ? ClawPositionInner.CLOSE : ClawPositionInner.OPEN);
+                bot.output.setInnerPosition(in ? ClawPositionInner.CLOSE : ClawPositionInner.OPEN);
             }
             pIn = gamepad2.left_bumper;
             pOut = gamepad2.right_bumper;
 
-            if (gamepad1.a) {setServoPower(.5);}
-            if (gamepad1.b) {setServoPower(0);}
-            if (gamepad1.y) {setServoPower(-.5);}
+            if (gamepad1.a) {bot.intake.setServoPower(.5);}
+            if (gamepad1.b) {bot.intake.setServoPower(0);}
+            if (gamepad1.y) {bot.intake.setServoPower(-.5);}
 
             pwr = -gamepad2.right_stick_y;
             m = Math.max(Math.abs(pwr), 1.0);
 
             pwr /= m;
 
-            setSpoolPower(pwr);
+            bot.output.setSpoolPower(pwr);
 
-            setDrivePowers(
+            bot.drive.setDrivePowers(
                     power * (-y+x) + zPower*z,
                     power * (-y-x) + zPower*z,
                     power * (y-x) + zPower*z,
