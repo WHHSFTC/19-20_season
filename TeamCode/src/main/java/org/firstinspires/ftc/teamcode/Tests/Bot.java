@@ -9,11 +9,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
@@ -61,6 +64,7 @@ public class Bot {
     public int cameraMonitorViewId;
     VuforiaTrackables SkystoneTrackables;
     VuforiaTrackable SkystoneTemplate;
+    public SimpleVuforia vuforia;
 
     public Bot(LinearOpMode opMode) {
         this.opMode = opMode;
@@ -123,8 +127,8 @@ public class Bot {
         lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lift3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
-
+        String vuforiaKey = "...";
+        vuforia = new SimpleVuforia(vuforiaKey);
 
 
     }
@@ -325,5 +329,34 @@ public class Bot {
         return backRightDrive.getCurrentPosition();
 
 
+    }
+
+    public class SimpleVuforia {
+        /**
+         * Creates a Vuforia localizer and starts localization.
+         * @param vuforiaLicenseKey The license key to access Vuforia code.
+         */
+        public SimpleVuforia(String vuforiaLicenseKey) {
+            VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+            parameters.vuforiaLicenseKey = vuforiaLicenseKey;
+            parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+            relicTrackables = vuforia.loadTrackablesFromAsset("RelicVuMark");
+            relicTemplate = relicTrackables.get(0);
+            relicTrackables.activate();
+        }
+
+        /**
+         * Returns the last detected mark type.
+         */
+        public RelicRecoveryVuMark detectMark() {
+            return RelicRecoveryVuMark.from(relicTemplate);
+        }
+
+
+        // The external Vuforia ID localizer.
+        private VuforiaLocalizer vuforia;
+        private VuforiaTrackables relicTrackables;
+        private VuforiaTrackable relicTemplate;
     }
 }
