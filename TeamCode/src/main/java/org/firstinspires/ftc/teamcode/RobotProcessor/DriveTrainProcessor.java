@@ -28,6 +28,7 @@ public class DriveTrainProcessor {
         this.currentOpmode = currentOpmode;
     }
 
+
     static final double P_TURN_COEFF = .018;
     static final double I_TURN_COEFF = 0;
     static final double D_TURN_COEFF = 0;
@@ -75,7 +76,7 @@ public class DriveTrainProcessor {
         double previous_error = 0;
         while (rcw != 0 && currentOpmode.opModeIsActive()) {
 
-            double error = angleWanted - sensors.getHeading();;
+            double error = angleWanted - sensors.getHeading();
 
             while (error > 180 && currentOpmode.opModeIsActive())
                 error -= 360;
