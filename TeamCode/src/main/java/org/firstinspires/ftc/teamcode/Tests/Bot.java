@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.Tests;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -12,25 +14,54 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
  * Created by khadija on 10/19/2019.
  */
 public class Bot {
-    private DcMotor frontLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backLeftDrive = null;
-    private DcMotor backRightDrive = null;
-    private HardwareMap hwMap = null;
-    private DcMotor intakeLeft = null;
-    private DcMotor intakeRight = null;
-    private BNO055IMU imu = null;
-    private Orientation angles = null;
-    private Acceleration gravity = null;
-    private DcMotor liftLeft = null;
-    private DcMotor liftRight = null;
+    //Drive motors
+    public DcMotor frontLeftDrive = null;
+    public DcMotor frontRightDrive = null;
+    public DcMotor backLeftDrive = null;
+    public DcMotor backRightDrive = null;
 
-    private LinearOpMode opMode = null;
+    //Lift motors
+    public DcMotor lift1 = null;
+    public DcMotor lift2 = null;
+    public DcMotor lift3 = null;
+
+    //Intake servo/motors
+    public CRServo intakeLeft = null;
+    public CRServo intakeRight = null;
+
+    //Random stuff
+    public HardwareMap hwMap = null;
+    public LinearOpMode opMode = null;
+
+    //IMU stuff
+    public BNO055IMU imu = null;
+    public Orientation angles = null;
+    public Acceleration gravity = null;
+
+    //Claw servos
+    public Servo servo1 = null;
+    public Servo servo2 = null;
+    public Servo servo3 = null;
+    public Servo servo4 = null;
+
+    //Holder servo
+    public Servo holdServo = null;
+
+    //Conveyor motor
+    public DcMotor conveyor = null;
+
+    //Vuforia Tracking Stuff
+    public int cameraMonitorViewId;
+    VuforiaTrackables SkystoneTrackables;
+    VuforiaTrackable SkystoneTemplate;
+
     public Bot(LinearOpMode opMode) {
         this.opMode = opMode;
     }
@@ -49,19 +80,19 @@ public class Bot {
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        // For Lift
+        lift1 = hwMap.get(DcMotor.class, "lift1");
+        lift2 = hwMap.get(DcMotor.class, "lift2");
+        lift3 = hwMap.get(DcMotor.class, "lift3");
+
         // for intake
-        intakeLeft = hwMap.get(DcMotor.class, "leftIntake");
-        intakeRight = hwMap.get(DcMotor.class, "rightIntake");
+        intakeLeft = hwMap.get(CRServo.class, "leftIntake");
+        intakeRight = hwMap.get(CRServo.class, "rightIntake");
         intakeLeft.setDirection(DcMotor.Direction.FORWARD);
         intakeRight.setDirection(DcMotor.Direction.REVERSE);
-        //stop coasting code
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        liftLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        liftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
+        //IMU stuff
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -71,6 +102,31 @@ public class Bot {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+        // For Claw
+        servo1 = hwMap.get(Servo.class,"Servo1");
+        servo2 = hwMap.get(Servo.class,"Servo2");
+        servo3 = hwMap.get(Servo.class,"Servo3");
+        servo4 = hwMap.get(Servo.class,"Servo4");
+
+        //For back holder
+        holdServo = hwMap.get(Servo.class, "holdServo");
+
+        //For conveyor
+        conveyor = hwMap.get(DcMotor.class, "conveyor");
+
+        //stop coasting code
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+
+
+
     }
     //drive
     public void setPower(double leftPower, double rightPower) {
