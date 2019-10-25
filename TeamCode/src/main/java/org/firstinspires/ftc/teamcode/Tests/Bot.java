@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -57,8 +59,9 @@ public class Bot {
     //Holder servo
     public Servo holdServo = null;
 
-    //Conveyor motor
+    //Conveyor
     public DcMotor conveyor = null;
+    public DistanceSensor limit = null;
 
     //Vuforia Tracking Stuff
     public int cameraMonitorViewId;
@@ -145,6 +148,15 @@ public class Bot {
         intakeRight.setPower(rightPower);
     }
 
+    public boolean getLimit() {
+        return limit.getDistance(DistanceUnit.INCH) == 0;
+    }
+    // sets power and waits until limit matches desired
+    public void runTilLimit(double power, boolean desired) {
+        conveyor.setPower(power);
+        while(getLimit() != desired) {}
+        conveyor.setPower(0);
+    }
 
     //Obtain the imu's gyro sensor stuff
     public double getGyroHeading() {

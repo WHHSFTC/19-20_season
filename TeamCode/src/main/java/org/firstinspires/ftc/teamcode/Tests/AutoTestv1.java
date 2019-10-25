@@ -21,6 +21,7 @@ public class AutoTestv1 extends LinearOpMode {
             robot.encoderDrive(0.1,-5,-5,5);
             robot.encoderTurn(0.1,-45,5);
             robot.encoderDrive(0.1,-1,-1,5);
+            robot.runTilLimit(1,true);
         }
     }
 }
