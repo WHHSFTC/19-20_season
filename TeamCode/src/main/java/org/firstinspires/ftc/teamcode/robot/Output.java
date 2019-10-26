@@ -8,15 +8,15 @@ public class Output {
     public Servo arm, wrist, inner, outer;
     public DcMotor spool1, spool2, spool3, spool4;
     Output(HardwareMap hwmap) {
-        arm = hwmap.servo.get("arm");
-        wrist = hwmap.servo.get("wrist");
-        inner = hwmap.servo.get("inner");
-        outer = hwmap.servo.get("outer");
+      //arm = hwmap.servo.get("arm");
+      //wrist = hwmap.servo.get("wrist");
+      //inner = hwmap.servo.get("inner");
+      //outer = hwmap.servo.get("outer");
 
-        spool1 = hwmap.dcMotor.get("spool1");
-        spool2 = hwmap.dcMotor.get("spool2");
-        spool3 = hwmap.dcMotor.get("spool3");
-        spool4 = hwmap.dcMotor.get("spool4");
+      //spool1 = hwmap.dcMotor.get("spool1");
+      //spool2 = hwmap.dcMotor.get("spool2");
+      //spool3 = hwmap.dcMotor.get("spool3");
+      //spool4 = hwmap.dcMotor.get("spool4");
     }
     public void setSpoolPower(double power) {
         spool1.setPower(power);

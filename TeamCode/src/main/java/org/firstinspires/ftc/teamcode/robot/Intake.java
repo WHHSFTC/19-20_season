@@ -20,10 +20,10 @@ public class Intake {
     Intake(HardwareMap hwmap) {
         flyL = hwmap.crservo.get("left");
         flyR = hwmap.crservo.get("right");
-        skyArm = hwmap.servo.get("skyarm");
+       // skyArm = hwmap.servo.get("skyarm");
         flyR.setDirection(DcMotorSimple.Direction.REVERSE);
-        belt = hwmap.dcMotor.get("belt");
-        limit = hwmap.get(DistanceSensor.class,"limit");
+        //belt = hwmap.dcMotor.get("belt");
+       // limit = hwmap.get(DistanceSensor.class,"limit");
     }
     public void setServoPower(double power) {
         flyL.setPower(power);

@@ -10,7 +10,7 @@ public class BetterTest extends LinearOpMode {
     RobotProcessor proc;
     public void runOpMode() {
         robot = new Robot(hardwareMap);
-        proc = new RobotProcessor(this);
+    //    proc = new RobotProcessor(this);
 
 
 

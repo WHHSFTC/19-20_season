@@ -10,6 +10,11 @@ public class DriveTrain {
         motorLB = hwmap.dcMotor.get("motorLB");
         motorRB = hwmap.dcMotor.get("motorRB");
         motorRF = hwmap.dcMotor.get("motorRF");
+
+        motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void setDrivePowers(double lb, double lf, double rf, double rb) {
         motorLB.setPower(lb);

@@ -89,9 +89,9 @@ public class Bot {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // For Lift
-        lift1 = hwMap.get(DcMotor.class, "lift1");
-        lift2 = hwMap.get(DcMotor.class, "lift2");
-        lift3 = hwMap.get(DcMotor.class, "lift3");
+//      lift1 = hwMap.get(DcMotor.class, "lift1");
+//      lift2 = hwMap.get(DcMotor.class, "lift2");
+//      lift3 = hwMap.get(DcMotor.class, "lift3");
 
         // for intake
         intakeLeft = hwMap.get(CRServo.class, "leftIntake");
@@ -111,16 +111,16 @@ public class Bot {
         imu.initialize(parameters);
 
         // For Claw
-        servo1 = hwMap.get(Servo.class,"Servo1");
-        servo2 = hwMap.get(Servo.class,"Servo2");
-        servo3 = hwMap.get(Servo.class,"Servo3");
-        servo4 = hwMap.get(Servo.class,"Servo4");
+//      servo1 = hwMap.get(Servo.class,"Servo1");
+//      servo2 = hwMap.get(Servo.class,"Servo2");
+//      servo3 = hwMap.get(Servo.class,"Servo3");
+//      servo4 = hwMap.get(Servo.class,"Servo4");
 
         //For back holder
-        holdServo = hwMap.get(Servo.class, "holdServo");
+///     holdServo = hwMap.get(Servo.class, "holdServo");
 
         //For conveyor
-        conveyor = hwMap.get(DcMotor.class, "conveyor");
+//      conveyor = hwMap.get(DcMotor.class, "conveyor");
 
         //stop coasting code
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
