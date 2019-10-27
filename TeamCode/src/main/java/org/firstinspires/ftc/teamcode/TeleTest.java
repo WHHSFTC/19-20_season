@@ -32,7 +32,7 @@ public class TeleTest extends LinearOpMode {double deadzone = .05;
 
             double theta = Math.atan2(yPow, xPow);
             double power = Math.pow(Math.max(Math.abs(xPow), Math.abs(yPow)),2);
-            double zPower = Math.pow(Math.abs(zPow),2);
+            double zPower = Math.pow(zPow,2);
             double x = Math.cos(theta);
             double y = Math.sin(theta);
 
