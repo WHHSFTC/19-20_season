@@ -9,6 +9,4 @@ public interface StrafingDriveTrain {
     public void goVector(double x, double y, double power);
     // follow arc around (centerX, centerY) for angle degrees counterclockwise
     public void goArc(double centerX, double centerY, double angle, double power);
-    // log motor powers to telemetry
-    public void dumpPowers();
 }
