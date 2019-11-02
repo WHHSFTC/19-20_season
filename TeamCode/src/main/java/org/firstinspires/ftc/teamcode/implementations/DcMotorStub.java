@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.implementations;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-public class DcMotor implements com.qualcomm.robotcore.hardware.DcMotor {
+public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
     MotorConfigurationType motorType;
     ZeroPowerBehavior zeroPowerBehavior;
     boolean powerFloat;
