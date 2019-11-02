@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.ServoController;
 
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 
+// acts like a crservo but is actually two crservos in opposite directions
 public class Flywheels implements CRServo {
     private CRServo servoLeft;
     private CRServo servoRight;

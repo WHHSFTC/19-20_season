@@ -7,7 +7,9 @@ import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 
 public class Claw implements Mechanism<Claw.State> {
     private State state;
+    // inner claw is closer to wrist
     private InnerClaw innerClaw;
+    // outer claw farther from wrist
     private OuterClaw outerClaw;
 
     public Claw(HardwareMap hwmap) {

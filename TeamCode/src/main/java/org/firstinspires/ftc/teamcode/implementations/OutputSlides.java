@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.util.Hardware;
 
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 
+// drives slide motors using sensors and encoders
 public class OutputSlides implements ContinuousMechanism {
     public OutputSlides(HardwareMap hwmap) {
 

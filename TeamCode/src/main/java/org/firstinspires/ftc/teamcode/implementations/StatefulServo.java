@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 
+// wrapper for Servo that uses an enum of states
 public abstract class StatefulServo<S extends StatefulServo.State> implements Mechanism<S> {
     // implemented by state enums of subclasses
     public interface State {

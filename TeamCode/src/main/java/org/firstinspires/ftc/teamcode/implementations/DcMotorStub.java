@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.implementations;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+// a stub that implements the methods of DcMotor for logging
 public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
     MotorConfigurationType motorType;
     ZeroPowerBehavior zeroPowerBehavior;

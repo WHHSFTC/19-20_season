@@ -8,7 +8,9 @@ import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
+// the bot
 public class Sursum {
+    // declarations
     public StrafingDriveTrain driveTrain;
     public ContinuousMechanism outputSlides;
     public Mechanism arm;
@@ -16,8 +18,10 @@ public class Sursum {
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
+    // initialization
     public Sursum(HardwareMap hwmap) {
         driveTrain = new DriveTrain(hwmap);
+
         // output {{{
         outputSlides = new OutputSlides(hwmap);
         arm = new Arm(hwmap);
