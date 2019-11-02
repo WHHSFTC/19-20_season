@@ -13,7 +13,7 @@ public class Arm extends StatefulServo<Arm.State> {
                           this.value = value;
                                              }
         public double getPosition() {
-                                  return value;
-                                               }
+            return value;
+        }
     }
 }
