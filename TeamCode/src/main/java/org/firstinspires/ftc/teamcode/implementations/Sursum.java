@@ -34,4 +34,10 @@ public class Sursum {
         belt = hwmap.dcMotor.get("belt");
         // }}}
     }
+    public void init() {
+
+    }
+    public void stop() {
+
+    }
 }

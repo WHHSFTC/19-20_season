@@ -31,4 +31,9 @@ public class DriveTrain implements StrafingDriveTrain {
     public void goVector(double x, double y, double power) {
 
     }
+
+    @Override
+    public void dumpMotors() {
+
+    }
 }
