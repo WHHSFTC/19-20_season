@@ -1,12 +1,20 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 public class DriveTrain implements StrafingDriveTrain {
+    private DcMotor motorRF;
+    private DcMotor motorLF;
+    private DcMotor motorLB;
+    private DcMotor motorRB;
     public DriveTrain(HardwareMap hwmap) {
-
+        motorRF = hwmap.dcMotor.get("motorRF");
+        motorLF = hwmap.dcMotor.get("motorLF");
+        motorLB = hwmap.dcMotor.get("motorLB");
+        motorRB = hwmap.dcMotor.get("motorRB");
     }
     // turns about center of robot
     @Override
@@ -38,6 +46,9 @@ public class DriveTrain implements StrafingDriveTrain {
     }
 
     public void setPowers(double rf, double lf, double lb, double rb) {
-
+        motorRF.setPower(rf);
+        motorLF.setPower(lf);
+        motorLB.setPower(lb);
+        motorRB.setPower(rb);
     }
 }
