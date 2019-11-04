@@ -59,6 +59,17 @@ public class Tele extends LinearOpMode {
 
     // drives the input
     private void driveInput() {
-
+        if(gamepad2.a) {
+            bot.flywheels.setPower(1);
+            bot.belt.setPower(1);
+        }
+        if(gamepad2.y) {
+            bot.flywheels.setPower(-1);
+            bot.belt.setPower(-1);
+        }
+        if(gamepad2.x) {
+            bot.flywheels.setPower(0);
+            bot.belt.setPower(0);
+        }
     }
 }
