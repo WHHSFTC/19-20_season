@@ -36,4 +36,8 @@ public class DriveTrain implements StrafingDriveTrain {
     public void dumpMotors() {
 
     }
+
+    public void setPowers(double rf, double lf, double lb, double rb) {
+
+    }
 }
