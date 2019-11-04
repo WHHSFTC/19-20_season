@@ -11,13 +11,13 @@ public class OutputSlides implements ContinuousMechanism {
 
     }
     @Override
-    public void setValue(double value) throws IllegalArgumentException {
+    public void setState(Double value) throws IllegalArgumentException {
 
     }
 
     @Override
-    public double getValue() {
-        return 0;
+    public Double getState() {
+        return 0.0;
     }
 
     @Override
