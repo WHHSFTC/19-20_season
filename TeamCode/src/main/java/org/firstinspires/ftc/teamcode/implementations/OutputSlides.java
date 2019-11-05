@@ -42,7 +42,7 @@ public class OutputSlides implements ContinuousMechanism {
         return -1;
     }
 
-    public double dumpEncoders(Telemetry telemetry) {
+    public dumpEncoders(Telemetry telemetry) {
         telemetry.addData("spool 1", motor1.getCurrentPosition());
         telemetry.addData("spool 2", motor2.getCurrentPosition());
         telemetry.addData("spool 3", motor3.getCurrentPosition());
