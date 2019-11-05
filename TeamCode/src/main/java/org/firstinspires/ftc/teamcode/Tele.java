@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.implementations.Arm;
 import org.firstinspires.ftc.teamcode.implementations.Claw;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.OutputSlides;
+import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
 @TeleOp(group = "Tele", name = "Tele")
@@ -24,6 +25,9 @@ public class Tele extends LinearOpMode {
             driveDriveTrain();
             driveInput();
             driveOutput();
+            if(gamepad1.dpad_down) bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+            if(gamepad1.dpad_up) bot.shuttleGate.setState(ShuttleGate.State.OPEN);
+            if(gamepad1.dpad_left || gamepad1.dpad_right) bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
             bot.driveTrain.dumpMotors();
             telemetry.update();
         }

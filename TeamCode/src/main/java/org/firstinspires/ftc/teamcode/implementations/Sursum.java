@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 public class Sursum {
     // declarations
     public StrafingDriveTrain driveTrain;
+    public Mechanism shuttleGate;
     public ContinuousMechanism outputSlides;
     public Mechanism arm;
     public Mechanism claw;
@@ -20,6 +21,7 @@ public class Sursum {
     // initialization
     public Sursum(HardwareMap hwmap) {
         driveTrain = new DriveTrain(hwmap);
+        shuttleGate = new ShuttleGate(hwmap);
 
         // output {{{
         outputSlides = new OutputSlides(hwmap);
