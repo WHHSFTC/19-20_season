@@ -23,6 +23,7 @@ public class Tele extends LinearOpMode {
             driveInput();
             driveOutput();
             bot.driveTrain.dumpMotors();
+            telemetry.update();
         }
         bot.stop();
     }
