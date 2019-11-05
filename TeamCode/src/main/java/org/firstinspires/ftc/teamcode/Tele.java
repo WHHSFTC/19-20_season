@@ -59,10 +59,10 @@ public class Tele extends LinearOpMode {
         double y = Math.signum(sin);
 
         ((DriveTrain) bot.driveTrain).setPowers(
-                power * y + zpow,
-                power * -x + zpow,
                 power * -y + zpow,
-                power * x + zpow
+                power * x + zpow,
+                power * y + zpow,
+                power * -x + zpow
         );
     }
 
@@ -72,6 +72,7 @@ public class Tele extends LinearOpMode {
         if(gamepad2.dpad_left) bot.arm.setState(Arm.State.LEFT);
         if(gamepad2.dpad_up) bot.arm.setState(Arm.State.OUT);
         if(gamepad2.dpad_right) bot.arm.setState(Arm.State.RIGHT);
+        if(gamepad2.b) bot.arm.setState(Arm.State.BELT);
         if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
         if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);
         bot.outputSlides.setState(gamepad2.left_stick_y >= DEADZONE ? (double) gamepad2.left_stick_y/2 : 0);
@@ -80,15 +81,15 @@ public class Tele extends LinearOpMode {
 
     // drives the input
     private void driveInput() {
-        if(gamepad2.a) {
+        if(gamepad1.a) {
             bot.flywheels.setPower(1);
             bot.belt.setPower(1);
         }
-        if(gamepad2.y) {
+        if(gamepad1.y) {
             bot.flywheels.setPower(-1);
             bot.belt.setPower(-1);
         }
-        if(gamepad2.x) {
+        if(gamepad1.x) {
             bot.flywheels.setPower(0);
             bot.belt.setPower(0);
         }
