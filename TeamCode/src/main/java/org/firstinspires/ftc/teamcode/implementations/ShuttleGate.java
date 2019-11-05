@@ -50,7 +50,7 @@ class LeftGate extends StatefulServo<LeftGate.State> {
         servo = hwmap.servo.get("leftGate");
     }
     enum State implements StatefulServo.State {
-        FOUNDATION(1), OPEN(0.18), CLOSED(0.48);
+        FOUNDATION(1), OPEN(0), CLOSED(0.48);
         private double value;
         State(double value) {
             this.value = value;
