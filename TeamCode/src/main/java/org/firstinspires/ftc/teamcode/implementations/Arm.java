@@ -2,18 +2,72 @@ package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Arm extends StatefulServo<Arm.State> {
-    // initializes the hardware
-    // servo is provided by StatefulServo<Arm.State>
+import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
+
+public class Arm implements Mechanism<Arm.State> {
+    private Elbow elbow;
+    private Wrist wrist;
+    private State state;
     Arm(HardwareMap hwmap) {
-        servo = hwmap.servo.get("arm");
+        elbow = new Elbow(hwmap);
+        wrist = new Wrist(hwmap);
+    }
+
+    @Override
+    public State getState() {
+        return state;
+    }
+
+    @Override
+    public void setState(State state) {
+        elbow.setState(state.getElbow());
+        wrist.setState(state.getWrist());
+        this.state = state;
+    }
+
+    public enum State {
+        BELT(Elbow.State.IN, Wrist.State.BELT), IN(Elbow.State.OUT, Wrist.State.IN), LEFT(Elbow.State.OUT, Wrist.State.LEFT), OUT(Elbow.State.OUT, Wrist.State.OUT), RIGHT(Elbow.State.OUT, Wrist.State.RIGHT);
+        private Elbow.State elbow;
+        private Wrist.State wrist;
+        State(Elbow.State elbow, Wrist.State wrist) {
+            this.elbow = elbow;
+            this.wrist = wrist;
+        }
+
+        public Elbow.State getElbow() {
+            return elbow;
+        }
+
+        public Wrist.State getWrist() {
+            return wrist;
+        }
+    }
+}
+
+class Elbow extends StatefulServo<Elbow.State> {
+    Elbow(HardwareMap hwmap) {
+        servo = hwmap.servo.get("elbow");
     }
     // enumerates the directions of the Arm with servo positions
     // StatefulServo requires getPosition()
     enum State implements StatefulServo.State {
-        // directions and their corresponding servo positions as defined by Andrew
-	// 0-1 is 270 degrees, so each 1/3 is 90 degrees apart
-        OUT(1), LEFT(2/3), IN(1/3), RIGHT(0);
+        IN(0.73), OUT(0.32);
+        double value;
+        State(double value) {
+            this.value = value;
+        }
+        public double getPosition() {
+            return value;
+        }
+    }
+}
+class Wrist extends StatefulServo<Wrist.State> {
+    Wrist(HardwareMap hwmap) {
+        servo = hwmap.servo.get("wrist");
+    }
+    enum State implements StatefulServo.State {
+        // 0-1 is 270 degrees, so each 1/3 is 90 degrees apart
+        OUT(1), RIGHT(2/3), IN(1/3), LEFT(0), BELT(1/6 /*todo check this value*/);
         double value;
         State(double value) {
             this.value = value;

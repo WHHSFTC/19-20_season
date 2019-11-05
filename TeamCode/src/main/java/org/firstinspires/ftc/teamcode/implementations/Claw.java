@@ -27,7 +27,7 @@ public class Claw implements Mechanism<Claw.State> {
         return state;
     }
 
-    enum State {
+    public enum State {
         OPEN(InnerClaw.State.OPEN, OuterClaw.State.OPEN), CLOSED(InnerClaw.State.CLOSED, OuterClaw.State.CLOSED);
         private InnerClaw.State inner;
         private OuterClaw.State outer;
@@ -51,7 +51,7 @@ class InnerClaw extends StatefulServo<InnerClaw.State> {
         servo = hwmap.servo.get("inner");
     }
     enum State implements StatefulServo.State {
-        OPEN(0), CLOSED(0.5);
+        OPEN(1), CLOSED(0.45);
         double value;
         State(double value) {
             this.value = value;
@@ -66,7 +66,7 @@ class OuterClaw extends StatefulServo<OuterClaw.State> {
         servo = hwmap.servo.get("outer");
     }
     enum State implements StatefulServo.State {
-        OPEN(0.5), CLOSED(0);
+        OPEN(0), CLOSED(0.58);
         double value;
         State(double value) {
             this.value = value;

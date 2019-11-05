@@ -14,7 +14,6 @@ public class Sursum {
     public StrafingDriveTrain driveTrain;
     public ContinuousMechanism outputSlides;
     public Mechanism arm;
-    public Mechanism wrist;
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
@@ -25,7 +24,6 @@ public class Sursum {
         // output {{{
         outputSlides = new OutputSlides(hwmap);
         arm = new Arm(hwmap);
-        wrist = new Wrist(hwmap);
         claw = new Claw(hwmap);
         // }}}
 

@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.implementations.Arm;
+import org.firstinspires.ftc.teamcode.implementations.Claw;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
@@ -20,7 +22,6 @@ public class Tele extends LinearOpMode {
             driveInput();
             driveOutput();
             bot.driveTrain.dumpMotors();
-            driveOutput();
         }
         bot.stop();
     }
@@ -35,7 +36,7 @@ public class Tele extends LinearOpMode {
         ypow = Math.abs(ypow) > DEADZONE ? ypow : 0;
         zpow = Math.abs(zpow) > DEADZONE ? zpow : 0;
         double theta = Math.atan2(ypow, xpow); //angle of joystick
-        double power = Math.pow(Math.max(Math.abs(xpow),Math.abs(ypow)),2); //logarithmic drive
+        double power = Math.pow(Math.max(Math.abs(xpow), Math.abs(ypow)), 2); //logarithmic drive
         // offset of pi/4 makes wheels strafe correctly at cardinal and intermediate directions
         double cos = Math.cos(theta - Math.PI / 4);
         double sin = Math.sin(theta - Math.PI / 4);
@@ -49,12 +50,22 @@ public class Tele extends LinearOpMode {
         double x = Math.signum(cos);
         double y = Math.signum(sin);
 
-        ((DriveTrain) bot.driveTrain).setPowers(power * y + zpow, power * -x + zpow, power * -y + zpow, power * x + zpow);
+        ((DriveTrain) bot.driveTrain).setPowers(
+                power * y + zpow,
+                power * -x + zpow,
+                power * -y + zpow,
+                power * x + zpow
+        );
     }
 
     // drives the output
     private void driveOutput() {
-
+        if(gamepad2.dpad_down) bot.arm.setState(Arm.State.IN);
+        if(gamepad2.dpad_left) bot.arm.setState(Arm.State.LEFT);
+        if(gamepad2.dpad_up) bot.arm.setState(Arm.State.OUT);
+        if(gamepad2.dpad_right) bot.arm.setState(Arm.State.RIGHT);
+        if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
+        if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);
     }
 
     // drives the input
