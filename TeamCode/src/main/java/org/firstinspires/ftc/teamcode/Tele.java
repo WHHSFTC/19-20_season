@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.implementations.Arm;
 import org.firstinspires.ftc.teamcode.implementations.Claw;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
+import org.firstinspires.ftc.teamcode.implementations.OutputSlides;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
 @TeleOp(group = "Tele", name = "Tele")
@@ -66,6 +67,8 @@ public class Tele extends LinearOpMode {
         if(gamepad2.dpad_right) bot.arm.setState(Arm.State.RIGHT);
         if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
         if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);
+        bot.outputSlides.setState(gamepad2.left_stick_y >= DEADZONE ? (double) gamepad2.left_stick_y/2 : 0);
+        ((OutputSlides) bot.outputSlides).dumpEncoders(telemetry);
     }
 
     // drives the input
