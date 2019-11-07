@@ -52,7 +52,7 @@ class InnerClaw extends StatefulServo<InnerClaw.State> {
     }
     enum State implements StatefulServo.State {
         OPEN(1), CLOSED(0.45);
-        double value;
+        private double value;
         State(double value) {
             this.value = value;
         }
@@ -67,7 +67,7 @@ class OuterClaw extends StatefulServo<OuterClaw.State> {
     }
     enum State implements StatefulServo.State {
         OPEN(0), CLOSED(0.58);
-        double value;
+        private double value;
         State(double value) {
             this.value = value;
         }
