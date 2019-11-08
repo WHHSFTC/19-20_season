@@ -40,6 +40,7 @@ public class Tele extends LinearOpMode {
             turtle = !turtle;
             telemetry.addData("turtle", turtle);
         }
+        turtleX = gamepad1.x;
         double xpow = gamepad1.left_stick_x;
         double ypow = -gamepad1.left_stick_y;
         double zpow = gamepad1.right_stick_x;
