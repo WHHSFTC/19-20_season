@@ -11,4 +11,5 @@ public interface StrafingDriveTrain {
     public void goArc(double centerX, double centerY, double angle, double power);
     // log to telemetry
     public void dumpMotors();
+    public void stop();
 }

@@ -4,8 +4,10 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 // the bot
@@ -19,8 +21,8 @@ public class Sursum {
     public CRServo flywheels;
     public DcMotor belt;
     // initialization
-    public Sursum(HardwareMap hwmap) {
-        driveTrain = new DriveTrain(hwmap);
+    public Sursum(HardwareMap hwmap, Telemetry telemetry, OpModeIF opMode) {
+        driveTrain = new DriveTrain(hwmap, telemetry, opMode);
         shuttleGate = new ShuttleGate(hwmap);
 
         // output {{{
@@ -38,6 +40,12 @@ public class Sursum {
 
     }
     public void stop() {
-
+        driveTrain.stop();
+        shuttleGate.stop();
+        outputSlides.stop();
+        arm.stop();
+        claw.stop();
+        flywheels.setPower(0);
+        belt.setPower(0);
     }
 }
