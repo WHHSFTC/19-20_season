@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
@@ -18,7 +19,7 @@ public class DriveTrain implements StrafingDriveTrain {
     private DcMotor motorLB;
     private DcMotor motorRB;
     private Telemetry telemetry;
-    private OpModeIF opMode;
+    private LinearOpMode opMode;
     private BNO055IMU imu;
 
     static final double P_TURN_COEFF = .018;
@@ -28,7 +29,7 @@ public class DriveTrain implements StrafingDriveTrain {
     static final double ANTI_WINDUP = 2;
     static final double TICKSPERROTATION = 537.6;
 
-    public DriveTrain(HardwareMap hwmap, Telemetry telemetry, OpModeIF opMode) {
+    public DriveTrain(HardwareMap hwmap, Telemetry telemetry, LinearOpMode opMode) {
         motorRF = hwmap.dcMotor.get("motorRF");
         motorLF = hwmap.dcMotor.get("motorLF");
         motorLB = hwmap.dcMotor.get("motorLB");
