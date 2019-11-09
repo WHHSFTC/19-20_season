@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 
 public class Arm implements Mechanism<Arm.State> {
+    public void stop() {}
     private Elbow elbow;
     private Wrist wrist;
     private State state;

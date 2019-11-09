@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
+
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 public class DriveTrain implements StrafingDriveTrain {
@@ -79,25 +79,12 @@ public class DriveTrain implements StrafingDriveTrain {
         motorRB.setPower(rb);
     }
 
-    public void resetEnc() {
-        motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-
-    public void enterEnc() {
-        motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    public void enterPosenc() {
-        motorLF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorRF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorRB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    @Override
+    public void setModes(DcMotor.RunMode mode) {
+        motorLF.setMode(mode);
+        motorRF.setMode(mode);
+        motorRB.setMode(mode);
+        motorLB.setMode(mode);
     }
 
     public void stop() {
@@ -106,7 +93,6 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLB.setPower(0);
         motorRB.setPower(0);
     }
-
 
     // absolute
     public void rotate(double angleWanted) {
@@ -171,8 +157,8 @@ public class DriveTrain implements StrafingDriveTrain {
     }
 
     public void goAngle(double dist, double angle, double power) {
-        resetEnc();
-        enterPosenc();
+        setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setModes(DcMotor.RunMode.RUN_TO_POSITION);
         angle = angle-180-getHeading();
         double angel = Math.toRadians(angle);
         double x = Math.cos(angel);
@@ -210,6 +196,6 @@ public class DriveTrain implements StrafingDriveTrain {
             telemetry.update();
         }
         setPowers(0,0,0,0);
-        enterEnc();
+        setModes(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }

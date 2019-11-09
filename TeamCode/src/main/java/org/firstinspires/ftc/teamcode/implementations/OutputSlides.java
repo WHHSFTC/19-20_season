@@ -52,4 +52,7 @@ public class OutputSlides implements ContinuousMechanism {
         telemetry.addData("spool 2", motor2.getPower());
         telemetry.addData("spool 3", motor3.getPower());
     }
+    public void stop() {
+        setState(0.0);
+    }
 }

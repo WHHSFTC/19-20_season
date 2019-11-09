@@ -37,7 +37,11 @@ public class Sursum {
         // }}}
     }
     public void init() {
-
+        driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER);
+        shuttleGate.setState(ShuttleGate.State.CLOSED);
+        arm.setState(Arm.State.BELT);
+        claw.setState(Claw.State.OPEN);
     }
     public void stop() {
         driveTrain.stop();

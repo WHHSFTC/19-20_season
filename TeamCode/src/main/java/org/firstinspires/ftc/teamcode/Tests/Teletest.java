@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
 @TeleOp(group = "Tele", name = "Tele")
-public class Tele extends LinearOpMode {
+public class Teletest extends LinearOpMode {
     private static final double DEADZONE = 0.05;
     private Sursum bot;
     private boolean turtle;

@@ -22,4 +22,5 @@ public abstract class StatefulServo<S extends StatefulServo.State> implements Me
         servo.setPosition(state.getPosition());
         this.state = state;
     }
+    public void stop() {}
 }

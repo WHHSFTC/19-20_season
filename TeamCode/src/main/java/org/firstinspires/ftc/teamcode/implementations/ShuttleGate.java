@@ -44,6 +44,8 @@ public class ShuttleGate implements Mechanism<ShuttleGate.State> {
             return right;
         }
     }
+    @Override
+    public void stop() {}
 }
 class LeftGate extends StatefulServo<LeftGate.State> {
     LeftGate(HardwareMap hwmap) {

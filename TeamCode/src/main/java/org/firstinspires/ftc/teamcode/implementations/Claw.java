@@ -44,6 +44,7 @@ public class Claw implements Mechanism<Claw.State> {
             return outer;
         }
     }
+    public void stop() {}
 }
 
 class InnerClaw extends StatefulServo<InnerClaw.State> {
