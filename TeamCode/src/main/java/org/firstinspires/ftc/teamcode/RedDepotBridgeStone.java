@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
@@ -11,6 +12,7 @@ public class RedDepotBridgeStone extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         bot = new Sursum(this);
         bot.init();
+        bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         waitForStart();
         // displace the first stone
         bot.driveTrain.goVector(60, 0, 1);

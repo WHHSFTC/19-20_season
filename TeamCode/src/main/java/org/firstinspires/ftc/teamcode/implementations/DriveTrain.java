@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 public class DriveTrain implements StrafingDriveTrain {
     private static final double MECANUM_WHEEL_CIRCUMFERENCE = 12.368475;
+    private double offset;
     private DcMotor motorRF;
     private DcMotor motorLF;
     private DcMotor motorLB;
@@ -22,12 +23,17 @@ public class DriveTrain implements StrafingDriveTrain {
     private LinearOpMode opMode;
     private BNO055IMU imu;
 
-    static final double P_TURN_COEFF = .018;
-    static final double I_TURN_COEFF = 0.01;
-    static final double D_TURN_COEFF = 0.026;
-    static final double HEADING_THRESHOLD = 5;
-    static final double ANTI_WINDUP = 2;
-    static final double TICKSPERROTATION = 537.6;
+    private static final double P_TURN_COEFF = .018;
+    private static final double I_TURN_COEFF = 0.01;
+    private static final double D_TURN_COEFF = 0.026;
+    private static final double HEADING_THRESHOLD = 5;
+    private static final double ANTI_WINDUP = 2;
+    private static final double TICKSPERROTATION = 537.6;
+
+    public static final double RED_SIDE = 0;
+    public static final double BUILDING_ZONE = 90;
+    public static final double BLUE_SIDE = 180;
+    public static final double LOADING_ZONE = 270;
 
     public DriveTrain(LinearOpMode opMode) {
         this.opMode = opMode;
@@ -44,7 +50,7 @@ public class DriveTrain implements StrafingDriveTrain {
         // not implemented
     }
 
-    public void initImu(){
+    public void initImu() {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -52,14 +58,19 @@ public class DriveTrain implements StrafingDriveTrain {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
         imu.initialize(parameters);
     }
-    public double getHeading(){
+
+    public double getRawHeading() {
         Orientation ret = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         double heading = ret.firstAngle;
         return heading;
     }
+
+    public double getHeading() {
+        return getRawHeading() + offset;
+    }
+
     // strafes at cartesian vector
     @Override
     public void goVector(double x, double y, double power) {
@@ -96,12 +107,14 @@ public class DriveTrain implements StrafingDriveTrain {
         motorRF.setPower(0);
         motorLF.setPower(0);
         motorLB.setPower(0);
+        motorRB.setPower(0);
     }
 
     // absolute
-    public void rotate(double angleWanted) {
+    public void rotate(double angle) {
         //Turn using PID
         // clockwise = negative input, counter-clockwise = positive input
+        double angleWanted = getHeading() + angle;
         double rcw = 1;
         double integral = 0;
         double previous_error = 0;
@@ -160,9 +173,11 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLB.setPower(clip_speed);
     }
 
+    // takes global angle
     public void goAngle(double dist, double angle, double power) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
+        // local angle
         angle = angle-getHeading();
         double angel = Math.toRadians(angle);
         double x = Math.cos(angel);
@@ -181,11 +196,11 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLF.setPower(-power * (-y - x));
         motorLB.setPower(-power * (-y + x));
         motorRB.setPower(power * (y + x));
-        while (( motorLB.isBusy() &&
+        while (opMode.opModeIsActive()  &&
+                motorLB.isBusy() &&
                 motorRB.isBusy() &&
                 motorRF.isBusy() &&
-                motorLF.isBusy()) &&
-                opMode.opModeIsActive()) {
+                motorLF.isBusy()) {
             opMode.telemetry.addData("Path2", "Running at %7d :%7d",
                     motorLB.getCurrentPosition(),
                     motorLF.getCurrentPosition(),
@@ -217,6 +232,6 @@ public class DriveTrain implements StrafingDriveTrain {
     }
     @Override
     public void setHeading(double angle) {
-
+        offset = angle - getRawHeading();
     }
 }

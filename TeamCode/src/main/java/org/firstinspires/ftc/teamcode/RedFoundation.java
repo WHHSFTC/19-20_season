@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
@@ -14,7 +15,7 @@ public class RedFoundation extends LinearOpMode {
     public void runOpMode() {
         bot = new Sursum(this);
         bot.init();
-        telemetry.addData("Start", "Back side to the wall.");
+        bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         waitForStart();
         // drive half the width of the bot to the left to line up with center-ish of foundation
         bot.driveTrain.goVector(bot.ROBOT_WIDTH * -1/2, 0, 1);
