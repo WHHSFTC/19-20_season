@@ -10,10 +10,14 @@ public class Red1 extends LinearOpMode {
     private Sursum bot;
     @Override
     public void runOpMode() {
-        bot = new Sursum(hardwareMap, telemetry, this);
+        bot = new Sursum(this);
+        // init
         bot.init();
+        // start
         waitForStart();
-        bot.driveTrain.goVector(0, 12, 1);
+        // park
+        bot.driveTrain.goVector(12, 0, .5);
+        // stop
         bot.stop();
     }
 }

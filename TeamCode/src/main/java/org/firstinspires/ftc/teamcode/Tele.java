@@ -18,7 +18,7 @@ public class Tele extends LinearOpMode {
     private boolean turtleX;
     @Override
     public void runOpMode() {
-        bot = new Sursum(hardwareMap, telemetry, this);
+        bot = new Sursum(this);
         bot.init();
         waitForStart();
         while (opModeIsActive()) {
@@ -82,7 +82,7 @@ public class Tele extends LinearOpMode {
         if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
         if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);
         bot.outputSlides.setState(Math.abs(gamepad2.left_stick_y) >= DEADZONE ? (double) gamepad2.left_stick_y : 0);
-        ((OutputSlides) bot.outputSlides).dumpEncoders(telemetry);
+        ((OutputSlides) bot.outputSlides).dumpEncoders();
     }
 
     // drives the input

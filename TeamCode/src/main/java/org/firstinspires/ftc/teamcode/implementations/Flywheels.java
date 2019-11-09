@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ServoController;
@@ -10,9 +11,9 @@ import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 public class Flywheels implements CRServo {
     private CRServo servoLeft;
     private CRServo servoRight;
-    public Flywheels(HardwareMap hwmap) {
-        servoLeft = hwmap.crservo.get("leftFly");
-        servoRight = hwmap.crservo.get("rightFly");
+    public Flywheels(LinearOpMode opMode) {
+        servoLeft = opMode.hardwareMap.crservo.get("leftFly");
+        servoRight = opMode.hardwareMap.crservo.get("rightFly");
     }
     @Override
     public ServoController getController() {

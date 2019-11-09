@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -12,9 +13,9 @@ public class Claw implements Mechanism<Claw.State> {
     // outer claw farther from wrist
     private OuterClaw outerClaw;
 
-    public Claw(HardwareMap hwmap) {
-        innerClaw = new InnerClaw(hwmap);
-        outerClaw = new OuterClaw(hwmap);
+    public Claw(LinearOpMode opMode) {
+        innerClaw = new InnerClaw(opMode);
+        outerClaw = new OuterClaw(opMode);
     }
 
     public void setState(State state) throws IllegalArgumentException {
@@ -48,8 +49,8 @@ public class Claw implements Mechanism<Claw.State> {
 }
 
 class InnerClaw extends StatefulServo<InnerClaw.State> {
-    InnerClaw(HardwareMap hwmap) {
-        servo = hwmap.servo.get("inner");
+    InnerClaw(LinearOpMode opMode) {
+        servo = opMode.hardwareMap.servo.get("inner");
     }
     enum State implements StatefulServo.State {
         OPEN(1), CLOSED(0.45);
@@ -63,8 +64,8 @@ class InnerClaw extends StatefulServo<InnerClaw.State> {
     }
 }
 class OuterClaw extends StatefulServo<OuterClaw.State> {
-    OuterClaw(HardwareMap hwmap) {
-        servo = hwmap.servo.get("outer");
+    OuterClaw(LinearOpMode opMode) {
+        servo = opMode.hardwareMap.servo.get("outer");
     }
     enum State implements StatefulServo.State {
         OPEN(0), CLOSED(0.58);

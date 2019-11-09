@@ -11,8 +11,12 @@ public interface StrafingDriveTrain {
     public void goVector(double x, double y, double power);
     // follow arc around (centerX, centerY) for angle degrees counterclockwise
     public void goArc(double centerX, double centerY, double angle, double power);
+    // begins driving at angle
+    public void startAngle(double angle, double power);
     // log to telemetry
     public void dumpMotors();
     public void stop();
+    public void halt();
     public void setModes(DcMotor.RunMode mode);
+    public void setHeading(double angle);
 }

@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.implementations;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
@@ -12,6 +14,8 @@ import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 // the bot
 public class Sursum {
+    public static final double ROBOT_WIDTH = 17.75;
+    public static final double ROBOT_LENGTH = 17.75;
     // declarations
     public StrafingDriveTrain driveTrain;
     public Mechanism shuttleGate;
@@ -20,20 +24,25 @@ public class Sursum {
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
+    public DistanceSensor ods;
     // initialization
-    public Sursum(HardwareMap hwmap, Telemetry telemetry, LinearOpMode opMode) {
-        driveTrain = new DriveTrain(hwmap, telemetry, opMode);
-        shuttleGate = new ShuttleGate(hwmap);
+    public Sursum(LinearOpMode opMode) {
+        driveTrain = new DriveTrain(opMode);
+        shuttleGate = new ShuttleGate(opMode);
 
         // output {{{
-        outputSlides = new OutputSlides(hwmap);
-        arm = new Arm(hwmap);
-        claw = new Claw(hwmap);
+        outputSlides = new OutputSlides(opMode);
+        arm = new Arm(opMode);
+        claw = new Claw(opMode);
         // }}}
 
         // intake {{{
-        flywheels = new Flywheels(hwmap);
-        belt = hwmap.dcMotor.get("belt");
+        flywheels = new Flywheels(opMode);
+        belt = opMode.hardwareMap.dcMotor.get("belt");
+        // }}}
+
+        // sensors {{{
+        ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         // }}}
     }
     public void init() {

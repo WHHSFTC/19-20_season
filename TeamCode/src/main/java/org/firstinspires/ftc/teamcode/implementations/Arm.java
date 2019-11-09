@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
@@ -9,9 +10,10 @@ public class Arm implements Mechanism<Arm.State> {
     private Elbow elbow;
     private Wrist wrist;
     private State state;
-    Arm(HardwareMap hwmap) {
-        elbow = new Elbow(hwmap);
-        wrist = new Wrist(hwmap);
+
+    Arm(LinearOpMode opMode) {
+        elbow = new Elbow(opMode);
+        wrist = new Wrist(opMode);
     }
 
     @Override
@@ -46,8 +48,8 @@ public class Arm implements Mechanism<Arm.State> {
 }
 
 class Elbow extends StatefulServo<Elbow.State> {
-    Elbow(HardwareMap hwmap) {
-        servo = hwmap.servo.get("elbow");
+    Elbow(LinearOpMode opMode) {
+        servo = opMode.hardwareMap.servo.get("elbow");
     }
     // enumerates the directions of the Arm with servo positions
     // StatefulServo requires getPosition()
@@ -63,8 +65,8 @@ class Elbow extends StatefulServo<Elbow.State> {
     }
 }
 class Wrist extends StatefulServo<Wrist.State> {
-    Wrist(HardwareMap hwmap) {
-        servo = hwmap.servo.get("wrist");
+    Wrist(LinearOpMode opMode) {
+        servo = opMode.hardwareMap.servo.get("wrist");
     }
     enum State implements StatefulServo.State {
         // 0-1 is 270 degrees, so each 1/3 is 90 degrees apart
