@@ -19,7 +19,6 @@ public class Tele extends LinearOpMode {
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
-        bot.init();
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();
@@ -88,11 +87,11 @@ public class Tele extends LinearOpMode {
     // drives the input
     private void driveInput() {
         if(gamepad1.a) {
-            bot.flywheels.setPower(1);
+            bot.flywheels.setPower(0.5);
             bot.belt.setPower(1);
         }
         if(gamepad1.y) {
-            bot.flywheels.setPower(-1);
+            bot.flywheels.setPower(-0.5);
             bot.belt.setPower(-1);
         }
         if(gamepad1.b) {
