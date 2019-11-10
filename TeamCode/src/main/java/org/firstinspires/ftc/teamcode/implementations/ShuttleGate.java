@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
@@ -8,9 +9,9 @@ public class ShuttleGate implements Mechanism<ShuttleGate.State> {
     private State state;
     private LeftGate left;
     private RightGate right;
-    ShuttleGate(HardwareMap hwmap) {
-        left = new LeftGate(hwmap);
-        right = new RightGate(hwmap);
+    ShuttleGate(LinearOpMode opMode) {
+        left = new LeftGate(opMode);
+        right = new RightGate(opMode);
     }
 
     @Override
@@ -44,10 +45,12 @@ public class ShuttleGate implements Mechanism<ShuttleGate.State> {
             return right;
         }
     }
+
+    public void stop() {}
 }
 class LeftGate extends StatefulServo<LeftGate.State> {
-    LeftGate(HardwareMap hwmap) {
-        servo = hwmap.servo.get("leftGate");
+    LeftGate(LinearOpMode opMode) {
+        servo = opMode.hardwareMap.servo.get("leftGate");
     }
     enum State implements StatefulServo.State {
         FOUNDATION(1), OPEN(0), CLOSED(0.48);
@@ -63,8 +66,8 @@ class LeftGate extends StatefulServo<LeftGate.State> {
     }
 }
 class RightGate extends StatefulServo<RightGate.State> {
-    RightGate(HardwareMap hwmap) {
-        servo = hwmap.servo.get("rightGate");
+    RightGate(LinearOpMode opMode) {
+        servo = opMode.hardwareMap.servo.get("rightGate");
     }
     enum State implements StatefulServo.State {
         FOUNDATION(0), OPEN(0.8), CLOSED(0.5);

@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Hardware;
 
@@ -12,13 +14,19 @@ public class OutputSlides implements ContinuousMechanism {
     private DcMotor motor1;
     private DcMotor motor2;
     private DcMotor motor3;
-    public OutputSlides(HardwareMap hwmap) {
-        motor1 = hwmap.dcMotor.get("spool1");
-        motor2 = hwmap.dcMotor.get("spool2");
-        motor3 = hwmap.dcMotor.get("spool3");
+    private LinearOpMode opMode;
+    public OutputSlides(LinearOpMode opMode) {
+        motor1 = opMode.hardwareMap.dcMotor.get("spool1");
+        motor2 = opMode.hardwareMap.dcMotor.get("spool2");
+        motor3 = opMode.hardwareMap.dcMotor.get("spool3");
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor3.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.opMode = opMode;
     }
     @Override
     public void setState(Double value) throws IllegalArgumentException {
@@ -42,9 +50,12 @@ public class OutputSlides implements ContinuousMechanism {
         return -1;
     }
 
-    public void dumpEncoders(Telemetry telemetry) {
-        telemetry.addData("spool 1", motor1.getCurrentPosition());
-        telemetry.addData("spool 2", motor2.getCurrentPosition());
-        telemetry.addData("spool 3", motor3.getCurrentPosition());
+    public void dumpEncoders() {
+        opMode.telemetry.addData("spool 1", motor1.getPower());
+        opMode.telemetry.addData("spool 2", motor2.getPower());
+        opMode.telemetry.addData("spool 3", motor3.getPower());
+    }
+    public void stop() {
+        setState(0.0);
     }
 }

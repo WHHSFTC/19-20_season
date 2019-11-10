@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.interfaces;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 public interface StrafingDriveTrain {
     // rotate about center angle degrees counterclockwise
     public void rotate(double angle);
@@ -9,6 +11,12 @@ public interface StrafingDriveTrain {
     public void goVector(double x, double y, double power);
     // follow arc around (centerX, centerY) for angle degrees counterclockwise
     public void goArc(double centerX, double centerY, double angle, double power);
+    // begins driving at angle
+    public void startAngle(double angle, double power);
     // log to telemetry
     public void dumpMotors();
+    public void stop();
+    public void halt();
+    public void setModes(DcMotor.RunMode mode);
+    public void setHeading(double angle);
 }
