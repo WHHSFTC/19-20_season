@@ -35,6 +35,10 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLF = opMode.hardwareMap.dcMotor.get("motorLF");
         motorLB = opMode.hardwareMap.dcMotor.get("motorLB");
         motorRB = opMode.hardwareMap.dcMotor.get("motorRB");
+        motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         initImu();
     }
