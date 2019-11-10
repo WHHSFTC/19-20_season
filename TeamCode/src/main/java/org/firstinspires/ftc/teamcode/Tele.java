@@ -37,9 +37,9 @@ public class Tele extends LinearOpMode {
     private void driveDriveTrain() {
         if(gamepad1.x && !turtleX) {
             turtle = !turtle;
-            telemetry.addData("turtle", turtle);
         }
         turtleX = gamepad1.x;
+        telemetry.addData("turtle", turtle);
         double xpow = gamepad1.left_stick_x;
         double ypow = -gamepad1.left_stick_y;
         double zpow = gamepad1.right_stick_x;
@@ -86,12 +86,12 @@ public class Tele extends LinearOpMode {
 
     // drives the input
     private void driveInput() {
-        if(gamepad1.a) {
-            bot.flywheels.setPower(2/3);
+        if(gamepad1.y) {
+            bot.flywheels.setPower(2.0/3);
             bot.belt.setPower(1);
         }
-        if(gamepad1.y) {
-            bot.flywheels.setPower(2/3);
+        if(gamepad1.a) {
+            bot.flywheels.setPower(2.0/3);
             bot.belt.setPower(-1);
         }
         if(gamepad1.b) {
