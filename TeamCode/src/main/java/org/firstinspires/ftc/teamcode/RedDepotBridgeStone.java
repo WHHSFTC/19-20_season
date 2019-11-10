@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
+@Autonomous(name = "RedDepotBridgeStone", group = "Auto")
 public class RedDepotBridgeStone extends LinearOpMode {
     private Sursum bot;
     @Override
