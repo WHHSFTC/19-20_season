@@ -15,8 +15,12 @@ public class Red1 extends LinearOpMode {
         // init
         bot.init();
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
+        telemetry.addData("heading", ((DriveTrain) bot.driveTrain).getHeading());
+        telemetry.update();
         // start
         waitForStart();
+        telemetry.addData("heading", ((DriveTrain) bot.driveTrain).getHeading());
+        telemetry.update();
         // park
         bot.driveTrain.goVector(0, 12, .5);
         // stop

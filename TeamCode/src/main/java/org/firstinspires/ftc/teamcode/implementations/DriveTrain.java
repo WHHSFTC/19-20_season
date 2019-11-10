@@ -30,9 +30,9 @@ public class DriveTrain implements StrafingDriveTrain {
     private static final double ANTI_WINDUP = 2;
     private static final double TICKSPERROTATION = 537.6;
 
-    public static final double RED_SIDE = 0;
+    public static final double RED_SIDE = 180;
     public static final double BUILDING_ZONE = 90;
-    public static final double BLUE_SIDE = 180;
+    public static final double BLUE_SIDE =  0;
     public static final double LOADING_ZONE = 270;
 
     public DriveTrain(LinearOpMode opMode) {
@@ -78,7 +78,9 @@ public class DriveTrain implements StrafingDriveTrain {
     // strafes at cartesian vector
     @Override
     public void goVector(double x, double y, double power) {
-        goAngle(Math.sqrt(x*x + y*y), Math.atan2(y, x), power);
+        double angle = Math.atan2(y, x);
+        angle = angle < 0 ? 2.0 * Math.PI - angle : angle;
+        goLocalRadians(Math.sqrt(x*x + y*y), angle, power);
     }
 
     @Override
@@ -177,13 +179,9 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLB.setPower(clip_speed);
     }
 
-    // takes global angle
-    public void goAngle(double dist, double angle, double power) {
+    public void goLocalRadians(double dist, double angel, double power) {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
-        // local angle
-        angle = angle-getHeading();
-        double angel = Math.toRadians(angle);
         double x = Math.cos(angel);
         double y = Math.sin(angel);
         double distance = dist / (MECANUM_WHEEL_CIRCUMFERENCE);
@@ -221,6 +219,12 @@ public class DriveTrain implements StrafingDriveTrain {
         }
         setPowers(0,0,0,0);
         setModes(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    }
+    // takes global angle
+    public void goAngle(double dist, double angle, double power) {
+        // local angle
+        goLocalRadians(dist, Math.toRadians(angle-getHeading()), power);
     }
 
     @Override
