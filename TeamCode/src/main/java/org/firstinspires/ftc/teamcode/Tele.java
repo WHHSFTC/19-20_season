@@ -19,6 +19,7 @@ public class Tele extends LinearOpMode {
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
+        bot.init();
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();
@@ -43,32 +44,32 @@ public class Tele extends LinearOpMode {
         double xpow = gamepad1.left_stick_x;
         double ypow = -gamepad1.left_stick_y;
         double zpow = gamepad1.right_stick_x;
+
+        double theta = Math.atan2(ypow, xpow); //angle of joystick
+        double power = Math.pow(Math.max(Math.abs(xpow), Math.abs(ypow)), 2); //logarithmic drive
         // ternaries for dead-zone logic
         xpow = Math.abs(xpow) > DEADZONE ? xpow : 0;
         ypow = Math.abs(ypow) > DEADZONE ? ypow : 0;
         zpow = Math.abs(zpow) > DEADZONE ? zpow : 0;
-        double theta = Math.atan2(ypow, xpow); //angle of joystick
-        double power = Math.pow(Math.max(Math.abs(xpow), Math.abs(ypow)), 2); //logarithmic drive
-        power = turtle ? power/3 : power;
-        // offset of pi/4 makes wheels strafe correctly at cardinal and intermediate directions
-        double cos = Math.cos(theta - Math.PI / 4);
-        double sin = Math.sin(theta - Math.PI / 4);
-        //eliminates incorrect signs resulting from double precision
-        if(Math.abs(cos)<.0000001){
-            cos=0;
-        }
-        if(Math.abs(sin)<.0000001){
-            sin=0;
-        }
-        double x = Math.signum(cos);
-        double y = Math.signum(sin);
+
+        double zpower = Math.pow(Math.abs(zpow),2);
+        double x = Math.cos(theta);
+        double y = Math.sin(theta);
+        double z = Math.signum(zpow);
 
         ((DriveTrain) bot.driveTrain).setPowers(
-                power * -y + zpow,
-                power * x + zpow,
-                power * y + zpow,
-                power * -x + zpow
-        );
+                power * (y-x) - zpower * z,
+                power * (-y-x) - zpower * z,
+                power * (-y+x) - zpower * z,
+                power * (y+x) - zpower * z );
+
+        // offset of pi/4 makes wheels strafe correctly at cardinal and intermediate directions
+
+        telemetry.addData("xpow", xpow);
+        telemetry.addData("zpow", zpow);
+        telemetry.addData("ypow", ypow);
+        telemetry.addData("theta", theta);
+
     }
 
     // drives the output
