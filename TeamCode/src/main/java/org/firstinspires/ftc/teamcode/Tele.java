@@ -24,7 +24,7 @@ public class Tele extends LinearOpMode {
         while (opModeIsActive()) {
             driveDriveTrain();
             driveInput();
-            // driveOutput();
+            driveOutput();
             if(gamepad2.dpad_down) bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
             if(gamepad2.dpad_up) bot.shuttleGate.setState(ShuttleGate.State.OPEN);
             if(gamepad2.dpad_left || gamepad1.dpad_right) bot.shuttleGate.setState(ShuttleGate.State.CLOSED);

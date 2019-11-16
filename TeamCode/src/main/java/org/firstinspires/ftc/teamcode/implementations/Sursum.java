@@ -24,7 +24,8 @@ public class Sursum {
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
-    public DistanceSensor ods;
+    public DistanceSensor ods_back;
+    public DistanceSensor ods_front;
     // initialization
     public Sursum(LinearOpMode opMode) {
         driveTrain = new DriveTrain(opMode);
@@ -42,7 +43,8 @@ public class Sursum {
         // }}}
 
         // sensors {{{
-        // ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
+        ods_back = opMode.hardwareMap.get(DistanceSensor.class, "odsback"); //Foundation Hooks
+        ods_front = opMode.hardwareMap.get(DistanceSensor.class, "odsfront"); //Flywheels
         // }}}
     }
     public void init() {
