@@ -78,9 +78,8 @@ public class DriveTrain implements StrafingDriveTrain {
     // strafes at cartesian vector
     @Override
     public void goVector(double x, double y, double power) {
-        double angle = Math.atan2(y, x);
-        angle = angle < 0 ? 2.0 * Math.PI - angle : angle;
-        goLocalRadians(Math.sqrt(x*x + y*y), angle, power);
+        double angle = Math.toDegrees(Math.atan2(y, x));
+        goAngle(Math.hypot(x, y), angle, power);
     }
 
     @Override
@@ -150,8 +149,6 @@ public class DriveTrain implements StrafingDriveTrain {
             accelerate(rcw);
 
             opMode.telemetry.addData("first angle", getHeading());
-            //opMode.telemetry.addData("second angle", ref.secondAngle);
-            //opMode.telemetry.addData("third angle", ref.thirdAngle);
             opMode.telemetry.addData("speed ", rcw);
             opMode.telemetry.addData("error", angleWanted - getHeading());
             opMode.telemetry.addData("angleWanted", angleWanted);
@@ -179,7 +176,10 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLB.setPower(clip_speed);
     }
 
-    public void goLocalRadians(double dist, double angel, double power) {
+    // takes global angle
+    public void goAngle(double dist, double angle, double power) {
+        // local angle
+        double angel = Math.toRadians(angle-getHeading());
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
         double x = Math.cos(angel);
@@ -203,6 +203,9 @@ public class DriveTrain implements StrafingDriveTrain {
                 motorRB.isBusy() &&
                 motorRF.isBusy() &&
                 motorLF.isBusy()) {
+            opMode.telemetry.addData("Raw Heading", getRawHeading());
+            opMode.telemetry.addData("Heading", getHeading());
+            opMode.telemetry.addData("Angle", angel);
             opMode.telemetry.addData("Path2", "Running at %7d :%7d",
                     motorLB.getCurrentPosition(),
                     motorLF.getCurrentPosition(),
@@ -220,11 +223,6 @@ public class DriveTrain implements StrafingDriveTrain {
         setPowers(0,0,0,0);
         setModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
-    }
-    // takes global angle
-    public void goAngle(double dist, double angle, double power) {
-        // local angle
-        goLocalRadians(dist, Math.toRadians(angle-getHeading()), power);
     }
 
     @Override
