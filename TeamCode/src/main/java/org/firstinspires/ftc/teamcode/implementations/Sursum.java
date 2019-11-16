@@ -42,7 +42,7 @@ public class Sursum {
         // }}}
 
         // sensors {{{
-        // ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
+        ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         // }}}
     }
     public void init() {
