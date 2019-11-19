@@ -1,18 +1,34 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
 
+import android.support.annotation.NonNull;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import java.util.Locale;
+
 // a stub that implements the methods of DcMotor for logging
 public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
-    MotorConfigurationType motorType;
-    ZeroPowerBehavior zeroPowerBehavior;
-    boolean powerFloat;
-    int targetPosition;
-    double power;
-    Direction direction;
-    RunMode mode;
+    private MotorConfigurationType motorType;
+    private ZeroPowerBehavior zeroPowerBehavior;
+    private boolean powerFloat;
+    private int targetPosition;
+    private double power;
+    private Direction direction;
+    private RunMode mode;
+    private LinearOpMode opMode;
+
+    DcMotorStub(LinearOpMode opMode) {
+        this.opMode = opMode;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format(Locale.ENGLISH, "MotorType: %s%nZeroPowerBehavior: %s%nPowerFloat: %b%nTargetPosition: %d%nPower: %a%nDirection: %s%nRunMode %s%n", motorType, zeroPowerBehavior, powerFloat, targetPosition, powerFloat, direction, mode);
+    }
 
     @Override
     public MotorConfigurationType getMotorType() {
@@ -97,7 +113,6 @@ public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
     @Override
     public void setPower(double power) {
         this.power = power;
-
     }
 
     @Override
