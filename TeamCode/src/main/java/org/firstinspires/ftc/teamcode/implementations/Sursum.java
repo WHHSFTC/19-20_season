@@ -27,17 +27,17 @@ public class Sursum {
     public DistanceSensor ods;
     // initialization
     public Sursum(LinearOpMode opMode) {
-        driveTrain = new DriveTrain(opMode);
-        shuttleGate = new ShuttleGate(opMode);
+        driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
+        shuttleGate = new ShuttleGate(opMode, "leftGate", "rightGate");
 
         // output {{{
-        outputSlides = new OutputSlides(opMode);
-        arm = new Arm(opMode);
-        claw = new Claw(opMode);
+        outputSlides = new OutputSlides(opMode, "spool1", "spool2", "spool3");
+        arm = new Arm(opMode, "elbow", "wrist");
+        claw = new Claw(opMode, "inner", "outer");
         // }}}
 
         // intake {{{
-        flywheels = new Flywheels(opMode);
+        flywheels = new Flywheels(opMode, "leftFly", "rightFly");
         belt = opMode.hardwareMap.dcMotor.get("belt");
         // }}}
 
