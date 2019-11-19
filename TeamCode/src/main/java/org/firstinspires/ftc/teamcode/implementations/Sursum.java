@@ -46,7 +46,7 @@ public class Sursum {
         // }}}
 
         // sensors {{{
-        // ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
+        ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         limit = opMode.hardwareMap.digitalChannel.get("limit");
         // }}}
     }
