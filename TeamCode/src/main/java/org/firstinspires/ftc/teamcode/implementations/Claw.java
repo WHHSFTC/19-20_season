@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 
@@ -53,7 +51,7 @@ class InnerClaw extends StatefulServo<InnerClaw.State> {
         servo = opMode.hardwareMap.servo.get("inner");
     }
     enum State implements StatefulServo.State {
-        OPEN(1), CLOSED(0.45);
+        OPEN(1), CLOSED(0.44);
         private double value;
         State(double value) {
             this.value = value;
@@ -68,7 +66,7 @@ class OuterClaw extends StatefulServo<OuterClaw.State> {
         servo = opMode.hardwareMap.servo.get("outer");
     }
     enum State implements StatefulServo.State {
-        OPEN(0), CLOSED(0.58);
+        OPEN(0), CLOSED(0.59);
         private double value;
         State(double value) {
             this.value = value;
