@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
+@TeleOp(name = "IMUTest", group = "Test")
 public class IMUTest extends LinearOpMode {
     private Sursum bot;
     @Override
