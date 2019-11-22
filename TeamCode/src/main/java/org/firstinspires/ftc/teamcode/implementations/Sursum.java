@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -26,23 +27,30 @@ public class Sursum {
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
+    public SideArm leftArm;
+    public SideArm rightArm;
     public DistanceSensor ods;
     public DigitalChannel limit;
     // initialization
     public Sursum(LinearOpMode opMode) {
-        driveTrain = new DriveTrain(opMode);
+        driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
         // ((DriveTrain) driveTrain).stubify();
-        shuttleGate = new ShuttleGate(opMode);
+        shuttleGate = new ShuttleGate(opMode, "leftGate", "rightGate");
+
 
         // output {{{
-        outputSlides = new OutputSlides(opMode);
-        arm = new Arm(opMode);
-        claw = new Claw(opMode);
+        outputSlides = new OutputSlides(opMode, "spool1", "spool2", "spool3");
+        arm = new Arm(opMode, "elbow", "wrist");
+        claw = new Claw(opMode, "inner", "outer");
         // }}}
 
         // intake {{{
-        flywheels = new Flywheels(opMode);
+        flywheels = new Flywheels(opMode, "leftFly", "rightFly");
         belt = opMode.hardwareMap.dcMotor.get("belt");
+        leftArm = new SideArm(opMode, "leftArm", "leftClaw");
+        rightArm = new SideArm(opMode, "rightArm", "rightClaw");
+        rightArm.arm.setDirection(Servo.Direction.REVERSE);
+        rightArm.claw.setDirection(Servo.Direction.REVERSE);
         // }}}
 
         // sensors {{{

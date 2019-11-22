@@ -11,10 +11,10 @@ public class OutputSlides implements ContinuousMechanism {
     private DcMotor motor2;
     private DcMotor motor3;
     private LinearOpMode opMode;
-    public OutputSlides(LinearOpMode opMode) {
-        motor1 = opMode.hardwareMap.dcMotor.get("spool1");
-        motor2 = opMode.hardwareMap.dcMotor.get("spool2");
-        motor3 = opMode.hardwareMap.dcMotor.get("spool3");
+    public OutputSlides(LinearOpMode opMode, String str1, String str2, String str3) {
+        motor1 = opMode.hardwareMap.dcMotor.get(str1);
+        motor2 = opMode.hardwareMap.dcMotor.get(str2);
+        motor3 = opMode.hardwareMap.dcMotor.get(str3);
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

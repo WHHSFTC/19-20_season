@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
+
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 
@@ -11,9 +13,9 @@ public class Claw implements Mechanism<Claw.State> {
     // outer claw farther from wrist
     private OuterClaw outerClaw;
 
-    public Claw(LinearOpMode opMode) {
-        innerClaw = new InnerClaw(opMode);
-        outerClaw = new OuterClaw(opMode);
+    public Claw(LinearOpMode opMode, String innerStr, String outerStr) {
+        innerClaw = new InnerClaw(opMode.hardwareMap.servo.get(innerStr));
+        outerClaw = new OuterClaw(opMode.hardwareMap.servo.get(outerStr));
     }
 
     public void setState(State state) throws IllegalArgumentException {
@@ -44,35 +46,37 @@ public class Claw implements Mechanism<Claw.State> {
         }
     }
     public void stop() {}
+
+    static class InnerClaw extends StatefulServo<InnerClaw.State> {
+        InnerClaw(Servo servo) {
+            super(servo);
+        }
+        enum State implements StatefulServo.State {
+            OPEN(1), CLOSED(0.44);
+            private double value;
+            State(double value) {
+                this.value = value;
+            }
+            public double getPosition() {
+                return value;
+            }
+        }
+    }
+
+    static class OuterClaw extends StatefulServo<OuterClaw.State> {
+        OuterClaw(Servo servo) {
+            super(servo);
+        }
+        enum State implements StatefulServo.State {
+            OPEN(0), CLOSED(0.59);
+            private double value;
+            State(double value) {
+                this.value = value;
+            }
+            public double getPosition() {
+                return value;
+            }
+        }
+    }
 }
 
-class InnerClaw extends StatefulServo<InnerClaw.State> {
-    InnerClaw(LinearOpMode opMode) {
-        servo = opMode.hardwareMap.servo.get("inner");
-    }
-    enum State implements StatefulServo.State {
-        OPEN(1), CLOSED(0.44);
-        private double value;
-        State(double value) {
-            this.value = value;
-        }
-        public double getPosition() {
-            return value;
-        }
-    }
-}
-class OuterClaw extends StatefulServo<OuterClaw.State> {
-    OuterClaw(LinearOpMode opMode) {
-        servo = opMode.hardwareMap.servo.get("outer");
-    }
-    enum State implements StatefulServo.State {
-        OPEN(0), CLOSED(0.59);
-        private double value;
-        State(double value) {
-            this.value = value;
-        }
-        public double getPosition() {
-            return value;
-        }
-    }
-}
