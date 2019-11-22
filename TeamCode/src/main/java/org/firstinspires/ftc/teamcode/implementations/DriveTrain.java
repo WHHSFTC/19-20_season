@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
@@ -43,10 +44,7 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLF = opMode.hardwareMap.dcMotor.get(lf);
         motorLB = opMode.hardwareMap.dcMotor.get(lb);
         motorRB = opMode.hardwareMap.dcMotor.get(rb);
-        motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
         imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         initImu();
     }
@@ -56,10 +54,7 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLF = new DcMotorStub(opMode);
         motorLB = new DcMotorStub(opMode);
         motorRB = new DcMotorStub(opMode);
-        motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
@@ -116,6 +111,14 @@ public class DriveTrain implements StrafingDriveTrain {
         motorRF.setMode(mode);
         motorRB.setMode(mode);
         motorLB.setMode(mode);
+    }
+
+    @Override
+    public void setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior behavior) {
+        motorRF.setZeroPowerBehavior(behavior);
+        motorLF.setZeroPowerBehavior(behavior);
+        motorLB.setZeroPowerBehavior(behavior);
+        motorRB.setZeroPowerBehavior(behavior);
     }
 
     public void stop() {

@@ -18,5 +18,6 @@ public interface StrafingDriveTrain {
     public void stop();
     public void halt();
     public void setModes(DcMotor.RunMode mode);
+    public void setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior behavior);
     public void setHeading(double angle);
 }

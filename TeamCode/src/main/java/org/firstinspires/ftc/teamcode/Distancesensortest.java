@@ -19,7 +19,7 @@ public class Distancesensortest extends LinearOpMode {
         bot.init();
         waitForStart();
         while (opModeIsActive()) {
-            distance = bot.ods.getDistance(DistanceUnit.INCH);
+//            distance = bot.ods.getDistance(DistanceUnit.INCH);
             telemetry.addData("The distance in Inches is: ", distance);
 
         }
