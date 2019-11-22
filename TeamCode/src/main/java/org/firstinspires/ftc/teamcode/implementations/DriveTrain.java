@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -34,18 +35,29 @@ public class DriveTrain implements StrafingDriveTrain {
     public static final double BLUE_SIDE =  0;
     public static final double LOADING_ZONE = 270;
 
-    public DriveTrain(LinearOpMode opMode) {
+    public DriveTrain(LinearOpMode opMode, String rf, String lf, String lb, String rb) {
         this.opMode = opMode;
-        motorRF = opMode.hardwareMap.dcMotor.get("motorRF");
-        motorLF = opMode.hardwareMap.dcMotor.get("motorLF");
-        motorLB = opMode.hardwareMap.dcMotor.get("motorLB");
-        motorRB = opMode.hardwareMap.dcMotor.get("motorRB");
+        motorRF = opMode.hardwareMap.dcMotor.get(rf);
+        motorLF = opMode.hardwareMap.dcMotor.get(lf);
+        motorLB = opMode.hardwareMap.dcMotor.get(lb);
+        motorRB = opMode.hardwareMap.dcMotor.get(rb);
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
         initImu();
+    }
+
+    public void stubify() {
+        motorRF = new DcMotorStub(opMode);
+        motorLF = new DcMotorStub(opMode);
+        motorLB = new DcMotorStub(opMode);
+        motorRB = new DcMotorStub(opMode);
+        motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
@@ -83,10 +95,10 @@ public class DriveTrain implements StrafingDriveTrain {
 
     @Override
     public void dumpMotors() {
-        opMode.telemetry.addData("motorRF", motorRF.getCurrentPosition());
-        opMode.telemetry.addData("motorLF", motorLF.getCurrentPosition());
-        opMode.telemetry.addData("motorLB", motorLB.getCurrentPosition());
-        opMode.telemetry.addData("motorRB", motorRB.getCurrentPosition());
+        opMode.telemetry.addData("motorRF", motorRF);
+        opMode.telemetry.addData("motorLF", motorLF);
+        opMode.telemetry.addData("motorLB", motorLB);
+        opMode.telemetry.addData("motorRB", motorRB);
     }
 
     public void setPowers(double rf, double lf, double lb, double rb) {
@@ -178,7 +190,7 @@ public class DriveTrain implements StrafingDriveTrain {
     // takes global angle
     public void goAngle(double dist, double angle, double power) {
         // local angle
-        double angel = Math.toRadians(angle-getHeading());
+        double angel = Math.toRadians(angle+180-getHeading());
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
         double x = Math.cos(angel);
