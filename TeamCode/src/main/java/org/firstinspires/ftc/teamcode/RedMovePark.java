@@ -17,7 +17,7 @@ public class RedMovePark extends LinearOpMode {
         waitForStart();
         // move forward
         //bot.driveTrain.goVector(0, 12, .5);
-        bot.driveTrain.goAngle(-24,90,.5);
+        bot.driveTrain.goAngle(24,270,.5);
         // park
         bot.driveTrain.goAngle(12, 180, 0.5);
         // stop
