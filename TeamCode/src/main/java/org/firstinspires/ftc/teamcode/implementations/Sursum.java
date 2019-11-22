@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
@@ -24,8 +25,8 @@ public class Sursum {
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
-    public Mechanism leftArm;
-    public Mechanism rightArm;
+    public SideArm leftArm;
+    public SideArm rightArm;
     public DistanceSensor ods;
     // initialization
     public Sursum(LinearOpMode opMode) {
@@ -41,6 +42,10 @@ public class Sursum {
         // intake {{{
         flywheels = new Flywheels(opMode, "leftFly", "rightFly");
         belt = opMode.hardwareMap.dcMotor.get("belt");
+        leftArm = new SideArm(opMode, "leftArm", "leftClaw");
+        rightArm = new SideArm(opMode, "rightArm", "rightClaw");
+        rightArm.arm.setDirection(Servo.Direction.REVERSE);
+        rightArm.claw.setDirection(Servo.Direction.REVERSE);
         // }}}
 
         // sensors {{{
