@@ -29,8 +29,8 @@ public class Sursum {
     public DcMotor belt;
     public SideArm leftArm;
     public SideArm rightArm;
-    public DistanceSensor ods;
-    public DigitalChannel limit;
+    //public DistanceSensor ods;
+    //public DigitalChannel limit;
     // initialization
     public Sursum(LinearOpMode opMode) {
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
@@ -54,8 +54,8 @@ public class Sursum {
         // }}}
 
         // sensors {{{
-        ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
-        limit = opMode.hardwareMap.digitalChannel.get("limit");
+        //ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
+        //limit = opMode.hardwareMap.digitalChannel.get("limit");
         // }}}
     }
     public void init() {
@@ -68,9 +68,10 @@ public class Sursum {
     public void intake() throws InterruptedException {
         flywheels.setPower(-2.0/3);
         belt.setPower(-1);
-        while (!limit.getState()) {
-            Thread.sleep(100);
-        }
+      //while (!limit.getState()) {
+      //    Thread.sleep(100);
+      //}
+        Thread.sleep(500);
         flywheels.setPower(0);
         Thread.sleep(500);
         belt.setPower(0);

@@ -49,49 +49,50 @@ public class RedFoundation extends LinearOpMode {
         // in reference to the middle of the bot
         bot.driveTrain.goAngle(tile_distance(1) + bot.ROBOT_WIDTH, 180, 1);
 
-        // bot.driveTrain.goAngle(48-bot.ROBOT_LENGTH, 270, 1); Hard Coded Distance
+        bot.driveTrain.goAngle(48-bot.ROBOT_LENGTH, 270, 1); // Hard coded distance
 
         // stopping all encoders and resetting to get the original value
-        bot.driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      //bot.driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // getting encoder values
-        encoder_values = ((DriveTrain) bot.driveTrain).getEncoders();
+      //// getting encoder values
+      //encoder_values = ((DriveTrain) bot.driveTrain).getEncoders();
 
-        // sorting encoder values
-        Collections.sort(encoder_values);
+      //// sorting encoder values
+      //Collections.sort(encoder_values);
 
-        // using the 3 encoder as the benchmark for the original value
-        original_value = encoder_values.get(2);
+      //// using the 3 encoder as the benchmark for the original value
+      //original_value = encoder_values.get(2);
 
-        // heading towards the foundation
-        // using distance sensor to judge when to stop
-        // waiting a set time between checks
-        bot.driveTrain.startAngle(270, .25);
+      //// heading towards the foundation
+      //// using distance sensor to judge when to stop
+      //// waiting a set time between checks
+      //bot.driveTrain.startAngle(270, .25);
 
-        while(bot.ods.getDistance(DistanceUnit.INCH) > 2.5) { Thread.sleep(50); }
+      //while(bot.ods.getDistance(DistanceUnit.INCH) > 2.5) { Thread.sleep(50); }
 
-        // stopping all bot movement
-        bot.driveTrain.halt();
+      //// stopping all bot movement
+      //bot.driveTrain.halt();
 
         // setting foundation hooks to hook onto the foundation
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
 
+        bot.driveTrain.goAngle(48 - bot.ROBOT_LENGTH, 90, .5);
         // bot.driveTrain.goAngle(tile_distance(2), 90, .5); //Hard Coded Distance
 
-        // heading towards the wall
-        // using distance sensor to judge when to stop
-        // waiting a set time between checks
-        bot.driveTrain.startAngle(90, .25);
+      //// heading towards the wall
+      //// using distance sensor to judge when to stop
+      //// waiting a set time between checks
+      //bot.driveTrain.startAngle(90, .25);
 
-        // using do-while loop to get encoders while driving to check if we hit the original position
-        do {
-            Thread.sleep(50);
-            encoder_values = ((DriveTrain) bot.driveTrain).getEncoders();
-            Collections.sort(encoder_values);
-        } while(encoder_values.get(2) > original_value);
+      //// using do-while loop to get encoders while driving to check if we hit the original position
+      //do {
+      //    Thread.sleep(50);
+      //    encoder_values = ((DriveTrain) bot.driveTrain).getEncoders();
+      //    Collections.sort(encoder_values);
+      //} while(encoder_values.get(2) > original_value);
 
-        // stopping all bot movement
-        bot.driveTrain.halt();
+      //// stopping all bot movement
+      //bot.driveTrain.halt();
 
         // releasing foundation
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
