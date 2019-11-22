@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
+
+import java.util.*;
 
 @Autonomous(group = "Auto", name = "RedFoundation")
 public class RedFoundation extends LinearOpMode {
@@ -18,6 +21,9 @@ public class RedFoundation extends LinearOpMode {
 
     private Sursum bot;
 
+    private List<Integer> encoder_values;
+
+    private int original_value;
     /**
      * get the distance in inches based on how many tiles are put into param
      * @param number_of_tiles is the number of tiles that the distance is needed for
@@ -45,11 +51,24 @@ public class RedFoundation extends LinearOpMode {
 
         // bot.driveTrain.goAngle(48-bot.ROBOT_LENGTH, 270, 1); Hard Coded Distance
 
+        // stopping all encoders and resetting to get the original value
+        bot.driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // getting encoder values
+        encoder_values = ((DriveTrain) bot.driveTrain).getEncoders();
+
+        // sorting encoder values
+        Collections.sort(encoder_values);
+
+        // using the 3 encoder as the benchmark for the original value
+        original_value = encoder_values.get(2);
+
         // heading towards the foundation
         // using distance sensor to judge when to stop
         // waiting a set time between checks
         bot.driveTrain.startAngle(270, .25);
-        while(bot.ods_back.getDistance(DistanceUnit.INCH) > 2.5) { Thread.sleep(50); }
+
+        while(bot.ods.getDistance(DistanceUnit.INCH) > 2.5) { Thread.sleep(50); }
 
         // stopping all bot movement
         bot.driveTrain.halt();
@@ -63,7 +82,13 @@ public class RedFoundation extends LinearOpMode {
         // using distance sensor to judge when to stop
         // waiting a set time between checks
         bot.driveTrain.startAngle(90, .25);
-        while(bot.ods_front.getDistance(DistanceUnit.INCH) > 5.1) { Thread.sleep(50); }
+
+        // using do-while loop to get encoders while driving to check if we hit the original position
+        do {
+            Thread.sleep(50);
+            encoder_values = ((DriveTrain) bot.driveTrain).getEncoders();
+            Collections.sort(encoder_values);
+        } while(encoder_values.get(2) > original_value);
 
         // stopping all bot movement
         bot.driveTrain.halt();

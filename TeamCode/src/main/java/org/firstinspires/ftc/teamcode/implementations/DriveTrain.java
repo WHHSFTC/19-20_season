@@ -13,6 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
+import java.util.*;
+
 public class DriveTrain implements StrafingDriveTrain {
     private static final double MECANUM_WHEEL_CIRCUMFERENCE = 12.368475;
     private double offset;
@@ -250,5 +252,13 @@ public class DriveTrain implements StrafingDriveTrain {
     @Override
     public void setHeading(double angle) {
         offset = angle - getRawHeading();
+    }
+    public List<Integer> getEncoders() {
+        List<Integer> encoders = new ArrayList<>();
+        encoders.add(motorRF.getCurrentPosition());
+        encoders.add(motorLF.getCurrentPosition());
+        encoders.add(motorLB.getCurrentPosition());
+        encoders.add(motorRB.getCurrentPosition());
+        return encoders;
     }
 }
