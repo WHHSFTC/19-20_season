@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.implementations;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
+
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 
 public class Claw implements Mechanism<Claw.State> {
@@ -51,7 +52,7 @@ public class Claw implements Mechanism<Claw.State> {
             super(servo);
         }
         enum State implements StatefulServo.State {
-            OPEN(1), CLOSED(0.45);
+            OPEN(1), CLOSED(0.44);
             private double value;
             State(double value) {
                 this.value = value;
@@ -61,12 +62,13 @@ public class Claw implements Mechanism<Claw.State> {
             }
         }
     }
+
     static class OuterClaw extends StatefulServo<OuterClaw.State> {
         OuterClaw(Servo servo) {
             super(servo);
         }
         enum State implements StatefulServo.State {
-            OPEN(0), CLOSED(0.58);
+            OPEN(0), CLOSED(0.59);
             private double value;
             State(double value) {
                 this.value = value;

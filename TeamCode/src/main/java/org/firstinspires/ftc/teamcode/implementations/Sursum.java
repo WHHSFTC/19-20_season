@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.implementations;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
@@ -28,10 +30,13 @@ public class Sursum {
     public SideArm leftArm;
     public SideArm rightArm;
     public DistanceSensor ods;
+    public DigitalChannel limit;
     // initialization
     public Sursum(LinearOpMode opMode) {
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
+        // ((DriveTrain) driveTrain).stubify();
         shuttleGate = new ShuttleGate(opMode, "leftGate", "rightGate");
+
 
         // output {{{
         outputSlides = new OutputSlides(opMode, "spool1", "spool2", "spool3");
@@ -50,6 +55,7 @@ public class Sursum {
 
         // sensors {{{
         ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
+        limit = opMode.hardwareMap.digitalChannel.get("limit");
         // }}}
     }
     public void init() {
@@ -58,6 +64,16 @@ public class Sursum {
         shuttleGate.setState(ShuttleGate.State.CLOSED);
         arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);
+    }
+    public void intake() throws InterruptedException {
+        flywheels.setPower(-2.0/3);
+        belt.setPower(-1);
+        while (!limit.getState()) {
+            Thread.sleep(100);
+        }
+        flywheels.setPower(0);
+        Thread.sleep(500);
+        belt.setPower(0);
     }
     public void stop() {
         driveTrain.stop();
