@@ -1,18 +1,17 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 
 public class ShuttleGate implements Mechanism<ShuttleGate.State> {
     private State state;
     private LeftGate left;
     private RightGate right;
-    ShuttleGate(LinearOpMode opMode) {
-        left = new LeftGate(opMode);
-        right = new RightGate(opMode);
+    ShuttleGate(LinearOpMode opMode, String leftStr, String rightStr) {
+        left = new LeftGate(opMode.hardwareMap.servo.get(leftStr));
+        right = new RightGate(opMode.hardwareMap.servo.get(rightStr));
     }
 
     @Override
@@ -48,38 +47,38 @@ public class ShuttleGate implements Mechanism<ShuttleGate.State> {
     }
     @Override
     public void stop() {}
-}
-class LeftGate extends StatefulServo<LeftGate.State> {
-    LeftGate(LinearOpMode opMode) {
-        servo = opMode.hardwareMap.servo.get("leftGate");
-    }
-    enum State implements StatefulServo.State {
-        FOUNDATION(1), OPEN(0), CLOSED(0.48);
-        private double value;
-        State(double value) {
-            this.value = value;
+    public static class LeftGate extends StatefulServo<LeftGate.State> {
+        LeftGate(Servo servo) {
+            super(servo);
         }
+        enum State implements StatefulServo.State {
+            FOUNDATION(1), OPEN(0), CLOSED(0.48);
+            private double value;
+            State(double value) {
+                this.value = value;
+            }
 
-        @Override
-        public double getPosition() {
-            return value;
+            @Override
+            public double getPosition() {
+                return value;
+            }
         }
     }
-}
-class RightGate extends StatefulServo<RightGate.State> {
-    RightGate(LinearOpMode opMode) {
-        servo = opMode.hardwareMap.servo.get("rightGate");
-    }
-    enum State implements StatefulServo.State {
-        FOUNDATION(0), OPEN(0.8), CLOSED(0.5);
-        private double value;
-        State(double value) {
-            this.value = value;
+    public static class RightGate extends StatefulServo<RightGate.State> {
+        RightGate(Servo servo) {
+            super(servo);
         }
+        enum State implements StatefulServo.State {
+            FOUNDATION(0), OPEN(0.8), CLOSED(0.5);
+            private double value;
+            State(double value) {
+                this.value = value;
+            }
 
-        @Override
-        public double getPosition() {
-            return value;
+            @Override
+            public double getPosition() {
+                return value;
+            }
         }
     }
 }

@@ -34,12 +34,12 @@ public class DriveTrain implements StrafingDriveTrain {
     public static final double BLUE_SIDE =  0;
     public static final double LOADING_ZONE = 270;
 
-    public DriveTrain(LinearOpMode opMode) {
+    public DriveTrain(LinearOpMode opMode, String rf, String lf, String lb, String rb) {
         this.opMode = opMode;
-        motorRF = opMode.hardwareMap.dcMotor.get("motorRF");
-        motorLF = opMode.hardwareMap.dcMotor.get("motorLF");
-        motorLB = opMode.hardwareMap.dcMotor.get("motorLB");
-        motorRB = opMode.hardwareMap.dcMotor.get("motorRB");
+        motorRF = opMode.hardwareMap.dcMotor.get(rf);
+        motorLF = opMode.hardwareMap.dcMotor.get(lf);
+        motorLB = opMode.hardwareMap.dcMotor.get(lb);
+        motorRB = opMode.hardwareMap.dcMotor.get(rb);
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
