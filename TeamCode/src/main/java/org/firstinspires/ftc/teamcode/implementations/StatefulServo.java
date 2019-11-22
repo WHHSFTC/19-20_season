@@ -16,6 +16,9 @@ public abstract class StatefulServo<S extends StatefulServo.State> implements Me
     protected Servo servo;
     // state represents the state
     private S state;
+    public StatefulServo(Servo servo) {
+        this.servo = servo;
+    }
     public S getState() {
         return state;
     }

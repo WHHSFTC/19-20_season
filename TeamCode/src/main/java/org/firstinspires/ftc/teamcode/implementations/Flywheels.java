@@ -11,9 +11,11 @@ import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 public class Flywheels implements CRServo {
     private CRServo servoLeft;
     private CRServo servoRight;
-    public Flywheels(LinearOpMode opMode) {
-        servoLeft = opMode.hardwareMap.crservo.get("leftFly");
-        servoRight = opMode.hardwareMap.crservo.get("rightFly");
+    private LinearOpMode opMode;
+    public Flywheels(LinearOpMode opMode, String leftStr, String rightStr) {
+        this.opMode = opMode;
+        servoLeft = opMode.hardwareMap.crservo.get(leftStr);
+        servoRight = opMode.hardwareMap.crservo.get(rightStr);
     }
     @Override
     public ServoController getController() {
