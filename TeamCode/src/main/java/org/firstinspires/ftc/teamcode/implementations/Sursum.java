@@ -24,6 +24,8 @@ public class Sursum {
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
+    public Mechanism leftArm;
+    public Mechanism rightArm;
     public DistanceSensor ods;
     // initialization
     public Sursum(LinearOpMode opMode) {
