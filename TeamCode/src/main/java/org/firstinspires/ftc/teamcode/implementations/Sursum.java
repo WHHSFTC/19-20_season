@@ -49,8 +49,8 @@ public class Sursum {
         belt = opMode.hardwareMap.dcMotor.get("belt");
         leftArm = new SideArm(opMode, "leftArm", "leftClaw");
         rightArm = new SideArm(opMode, "rightArm", "rightClaw");
-        rightArm.arm.setDirection(Servo.Direction.REVERSE);
-        rightArm.claw.setDirection(Servo.Direction.REVERSE);
+      //rightArm.arm.setDirection(Servo.Direction.REVERSE);
+      //rightArm.claw.setDirection(Servo.Direction.REVERSE);
         // }}}
 
         // sensors {{{

@@ -50,7 +50,7 @@ public abstract class StatefulServo<S extends StatefulServo.State> implements Me
 
     @Override
     public void setPosition(double position) {
-        setPosition(position);
+        servo.setPosition(position);
     }
 
     @Override
