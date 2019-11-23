@@ -40,16 +40,16 @@ public class RedFoundation extends LinearOpMode {
         bot.init();
 
         // Setting our global heading by changing offset
-        bot.driveTrain.setHeading(DriveTrain.RED_SIDE);
+        bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 
         // waiting for start
         waitForStart();
 
         // heading over 2 tiles to get lined up with the center of the foundation
         // in reference to the middle of the bot
-        bot.driveTrain.goAngle(tile_distance(1) + bot.ROBOT_WIDTH, 180, 1);
+        bot.driveTrain.goAngle(35, DriveTrain.BUILDING_ZONE, 0.75);
 
-        bot.driveTrain.goAngle(48-bot.ROBOT_LENGTH, 270, 1); // Hard coded distance
+        bot.driveTrain.goAngle(54-bot.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, 0.25); // Hard coded distance
 
         // stopping all encoders and resetting to get the original value
       //bot.driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -72,11 +72,12 @@ public class RedFoundation extends LinearOpMode {
 
       //// stopping all bot movement
       //bot.driveTrain.halt();
-
+        Thread.sleep(1000);
         // setting foundation hooks to hook onto the foundation
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+        Thread.sleep(1000);
 
-        bot.driveTrain.goAngle(48 - bot.ROBOT_LENGTH, 90, .5);
+        bot.driveTrain.goAngle(60 - bot.ROBOT_LENGTH, DriveTrain.RED_SIDE, .25);
         // bot.driveTrain.goAngle(tile_distance(2), 90, .5); //Hard Coded Distance
 
       //// heading towards the wall
@@ -96,9 +97,10 @@ public class RedFoundation extends LinearOpMode {
 
         // releasing foundation
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
+        Thread.sleep(1000);
 
         // heading to park under bridge
-        bot.driveTrain.goAngle(tile_distance(2), 0, 1);
+        bot.driveTrain.goAngle(tile_distance(2) + 2, DriveTrain.LOADING_ZONE, 1);
 
         // completely stops all bot movement
         bot.stop();

@@ -30,7 +30,8 @@ public class Flywheels implements CRServo {
     @Override
     public void setDirection(Direction direction) {
         servoLeft.setDirection(direction);
-        servoRight.setDirection(direction == Direction.FORWARD ? Direction.REVERSE : Direction.FORWARD);
+        //servoRight.setDirection(direction == Direction.FORWARD ? Direction.REVERSE : Direction.FORWARD);
+        servoRight.setDirection(direction);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class Flywheels implements CRServo {
         power *= 0.5;
         if(power > 0.5|| power < -0.5) throw new IllegalArgumentException("Power out of -0.5 to 0.5 range");
         servoLeft.setPower(power);
-        servoRight.setPower(power);
+        servoRight.setPower(-power);
     }
 
     @Override

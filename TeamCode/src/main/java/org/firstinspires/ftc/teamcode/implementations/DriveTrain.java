@@ -34,9 +34,9 @@ public class DriveTrain implements StrafingDriveTrain {
     private static final double TICKSPERROTATION = 537.6;
 
     public static final double RED_SIDE = 180;
-    public static final double BUILDING_ZONE = 90;
+    public static final double BUILDING_ZONE = 270;
     public static final double BLUE_SIDE =  0;
-    public static final double LOADING_ZONE = 270;
+    public static final double LOADING_ZONE = 90;
 
     public DriveTrain(LinearOpMode opMode, String rf, String lf, String lb, String rb) {
         this.opMode = opMode;
@@ -75,8 +75,12 @@ public class DriveTrain implements StrafingDriveTrain {
 
     public double getRawHeading() {
         Orientation ret = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        double heading = ret.firstAngle;
+        double heading = ret.thirdAngle;
         return heading;
+    }
+
+    public Orientation getRawHeadings() {
+        return imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
     }
 
     public double getHeading() {

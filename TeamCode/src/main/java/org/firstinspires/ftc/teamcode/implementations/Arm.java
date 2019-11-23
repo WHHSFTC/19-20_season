@@ -55,7 +55,7 @@ class Elbow extends StatefulServo<Elbow.State> {
     // enumerates the directions of the Arm with servo positions
     // StatefulServo requires getPosition()
     enum State implements StatefulServo.State {
-        IN(0.7), OUT(0.25);
+        IN(0.7), OUT(0.23);
         private double value;
         State(double value) {
             this.value = value;
@@ -71,7 +71,7 @@ class Wrist extends StatefulServo<Wrist.State> {
     }
     enum State implements StatefulServo.State {
         // 0-1 is 270 degrees, so each 1/3 is 90 degrees apart
-        OUT(1), RIGHT(0.69), IN(0.38), LEFT(0.08), BELT(0.25);
+        OUT(1), RIGHT(0.69), IN(0.38), LEFT(0.08), BELT(0.23);
         private double value;
         State(double value) {
             this.value = value;
