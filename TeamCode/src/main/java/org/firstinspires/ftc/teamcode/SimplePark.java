@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
@@ -17,6 +18,7 @@ public class SimplePark extends LinearOpMode {
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         // start
         waitForStart();
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
         // park
         bot.driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.5);
         // stop

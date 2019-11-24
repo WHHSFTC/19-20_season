@@ -19,7 +19,6 @@ public class Tele extends LinearOpMode {
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
-        bot.init();
         bot.leftArm.arm.setPosition(1);
         bot.rightArm.arm.setPosition(.86);
         bot.leftArm.claw.setPosition(.94);
@@ -29,9 +28,9 @@ public class Tele extends LinearOpMode {
             driveDriveTrain();
             driveInput();
             driveOutput();
-            if(gamepad1.dpad_down) bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-            if(gamepad1.dpad_up) bot.shuttleGate.setState(ShuttleGate.State.OPEN);
-            if(gamepad1.dpad_left || gamepad1.dpad_right) bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
+            if(gamepad2.a) bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+            if(gamepad2.y) bot.shuttleGate.setState(ShuttleGate.State.OPEN);
+            if(gamepad2.x) bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
             bot.driveTrain.dumpMotors();
             telemetry.update();
         }
