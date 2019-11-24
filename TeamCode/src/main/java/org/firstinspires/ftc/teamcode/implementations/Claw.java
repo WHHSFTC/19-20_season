@@ -52,7 +52,7 @@ public class Claw implements Mechanism<Claw.State> {
             super(servo);
         }
         enum State implements StatefulServo.State {
-            OPEN(0.4), CLOSED(0.58);
+            OPEN(0.4), CLOSED(0.56);
             private double value;
             State(double value) {
                 this.value = value;
@@ -68,7 +68,7 @@ public class Claw implements Mechanism<Claw.State> {
             super(servo);
         }
         enum State implements StatefulServo.State {
-            OPEN(0.61), CLOSED(0.52);
+            OPEN(0.61), CLOSED(0.48);
             private double value;
             State(double value) {
                 this.value = value;
