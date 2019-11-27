@@ -75,7 +75,7 @@ public class SideArmSkyStoneAutoRed extends LinearOpMode {
 
         Thread.sleep(1000);
 
-        bot.rightArm.setClawPosition(SideArm.Claw.State.CLOSE);
+        bot.rightArm.setClawPosition(SideArm.Claw.State.CLOSED);
 
         Thread.sleep(1500);
 

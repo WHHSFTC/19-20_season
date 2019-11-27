@@ -1,8 +1,13 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
-/**
- * DO NOT CHANGE ORDER OR ELSE EVERYTHING WILL BREAK
- */
 public enum SkyStonePosition {
-    THREE_SIX, TWO_FIVE, ONE_FOUR;
+    THREE_SIX(0), TWO_FIVE(1), ONE_FOUR(2);
+    private double distance;
+    SkyStonePosition(int pos) {
+        distance = pos * 8 + 4;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
 }

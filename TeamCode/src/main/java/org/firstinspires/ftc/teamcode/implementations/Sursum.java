@@ -20,6 +20,8 @@ import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 public class Sursum {
     public static final double ROBOT_WIDTH = 17.75;
     public static final double ROBOT_LENGTH = 17.75;
+    public static final double SIDEARM_Y = ROBOT_LENGTH/2 - 5;
+    public static final double CAMERA_X = ROBOT_WIDTH/2 - 2;
     // declarations
     public StrafingDriveTrain driveTrain;
     public Mechanism shuttleGate;
