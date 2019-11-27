@@ -33,8 +33,8 @@ public class Sursum {
     //public DistanceSensor ods;
     //public DigitalChannel limit;
     public ColorSensor color_sensor;
-    public Vision vision;
-//    public VisionTF visionTF;
+//    public Vision vision;
+    public VisionTF visionTF;
     // initialization
     public Sursum(LinearOpMode opMode) {
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
@@ -63,8 +63,8 @@ public class Sursum {
         color_sensor = opMode.hardwareMap.colorSensor.get("color");
         // }}}
 
-        vision = new Vision(opMode, "Webcam 1");
-//        visionTF = new VisionTF(opMode, "Webcam 1");
+//        vision = new Vision(opMode, "Webcam 1");
+        visionTF = new VisionTF(opMode, "Webcam 1");
     }
     public void init() {
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -87,6 +87,15 @@ public class Sursum {
         leftArm.setClawPosition(SideArm.Claw.State.OPEN);
     }
 
+    public SkyStonePosition findSkystone() throws InterruptedException {
+        for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
+            if (visionTF.getStone() == "skystone") {
+                return position;
+            }
+            driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
+        }
+        return SkyStonePosition.ONE_FOUR;
+    }
     public void intake() throws InterruptedException {
         flywheels.setPower(-2.0/3);
         belt.setPower(-1);

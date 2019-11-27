@@ -170,7 +170,4 @@ public class Vision {
         targetsSkyStone.deactivate();
         return yPosition / mmPerInch;
     }
-    public enum SkyStonePosition {
-        ONE_FOUR, TWO_FIVE, THREE_SIX;
-    }
 }

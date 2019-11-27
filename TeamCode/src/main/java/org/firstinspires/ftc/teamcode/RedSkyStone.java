@@ -17,7 +17,7 @@ public class RedSkyStone extends LinearOpMode {
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         waitForStart();
         bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
-        bot.driveTrain.goAngle(-bot.vision.getSkyStone(DriveTrain.BUILDING_ZONE), DriveTrain.BUILDING_ZONE, .5);
+//        bot.driveTrain.goAngle(-bot.vision.getSkyStone(DriveTrain.BUILDING_ZONE), DriveTrain.BUILDING_ZONE, .5);
         bot.stop();
     }
 }
