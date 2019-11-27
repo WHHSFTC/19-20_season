@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -31,6 +32,9 @@ public class Sursum {
     public SideArm rightArm;
     //public DistanceSensor ods;
     //public DigitalChannel limit;
+    public ColorSensor color_sensor;
+    public Vision vision;
+//    public VisionTF visionTF;
     // initialization
     public Sursum(LinearOpMode opMode) {
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
@@ -49,14 +53,18 @@ public class Sursum {
         belt = opMode.hardwareMap.dcMotor.get("belt");
         leftArm = new SideArm(opMode, "leftArm", "leftClaw");
         rightArm = new SideArm(opMode, "rightArm", "rightClaw");
-      //rightArm.arm.setDirection(Servo.Direction.REVERSE);
-      //rightArm.claw.setDirection(Servo.Direction.REVERSE);
+//        rightArm.arm.setDirection(Servo.Direction.REVERSE);
+        rightArm.claw.setDirection(Servo.Direction.REVERSE);
         // }}}
 
         // sensors {{{
         //ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         //limit = opMode.hardwareMap.digitalChannel.get("limit");
+        color_sensor = opMode.hardwareMap.colorSensor.get("color");
         // }}}
+
+        vision = new Vision(opMode, "Webcam 1");
+//        visionTF = new VisionTF(opMode, "Webcam 1");
     }
     public void init() {
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -66,6 +74,19 @@ public class Sursum {
         arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);
     }
+
+    public void redInit() {
+        init();
+        rightArm.setArmPosition(SideArm.Arm.State.DOWN);
+        rightArm.setClawPosition(SideArm.Claw.State.OPEN);
+    }
+
+    public void blueInit() {
+        init();
+        leftArm.setArmPosition(SideArm.Arm.State.DOWN);
+        leftArm.setClawPosition(SideArm.Claw.State.OPEN);
+    }
+
     public void intake() throws InterruptedException {
         flywheels.setPower(-2.0/3);
         belt.setPower(-1);

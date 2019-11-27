@@ -29,7 +29,7 @@ public class DriveTrain implements StrafingDriveTrain {
     private static final double P_TURN_COEFF = .018;
     private static final double I_TURN_COEFF = 0.01;
     private static final double D_TURN_COEFF = 0.026;
-    private static final double HEADING_THRESHOLD = 5;
+    private static final double HEADING_THRESHOLD = 1;
     private static final double ANTI_WINDUP = 2;
     private static final double TICKSPERROTATION = 537.6;
 
@@ -178,22 +178,16 @@ public class DriveTrain implements StrafingDriveTrain {
             opMode.telemetry.addData("I", I_TURN_COEFF * integral);
             opMode.telemetry.addData("D", D_TURN_COEFF * derivative);
             opMode.telemetry.update();
-
-            try {
-                Thread.sleep(20);
-            } catch(InterruptedException ex) {
-                return;
-            }
         }
         accelerate(0);
     }
 
     public void accelerate(double speed) {
         double clip_speed = Range.clip(speed, -1, 1);
-        motorLF.setPower(clip_speed);
-        motorRF.setPower(clip_speed);
-        motorRB.setPower(clip_speed);
-        motorLB.setPower(clip_speed);
+        motorLF.setPower(-clip_speed);
+        motorRF.setPower(-clip_speed);
+        motorRB.setPower(-clip_speed);
+        motorLB.setPower(-clip_speed);
     }
 
     // takes global angle
@@ -247,8 +241,7 @@ public class DriveTrain implements StrafingDriveTrain {
 
     @Override
     public void startAngle(double angle, double power) {
-        angle = angle-180-getHeading();
-        double angel = Math.toRadians(angle);
+        double angel = Math.toRadians(angle+180-getHeading());
         double x = Math.cos(angel);
         double y = Math.sin(angel);
         motorRF.setPower(power * (y - x));

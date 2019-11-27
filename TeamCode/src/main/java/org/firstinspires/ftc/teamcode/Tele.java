@@ -19,10 +19,11 @@ public class Tele extends LinearOpMode {
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
-        bot.leftArm.arm.setPosition(1);
-        bot.rightArm.arm.setPosition(.86);
-        bot.leftArm.claw.setPosition(.94);
-        bot.rightArm.claw.setPosition(0);
+//        bot.leftArm.arm.setPosition(1);
+        bot.rightArm.arm.setPosition(0);
+//        bot.leftArm.claw.setPosition(.94);
+        bot.rightArm.claw.setPosition(1);
+//        bot.driveTrain.
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();

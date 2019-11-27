@@ -12,12 +12,20 @@ public class SideArm {
         arm = new Arm(opMode.hardwareMap.servo.get(armStr));
         claw = new Claw(opMode.hardwareMap.servo.get(clawStr));
     }
+
+    public void setArmPosition(SideArm.Arm.State state) {
+        arm.setPosition(state.getPosition());
+    }
+
+    public void setClawPosition(SideArm.Claw.State state) {
+        claw.setPosition(state.getPosition());
+    }
     public static class Arm extends StatefulServo<Arm.State> {
         Arm(Servo servo) {
             super(servo);
         }
         public enum State implements StatefulServo.State {
-            UP(1), DOWN(0);
+            UP(1), DOWN(0.);
             double position;
             State(double position) {
                 this.position = position;
@@ -33,7 +41,7 @@ public class SideArm {
             super(servo);
         }
         public enum State implements StatefulServo.State {
-            OPEN(1), CLOSE(0);
+            OPEN(0), CLOSE(1);
             double position;
             State(double position) {
                 this.position = position;
