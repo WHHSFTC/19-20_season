@@ -22,6 +22,9 @@ public class OutputSlides implements ContinuousMechanism {
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor3.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motor3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.opMode = opMode;
     }
     @Override
@@ -53,5 +56,17 @@ public class OutputSlides implements ContinuousMechanism {
     }
     public void stop() {
         setState(0.0);
+    }
+
+    public void runToZero() {
+        motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor1.setTargetPosition(0);
+        motor2.setTargetPosition(0);
+        motor3.setTargetPosition(0);
+        motor1.setPower(0.5);
+        motor2.setPower(0.5);
+        motor3.setPower(0.5);
     }
 }

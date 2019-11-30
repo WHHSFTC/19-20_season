@@ -77,18 +77,24 @@ public class VisionTF {
         String label = "";
         // getUpdatedRecognitions() will return null if no new information is available since
         // the last time that call was made.
+        tfod.activate();
         Thread.sleep(1000);
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        tfod.shutdown();
         opMode.telemetry.addData("# Object Detected", updatedRecognitions.size());
         // step through the list of recognitions and display boundary info.
         int i = 0;
-        Recognition recognition = updatedRecognitions.get(0);
-        opMode.telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-        opMode.telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                recognition.getLeft(), recognition.getTop());
-        opMode.telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                recognition.getRight(), recognition.getBottom());
-        label = recognition.getLabel();
+        try {
+            Recognition recognition = updatedRecognitions.get(0);
+            label = recognition.getLabel();
+            opMode.telemetry.addData(String.format("label (%d)", i), label);
+            opMode.telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                    recognition.getLeft(), recognition.getTop());
+            opMode.telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                    recognition.getRight(), recognition.getBottom());
+        } catch(IndexOutOfBoundsException ex) {
+            opMode.telemetry.addData("tf", "no object detected by tf");
+        }
         opMode.telemetry.update();
         return label.toLowerCase();
     }

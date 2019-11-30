@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -7,6 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
+import java.util.*;
+
+@Autonomous(name = "ParkWithCS", group = "Test")
 public class ParkWithCS extends LinearOpMode {
     private static final double TILE = 24; // inches
     /**
@@ -26,11 +30,13 @@ public class ParkWithCS extends LinearOpMode {
      * @return the absolute value of the difference between the values of the first array and second array
      */
     public static int compare_colors(int[] first_compare, int[] second_compare) {
-        int compare = 0;
+        int first_sum = 0;
+        int second_sum = 0;
         for (int i = 0; i < first_compare.length; i++) {
-            compare = Math.abs(first_compare[i]-second_compare[i]);
+            first_sum += first_compare[i];
+            second_sum += second_compare[i];
         }
-        return compare;
+        return Math.abs(first_sum-second_sum);
     }
 
     private ElapsedTime run_time;
@@ -50,17 +56,15 @@ public class ParkWithCS extends LinearOpMode {
 
         waitForStart();
 
-        bot.driveTrain.startAngle(DriveTrain.BUILDING_ZONE, .5);
-
-        run_time.reset();
-        while (run_time.seconds() <= 10.0 &&
-                compare_colors(get_color_sensor_value(bot.color_sensor), new int[] {255, 51, 51}) <= WINDOW){
-            Thread.sleep(50);
+        while (opModeIsActive()) {
+            telemetry.addData("value", Arrays.toString(get_color_sensor_value(bot.color_sensor)));
+            telemetry.update();
+            ((DriveTrain) bot.driveTrain).setPowers(.5, -.5, -.5, .5);
+            if (compare_colors(get_color_sensor_value(bot.color_sensor), new int[]{255, 51, 51}) <= WINDOW) {
+                telemetry.addLine("FOUND LINE");
+            }
+            telemetry.update();
         }
-
-        telemetry.addLine("Found Line: PARKING");
-        telemetry.update();
-
         bot.driveTrain.halt();
 
         bot.stop();

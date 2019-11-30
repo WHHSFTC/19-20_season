@@ -19,9 +19,9 @@ public class Tele extends LinearOpMode {
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
-//        bot.leftArm.arm.setPosition(1);
-        bot.rightArm.arm.setPosition(0);
-//        bot.leftArm.claw.setPosition(.94);
+        bot.leftArm.arm.setPosition(0.36);
+        bot.rightArm.arm.setPosition(0.36);
+        bot.leftArm.claw.setPosition(1);
         bot.rightArm.claw.setPosition(1);
 //        bot.driveTrain.
         waitForStart();
@@ -32,6 +32,7 @@ public class Tele extends LinearOpMode {
             if(gamepad2.a) bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
             if(gamepad2.y) bot.shuttleGate.setState(ShuttleGate.State.OPEN);
             if(gamepad2.x) bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
+            //if(gamepad2.right_trigger > 0.5) ((OutputSlides) bot.outputSlides).runToZero();
             bot.driveTrain.dumpMotors();
             telemetry.update();
         }
@@ -122,7 +123,7 @@ public class Tele extends LinearOpMode {
         if(gamepad2.b) bot.arm.setState(Arm.State.BELT);
         if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
         if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);
-        bot.outputSlides.setState(Math.abs(gamepad2.left_stick_y) >= DEADZONE ? (double) gamepad2.left_stick_y : 0);
+        bot.outputSlides.setState(Math.abs(gamepad2.right_stick_y) >= DEADZONE ? (double) gamepad2.right_stick_y * .7 : 0);
         ((OutputSlides) bot.outputSlides).dumpEncoders();
     }
 

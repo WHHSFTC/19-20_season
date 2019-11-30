@@ -37,8 +37,10 @@ public class Sursum {
     public ColorSensor color_sensor;
 //    public Vision vision;
     public VisionTF visionTF;
+    public LinearOpMode opMode;
     // initialization
     public Sursum(LinearOpMode opMode) {
+        this.opMode = opMode;
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
         // ((DriveTrain) driveTrain).stubify();
         shuttleGate = new ShuttleGate(opMode, "leftGate", "rightGate");
@@ -55,7 +57,7 @@ public class Sursum {
         belt = opMode.hardwareMap.dcMotor.get("belt");
         leftArm = new SideArm(opMode, "leftArm", "leftClaw");
         rightArm = new SideArm(opMode, "rightArm", "rightClaw");
-//        rightArm.arm.setDirection(Servo.Direction.REVERSE);
+        rightArm.arm.setDirection(Servo.Direction.REVERSE);
         rightArm.claw.setDirection(Servo.Direction.REVERSE);
         // }}}
 
@@ -66,7 +68,6 @@ public class Sursum {
         // }}}
 
 //        vision = new Vision(opMode, "Webcam 1");
-        visionTF = new VisionTF(opMode, "Webcam 1");
     }
     public void init() {
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -75,6 +76,7 @@ public class Sursum {
         shuttleGate.setState(ShuttleGate.State.CLOSED);
         arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);
+        visionTF = new VisionTF(opMode, "Webcam 1");
     }
 
     public void redInit() {
@@ -91,7 +93,10 @@ public class Sursum {
 
     public SkyStonePosition findSkystone() throws InterruptedException {
         for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
-            if (visionTF.getStone() == "skystone") {
+            String object = visionTF.getStone();
+            opMode.telemetry.addData("Tensorflow Object", object);
+            opMode.telemetry.update();
+            if (object == "skystone") {
                 return position;
             }
             driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);

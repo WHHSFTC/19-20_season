@@ -25,7 +25,7 @@ public class SideArm {
             super(servo);
         }
         public enum State implements StatefulServo.State {
-            UP(1), HOLD(0.5), DOWN(0.); //todo positions
+            UP(0.36), HOLD(0.6), DOWN(0.8); //todo positions
             double position;
             State(double position) {
                 this.position = position;
@@ -41,7 +41,7 @@ public class SideArm {
             super(servo);
         }
         public enum State implements StatefulServo.State {
-            OPEN(0), CLOSED(1);
+            OPEN(0.5), CLOSED(1);
             double position;
             State(double position) {
                 this.position = position;
