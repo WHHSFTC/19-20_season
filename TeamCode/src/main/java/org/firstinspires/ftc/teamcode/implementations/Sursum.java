@@ -61,6 +61,7 @@ public class Sursum {
     public void init() {
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER);
+        driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
         shuttleGate.setState(ShuttleGate.State.CLOSED);
         arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);

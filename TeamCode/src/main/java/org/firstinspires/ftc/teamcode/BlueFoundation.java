@@ -4,15 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
-import java.util.*;
+import java.util.List;
 
-@Autonomous(group = "Auto", name = "RedFoundation")
-public class RedFoundation extends LinearOpMode {
+@Autonomous(group = "Auto", name = "BlueFoundation")
+public class BlueFoundation extends LinearOpMode {
 
     // constant for tile distance
     // length == width
@@ -50,13 +49,15 @@ public class RedFoundation extends LinearOpMode {
         // in reference to the middle of the bot
         bot.driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.75);
 
-        bot.driveTrain.goAngle(54-bot.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, 0.25); // Hard coded distance
+        bot.driveTrain.goAngle(54-bot.ROBOT_LENGTH, DriveTrain.RED_SIDE, 0.25); // Hard coded distance
+
         Thread.sleep(1000);
         // setting foundation hooks to hook onto the foundation
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
         Thread.sleep(1000);
 
-        bot.driveTrain.goAngle(60 - bot.ROBOT_LENGTH, DriveTrain.RED_SIDE, .25);
+        bot.driveTrain.goAngle(60 - bot.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
+        // releasing foundation
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
         Thread.sleep(1000);
 
