@@ -36,7 +36,7 @@ public class RedSkyStone extends LinearOpMode {
         bot = new Sursum(this);
 
         // initialization
-        bot.init();
+        bot.redInit();
 
         // set global heading
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
@@ -54,9 +54,11 @@ public class RedSkyStone extends LinearOpMode {
 
         bot.findSkystone();
 
+        bot.pick_up_stone();
+
         // TODO FAIL-SAFE: IF PARTNER PARKED IN LINE
 
-        /*
+
         // heads back to wall to line up going under skybridge
         bot.driveTrain.goAngle(tile_distance(2), DriveTrain.BLUE_SIDE, POWER/4);
 
@@ -104,7 +106,7 @@ public class RedSkyStone extends LinearOpMode {
 
         // parking
         bot.driveTrain.goAngle(tile_distance(2), DriveTrain.BLUE_SIDE, POWER);
-        */
+
 
         // stopping bot
         bot.visionTF.shutdown();

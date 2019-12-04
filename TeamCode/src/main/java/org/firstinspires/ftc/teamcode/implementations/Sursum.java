@@ -18,6 +18,10 @@ import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 // the bot
 public class Sursum {
+
+    private double our_side;
+    private double opponents_side;
+
     public static final double ROBOT_WIDTH = 17.75;
     public static final double ROBOT_LENGTH = 17.75;
     public static final double SIDEARM_Y = ROBOT_LENGTH/2 - 5;
@@ -81,16 +85,20 @@ public class Sursum {
 
     public void redInit() {
         init();
-        rightArm.setArmPosition(SideArm.Arm.State.DOWN);
-        rightArm.setClawPosition(SideArm.Claw.State.OPEN);
+        our_side = DriveTrain.RED_SIDE;
+        opponents_side = DriveTrain.BLUE_SIDE;
     }
 
     public void blueInit() {
         init();
-        leftArm.setArmPosition(SideArm.Arm.State.DOWN);
-        leftArm.setClawPosition(SideArm.Claw.State.OPEN);
+        our_side = DriveTrain.BLUE_SIDE;
+        opponents_side = DriveTrain.RED_SIDE;
     }
 
+    /**
+     * finds the skystone unsing TensorFlow to detect
+     * @throws InterruptedException
+     */
     public void findSkystone() throws InterruptedException {
         for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
             String object = visionTF.getStone().toLowerCase();
@@ -99,12 +107,19 @@ public class Sursum {
             opMode.telemetry.addData("Confidence: ", "N/A");
             opMode.telemetry.update();
             if (object.equals("skystone")) {
-                break;
+                return;
             }
             driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
         }
+    }
+
+    /**
+     * picks up skystone found by findSkystone()
+     * @throws InterruptedException
+     */
+    public void pick_up_stone() throws InterruptedException {
         // backing up
-        driveTrain.goAngle(ROBOT_LENGTH/2, DriveTrain.RED_SIDE, .5);
+        driveTrain.goAngle(ROBOT_LENGTH/2, our_side, .5);
 
         // turn so sidearm faces stones
         driveTrain.rotate(90);
@@ -113,7 +128,7 @@ public class Sursum {
         driveTrain.goAngle(4, DriveTrain.BUILDING_ZONE, .5);
 
         // moves forward to be line with stone
-        driveTrain.goAngle(13, DriveTrain.BLUE_SIDE, .5);
+        driveTrain.goAngle(13, opponents_side, .5);
 
         // FAILSAFE
         rightArm.setClawPosition(SideArm.Claw.State.OPEN);
@@ -132,6 +147,8 @@ public class Sursum {
         opMode.telemetry.addLine("Holding Stone");
         opMode.telemetry.update();
     }
+
+
     public void intake() throws InterruptedException {
         flywheels.setPower(-2.0/3);
         belt.setPower(-1);
