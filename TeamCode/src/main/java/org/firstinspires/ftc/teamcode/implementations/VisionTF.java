@@ -80,7 +80,7 @@ public class VisionTF {
         tfod.activate();
         Thread.sleep(1000);
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-        tfod.shutdown();
+
         opMode.telemetry.addData("# Object Detected", updatedRecognitions.size());
         // step through the list of recognitions and display boundary info.
         int i = 0;
@@ -124,5 +124,9 @@ public class VisionTF {
         tfodParameters.minimumConfidence = 0.8;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    }
+
+    public void shutdown() {
+        tfod.deactivate();
     }
 }

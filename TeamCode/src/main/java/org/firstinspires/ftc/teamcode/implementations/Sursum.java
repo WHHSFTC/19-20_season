@@ -34,7 +34,7 @@ public class Sursum {
     public SideArm rightArm;
     //public DistanceSensor ods;
     //public DigitalChannel limit;
-    public ColorSensor color_sensor;
+    public ColorSensor color_sensor_bottom;
 //    public Vision vision;
     public VisionTF visionTF;
     public LinearOpMode opMode;
@@ -64,7 +64,7 @@ public class Sursum {
         // sensors {{{
         //ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         //limit = opMode.hardwareMap.digitalChannel.get("limit");
-        color_sensor = opMode.hardwareMap.colorSensor.get("color");
+        color_sensor_bottom = opMode.hardwareMap.colorSensor.get("color");
         // }}}
 
 //        vision = new Vision(opMode, "Webcam 1");
@@ -91,17 +91,46 @@ public class Sursum {
         leftArm.setClawPosition(SideArm.Claw.State.OPEN);
     }
 
-    public SkyStonePosition findSkystone() throws InterruptedException {
+    public void findSkystone() throws InterruptedException {
         for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
-            String object = visionTF.getStone();
+            String object = visionTF.getStone().toLowerCase();
+            Thread.sleep(1000);
             opMode.telemetry.addData("Tensorflow Object", object);
+            opMode.telemetry.addData("Confidence: ", "N/A");
             opMode.telemetry.update();
-            if (object == "skystone") {
-                return position;
+            if (object.equals("skystone")) {
+                break;
             }
             driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
         }
-        return SkyStonePosition.ONE_FOUR;
+        // backing up
+        driveTrain.goAngle(ROBOT_LENGTH/2, DriveTrain.RED_SIDE, .5);
+
+        // turn so sidearm faces stones
+        driveTrain.rotate(90);
+
+        // lines up sidearm
+        driveTrain.goAngle(4, DriveTrain.BUILDING_ZONE, .5);
+
+        // moves forward to be line with stone
+        driveTrain.goAngle(13, DriveTrain.BLUE_SIDE, .5);
+
+        // FAILSAFE
+        rightArm.setClawPosition(SideArm.Claw.State.OPEN);
+
+        // arm comes down
+        rightArm.setArmPosition(SideArm.Arm.State.DOWN);
+        Thread.sleep(1000);
+
+        // claw closes on stone
+        rightArm.setClawPosition(SideArm.Claw.State.CLOSED);
+        Thread.sleep(1000);
+
+        // holding stone
+        rightArm.setArmPosition(SideArm.Arm.State.HOLD);
+
+        opMode.telemetry.addLine("Holding Stone");
+        opMode.telemetry.update();
     }
     public void intake() throws InterruptedException {
         flywheels.setPower(-2.0/3);

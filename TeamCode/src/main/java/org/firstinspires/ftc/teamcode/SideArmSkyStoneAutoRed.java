@@ -99,7 +99,7 @@ public class SideArmSkyStoneAutoRed extends LinearOpMode {
 
         run_time.reset();
         while (run_time.seconds() <= 15.0){
-            if (compare_colors(get_color_sensor_value(bot.color_sensor), new int[] {255, 51, 51}) <= 10) {
+            if (compare_colors(get_color_sensor_value(bot.color_sensor_bottom), new int[] {255, 51, 51}) <= 10) {
                 Thread.sleep(100);
                 break;
             }

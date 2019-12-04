@@ -1,12 +1,17 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+/**
+ * DO NOT CHANGE ORDER OR ELSE EVERYTHING WILL BREAK
+ */
 public enum SkyStonePosition {
-    THREE_SIX(0), TWO_FIVE(1), ONE_FOUR(2);
+    // why put math when just put values
+    THREE_SIX(4), TWO_FIVE(12), ONE_FOUR(20);
     private double distance;
-    SkyStonePosition(int pos) {
-        distance = pos * 8 + 4;
-    }
+    SkyStonePosition(double pos) { distance = pos; }
 
+    /**
+     * @return double distance
+     */
     public double getDistance() {
         return distance;
     }

@@ -57,10 +57,11 @@ public class ParkWithCS extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("value", Arrays.toString(get_color_sensor_value(bot.color_sensor)));
+            telemetry.addData("value", Arrays.toString(get_color_sensor_value(bot.color_sensor_bottom)));
             telemetry.update();
-            ((DriveTrain) bot.driveTrain).setPowers(.5, -.5, -.5, .5);
-            if (compare_colors(get_color_sensor_value(bot.color_sensor), new int[]{255, 51, 51}) <= WINDOW) {
+//            ((DriveTrain) bot.driveTrain).setPowers(.25, -.25, -.25, .25);
+            bot.driveTrain.startAngle(DriveTrain.BUILDING_ZONE, .25);
+            if (compare_colors(get_color_sensor_value(bot.color_sensor_bottom), new int[]{255, 51, 51}) <= WINDOW) {
                 telemetry.addLine("FOUND LINE");
             }
             telemetry.update();

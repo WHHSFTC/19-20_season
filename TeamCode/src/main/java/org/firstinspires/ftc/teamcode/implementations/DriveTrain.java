@@ -136,6 +136,11 @@ public class DriveTrain implements StrafingDriveTrain {
     }
 
     // absolute
+
+    /**
+     * turns robot
+     * @param angle positive input = counter-clockwise || negative input = clockwise
+     */
     public void rotate(double angle) {
         //Turn using PID
         // clockwise = negative input, counter-clockwise = positive input
