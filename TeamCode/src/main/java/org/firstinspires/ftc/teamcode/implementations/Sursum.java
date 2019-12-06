@@ -4,29 +4,29 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
-// the bot
+/**
+ * Bot Class
+ */
 public class Sursum {
 
-    private double our_side;
-    private double opponents_side;
+    // fields that changed based on what side we start on
+    public double our_side;
+    public double opponents_side;
 
+    // Constants that contain magic numbers
     public static final double ROBOT_WIDTH = 17.75;
     public static final double ROBOT_LENGTH = 17.75;
     public static final double SIDEARM_Y = ROBOT_LENGTH/2 - 5;
     public static final double CAMERA_X = ROBOT_WIDTH/2 - 2;
-    // declarations
+    public static final double SIDE_ARM_OFFSET = 8; //inches
+
+    // declarations of all systems
     public StrafingDriveTrain driveTrain;
     public Mechanism shuttleGate;
     public ContinuousMechanism outputSlides;
@@ -34,15 +34,19 @@ public class Sursum {
     public Mechanism claw;
     public CRServo flywheels;
     public DcMotor belt;
-    public SideArm leftArm;
-    public SideArm rightArm;
+    public LeftSideArm leftArm;
+    public RightSideArm rightArm;
     //public DistanceSensor ods;
     //public DigitalChannel limit;
     public ColorSensor color_sensor_bottom;
 //    public Vision vision;
     public VisionTF visionTF;
     public LinearOpMode opMode;
-    // initialization
+
+    /**
+     * Creation of all systems of the bot
+     * @param opMode import current opMode to get initialize
+     */
     public Sursum(LinearOpMode opMode) {
         this.opMode = opMode;
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
@@ -59,8 +63,8 @@ public class Sursum {
         // intake {{{
         flywheels = new Flywheels(opMode, "leftFly", "rightFly");
         belt = opMode.hardwareMap.dcMotor.get("belt");
-        leftArm = new SideArm(opMode, "leftArm", "leftClaw");
-        rightArm = new SideArm(opMode, "rightArm", "rightClaw");
+        leftArm = new LeftSideArm(opMode, "leftArm", "leftClaw");
+        rightArm = new RightSideArm(opMode, "rightArm", "rightClaw");
         rightArm.arm.setDirection(Servo.Direction.REVERSE);
         rightArm.claw.setDirection(Servo.Direction.REVERSE);
         // }}}
@@ -73,6 +77,10 @@ public class Sursum {
 
 //        vision = new Vision(opMode, "Webcam 1");
     }
+
+    /**
+     * generic initialization
+     */
     public void init() {
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -80,15 +88,25 @@ public class Sursum {
         shuttleGate.setState(ShuttleGate.State.CLOSED);
         arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);
+        leftArm.setArmPosition(LeftSideArm.Arm.State.UP);
+        rightArm.setArmPosition(RightSideArm.Arm.State.UP);
+        leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
+        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
         visionTF = new VisionTF(opMode, "Webcam 1");
     }
 
+    /**
+     * Initialization for Red Side
+     */
     public void redInit() {
         init();
         our_side = DriveTrain.RED_SIDE;
         opponents_side = DriveTrain.BLUE_SIDE;
     }
 
+    /**
+     * Initialization for Blue Side
+     */
     public void blueInit() {
         init();
         our_side = DriveTrain.BLUE_SIDE;
@@ -99,7 +117,7 @@ public class Sursum {
      * finds the skystone unsing TensorFlow to detect
      * @throws InterruptedException
      */
-    public void findSkystone() throws InterruptedException {
+    public SkyStonePosition findSkystone() throws InterruptedException {
         for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
             String object = visionTF.getStone().toLowerCase();
             Thread.sleep(1000);
@@ -107,22 +125,23 @@ public class Sursum {
             opMode.telemetry.addData("Confidence: ", "N/A");
             opMode.telemetry.update();
             if (object.equals("skystone")) {
-                return;
+                return position;
             }
             driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
         }
+        return SkyStonePosition.ONE_FOUR;
     }
 
     /**
      * picks up skystone found by findSkystone()
      * @throws InterruptedException
      */
-    public void pick_up_stone() throws InterruptedException {
+    public void pick_up_stone(double angle) throws InterruptedException {
         // backing up
         driveTrain.goAngle(ROBOT_LENGTH/2, our_side, .5);
 
         // turn so sidearm faces stones
-        driveTrain.rotate(90);
+        driveTrain.rotate(angle);
 
         // lines up sidearm
         driveTrain.goAngle(4, DriveTrain.BUILDING_ZONE, .5);
@@ -131,24 +150,28 @@ public class Sursum {
         driveTrain.goAngle(13, opponents_side, .5);
 
         // FAILSAFE
-        rightArm.setClawPosition(SideArm.Claw.State.OPEN);
+        rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
 
         // arm comes down
-        rightArm.setArmPosition(SideArm.Arm.State.DOWN);
+        rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
         Thread.sleep(1000);
 
         // claw closes on stone
-        rightArm.setClawPosition(SideArm.Claw.State.CLOSED);
+        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
         Thread.sleep(1000);
 
         // holding stone
-        rightArm.setArmPosition(SideArm.Arm.State.HOLD);
+        rightArm.setArmPosition(RightSideArm.Arm.State.HOLD);
 
         opMode.telemetry.addLine("Holding Stone");
         opMode.telemetry.update();
     }
 
 
+    /**
+     * Intake mechanisms
+     * @throws InterruptedException
+     */
     public void intake() throws InterruptedException {
         flywheels.setPower(-2.0/3);
         belt.setPower(-1);
@@ -160,6 +183,10 @@ public class Sursum {
         Thread.sleep(500);
         belt.setPower(0);
     }
+
+    /**
+     * stops bot completely
+     */
     public void stop() {
         driveTrain.stop();
         shuttleGate.stop();

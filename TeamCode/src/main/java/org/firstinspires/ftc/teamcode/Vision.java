@@ -52,7 +52,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-
+@Disabled
 @TeleOp(name="Vision", group ="Concept")
 public class Vision extends LinearOpMode {
 

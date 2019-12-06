@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.Tests;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
+@Disabled
 @Autonomous(name = "rotate test",group = "test")
 public class RotateTest extends LinearOpMode {
     private Sursum bot;

@@ -2,15 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
-import org.firstinspires.ftc.teamcode.implementations.SideArm;
+import org.firstinspires.ftc.teamcode.implementations.RightSideArm;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
-
+@Disabled
 @Autonomous(group = "Auto", name = "SideArmSkyStoneAutoRed")
 public class SideArmSkyStoneAutoRed extends LinearOpMode {
 
@@ -63,11 +64,11 @@ public class SideArmSkyStoneAutoRed extends LinearOpMode {
 
         bot.driveTrain.rotate(90);
 
-        bot.rightArm.setArmPosition(SideArm.Arm.State.DOWN);
+        bot.rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
 
         Thread.sleep(1000);
 
-        bot.rightArm.setClawPosition(SideArm.Claw.State.OPEN);
+        bot.rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
 
         Thread.sleep(1000);
 
@@ -75,7 +76,7 @@ public class SideArmSkyStoneAutoRed extends LinearOpMode {
 
         Thread.sleep(1000);
 
-        bot.rightArm.setClawPosition(SideArm.Claw.State.CLOSED);
+        bot.rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
 
         Thread.sleep(1500);
 
@@ -87,9 +88,9 @@ public class SideArmSkyStoneAutoRed extends LinearOpMode {
 
         bot.driveTrain.goAngle(tile_distance(1), DriveTrain.BLUE_SIDE, .5);
 
-        bot.rightArm.setArmPosition(SideArm.Arm.State.DOWN);
+        bot.rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
 
-        bot.rightArm.setClawPosition(SideArm.Claw.State.OPEN);
+        bot.rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
 
         Thread.sleep(1500);
 

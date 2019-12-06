@@ -12,17 +12,20 @@ import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
 @TeleOp(group = "Tele", name = "Tele")
 public class Tele extends LinearOpMode {
+
     private static final double DEADZONE = 0.05;
+
     private Sursum bot;
     private boolean turtle;
     private boolean turtleX;
+
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
         bot.leftArm.arm.setPosition(0.36);
-        bot.rightArm.arm.setPosition(1-0.36);
+        bot.rightArm.arm.setPosition(.62);
         bot.leftArm.claw.setPosition(1);
-        bot.rightArm.claw.setPosition(1-1);
+        bot.rightArm.claw.setPosition(0);
 //        bot.driveTrain.
         waitForStart();
         while (opModeIsActive()) {
@@ -62,11 +65,17 @@ public class Tele extends LinearOpMode {
         double y = Math.sin(theta);
         double z = Math.signum(zpow);
 
+//        ((DriveTrain) bot.driveTrain).setPowers(
+//                power * (y-x) + zpower * z,
+//                power * (-y-x) + zpower * z,
+//                power * (-y+x) + zpower * z,
+//                power * (y+x) + zpower * z );
+
         ((DriveTrain) bot.driveTrain).setPowers(
-        power * (y-x) - zpower * z,
-        power * (-y-x) - zpower * z,
-        power * (-y+x) - zpower * z,
-        power * (y+x) - zpower * z );
+        power * -(y-x) + zpower * z,
+        power * -(-y-x) + zpower * z,
+        power * -(-y+x) + zpower * z,
+        power * -(y+x) + zpower * z );
 
         // offset of pi/4 makes wheels strafe correctly at cardinal and intermediate directions
 

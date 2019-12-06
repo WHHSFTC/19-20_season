@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,7 +10,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
 import java.util.*;
-
+@Disabled
 @Autonomous(name = "ParkWithCS", group = "Test")
 public class ParkWithCS extends LinearOpMode {
     private static final double TILE = 24; // inches
@@ -61,6 +62,7 @@ public class ParkWithCS extends LinearOpMode {
             telemetry.update();
 //            ((DriveTrain) bot.driveTrain).setPowers(.25, -.25, -.25, .25);
             bot.driveTrain.startAngle(DriveTrain.BUILDING_ZONE, .25);
+            // (0, 52, 190) blue tape
             if (compare_colors(get_color_sensor_value(bot.color_sensor_bottom), new int[]{255, 51, 51}) <= WINDOW) {
                 telemetry.addLine("FOUND LINE");
             }

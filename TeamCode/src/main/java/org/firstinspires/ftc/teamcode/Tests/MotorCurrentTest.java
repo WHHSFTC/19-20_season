@@ -4,11 +4,12 @@ import com.qualcomm.hardware.lynx.LynxController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.lynx.commands.core.LynxGetADCCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.lang.reflect.Field;
-
+@Disabled
 @Autonomous(name = "MotorCurrentTest", group = "Tests")
 public class MotorCurrentTest extends LinearOpMode {
     private DcMotor motor0;
