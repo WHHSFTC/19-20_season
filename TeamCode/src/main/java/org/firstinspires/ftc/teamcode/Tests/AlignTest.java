@@ -1,30 +1,25 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
+
 @Disabled
-@Autonomous(group = "Auto", name = "Red1")
-public class Red1 extends LinearOpMode {
+@Autonomous(name = "AlignTest", group = "Test")
+public class AlignTest extends LinearOpMode {
     private Sursum bot;
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
-        // init
         bot.init();
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
-        telemetry.addData("heading", ((DriveTrain) bot.driveTrain).getHeading());
-        telemetry.update();
-        // start
         waitForStart();
-        telemetry.addData("heading", ((DriveTrain) bot.driveTrain).getHeading());
-        telemetry.update();
-        // park
-        bot.driveTrain.goVector(0, 12, .5);
-        // stop
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        bot.driveTrain.align(DriveTrain.BLUE_SIDE);
         bot.stop();
     }
 }

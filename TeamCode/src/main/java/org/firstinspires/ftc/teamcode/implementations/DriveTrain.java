@@ -186,6 +186,52 @@ public class DriveTrain implements StrafingDriveTrain {
         }
         accelerate(0);
     }
+    @Override
+    public void align(double angle) {
+        //Turn  to global angle using PID
+        // clockwise = negative input, counter-clockwise = positive input
+        double angleWanted = angle;
+        double rcw = 1;
+        double integral = 0;
+        double previous_error = 0;
+        while (rcw != 0 && opMode.opModeIsActive()) {
+            double error = angleWanted - getHeading();
+            while (error > 180 && opMode.opModeIsActive()) error -= 360;
+            while (error < -180 && opMode.opModeIsActive()) error += 360;
+            double derivative = error - previous_error;
+            // small margin of error for increased speed
+            if (Math.abs(error) < HEADING_THRESHOLD) {
+                error = 0;
+            }
+            // prevents integral from growing too large
+            if (Math.abs(error) < ANTI_WINDUP && error != 0) {
+                integral += error;
+            } else {
+                integral = 0;
+            }
+            if (integral > (50 / I_TURN_COEFF)) {
+                integral = 50 / I_TURN_COEFF;
+            }
+            if (error == 0) {
+                derivative = 0;
+            }
+            rcw = P_TURN_COEFF * error + I_TURN_COEFF * integral + D_TURN_COEFF * derivative;
+            previous_error = error;
+            accelerate(rcw);
+
+            opMode.telemetry.addData("first angle", getHeading());
+            opMode.telemetry.addData("speed ", rcw);
+            opMode.telemetry.addData("error", angleWanted - getHeading());
+            opMode.telemetry.addData("angleWanted", angleWanted);
+            opMode.telemetry.addData("motor power", motorLF.getPower());
+            opMode.telemetry.addData("rcw", rcw);
+            opMode.telemetry.addData("P", P_TURN_COEFF * error);
+            opMode.telemetry.addData("I", I_TURN_COEFF * integral);
+            opMode.telemetry.addData("D", D_TURN_COEFF * derivative);
+            opMode.telemetry.update();
+        }
+        accelerate(0);
+    }
 
     public void accelerate(double speed) {
         double clip_speed = Range.clip(speed, -1, 1);

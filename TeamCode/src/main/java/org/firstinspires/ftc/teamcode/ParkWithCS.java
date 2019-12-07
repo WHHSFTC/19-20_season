@@ -51,7 +51,7 @@ public class ParkWithCS extends LinearOpMode {
 
         bot = new Sursum(this);
 
-        bot.init();
+        bot.init(Sursum.Color.RED);
 
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 

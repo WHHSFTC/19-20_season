@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public interface StrafingDriveTrain {
     // rotate about center angle degrees counterclockwise
     public void rotate(double angle);
+    public void align(double angle);
     // strafe dist distance at angle degrees counterclockwise (relative to bot orientation)
     public void goAngle(double dist, double angle, double power);
     // strafe following vector

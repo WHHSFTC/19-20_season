@@ -34,7 +34,7 @@ public class RedSkyStone extends LinearOpMode {
         bot = new Sursum(this);
 
         // initialization
-        bot.redInit();
+        bot.init(Sursum.Color.RED);
 
         // set global heading
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
@@ -42,22 +42,23 @@ public class RedSkyStone extends LinearOpMode {
         waitForStart();
 
         // drive towards stones
-        bot.driveTrain.goAngle( 44-bot.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, POWER/4);
+        bot.driveTrain.goAngle( 43-bot.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, POWER/4);
 
         telemetry.addLine("Starting TensorFlow Search");
         telemetry.update();
 
         SkyStonePosition sky_stone_position = bot.findSkystone();
 
-        bot.pick_up_stone(90);
+        bot.intakeSkyStone();
 
         // TODO FORK IF PARTNER PARKED IN LINE
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(8, bot.our_side, POWER/4);
+        bot.driveTrain.goAngle(15, bot.our_side, POWER/4);
 
         // heads to wall to line up
-        bot.driveTrain.goAngle(sky_stone_position.getDistance() - bot.SIDE_ARM_OFFSET + tile_distance(3.75), DriveTrain.BUILDING_ZONE, POWER/2);
+        bot.driveTrain.goAngle(sky_stone_position.getDistance() - bot.SIDE_ARM_OFFSET + tile_distance(3), DriveTrain.BUILDING_ZONE, POWER);
+//        bot.driveTrain.goAngle(tile_distance(0.75), DriveTrain.BUILDING_ZONE, POWER/2);
 
         // heads back to foundation
         bot.driveTrain.goAngle(tile_distance(0.5), DriveTrain.LOADING_ZONE, POWER);
@@ -78,7 +79,7 @@ public class RedSkyStone extends LinearOpMode {
         bot.driveTrain.goAngle(12, bot.our_side, POWER/2);
 
         // turning back to face foundation
-        bot.driveTrain.rotate(90);
+        bot.driveTrain.align(bot.opponents_side);
 
         // heads back to foundation
         bot.driveTrain.goAngle(18, bot.opponents_side, POWER/2);
@@ -96,7 +97,6 @@ public class RedSkyStone extends LinearOpMode {
 
         // parking
         bot.driveTrain.goAngle(tile_distance(2), DriveTrain.LOADING_ZONE, POWER);
-
 
         // stopping bot
         bot.visionTF.shutdown();

@@ -375,7 +375,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     private boolean turtleX;
     public void runNormalTele() {
         bot = new Sursum(this);
-        bot.init();
+        bot.init(Sursum.Color.RED);
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();

@@ -81,7 +81,16 @@ public class Sursum {
     /**
      * generic initialization
      */
-    public void init() {
+    public void init(Color color) {
+        switch(color) {
+            case RED:
+                our_side = DriveTrain.RED_SIDE;
+                opponents_side = DriveTrain.BLUE_SIDE;
+                break;
+            case BLUE:
+                our_side = DriveTrain.BLUE_SIDE;
+                opponents_side = DriveTrain.RED_SIDE;
+        }
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER);
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -97,22 +106,12 @@ public class Sursum {
         opMode.telemetry.update();
     }
 
-    /**
-     * Initialization for Red Side
-     */
-    public void redInit() {
-        init();
-        our_side = DriveTrain.RED_SIDE;
-        opponents_side = DriveTrain.BLUE_SIDE;
+    @Deprecated
+    public void init() {
+        init(Color.RED);
     }
-
-    /**
-     * Initialization for Blue Side
-     */
-    public void blueInit() {
-        init();
-        our_side = DriveTrain.BLUE_SIDE;
-        opponents_side = DriveTrain.RED_SIDE;
+    public enum Color {
+        RED, BLUE
     }
 
     /**
@@ -137,21 +136,21 @@ public class Sursum {
      * picks up skystone found by findSkystone()
      * @throws InterruptedException
      */
-    public void pick_up_stone(double angle) throws InterruptedException {
+    public void intakeSkyStone() throws InterruptedException {
         // backing up
         driveTrain.goAngle(10, our_side, .5);
 
         // turn so sidearm faces stones
-        driveTrain.rotate(angle);
+        driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
-        driveTrain.goAngle(SIDEARM_Y + CAMERA_X - 3, DriveTrain.BUILDING_ZONE, .25);
+        driveTrain.goAngle(SIDEARM_Y + CAMERA_X - 2, DriveTrain.BUILDING_ZONE, .25);
 
         rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
 
         // moves forward to be line with stone
-        driveTrain.goAngle(14  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
+        driveTrain.goAngle(20  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
 
         // claw closes on stone
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
@@ -165,6 +164,55 @@ public class Sursum {
         opMode.telemetry.update();
     }
 
+    /**
+     * moves foundation fast
+     * @throws InterruptedException
+     */
+    public void fastFoundation() throws InterruptedException {
+        // heading over 2 tiles to get lined up with the center of the foundation
+        // in reference to the middle of the bot
+        driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.75);
+
+        driveTrain.align(opponents_side);
+
+        driveTrain.goAngle(54-ROBOT_LENGTH, opponents_side, 0.25); // Hard coded distance
+        Thread.sleep(1000);
+        // setting foundation hooks to hook onto the foundation
+        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+        Thread.sleep(1000);
+
+        driveTrain.goAngle(60 - ROBOT_LENGTH, our_side, .25);
+        shuttleGate.setState(ShuttleGate.State.CLOSED);
+        Thread.sleep(1000);
+
+        // heading to park under bridge
+        driveTrain.goAngle(50, DriveTrain.LOADING_ZONE, 1);
+    }
+
+    /**
+     * moves foundation slow
+     * @throws InterruptedException
+     */
+    public void slowFoundation() throws InterruptedException {
+        // heading over 2 tiles to get lined up with the center of the foundation
+        // in reference to the middle of the bot
+        driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.25);
+
+        driveTrain.align(opponents_side);
+
+        driveTrain.goAngle(54-ROBOT_LENGTH, opponents_side, 0.25); // Hard coded distance
+        Thread.sleep(1000);
+        // setting foundation hooks to hook onto the foundation
+        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+        Thread.sleep(1000);
+
+        driveTrain.goAngle(60 - ROBOT_LENGTH, our_side, .25);
+        shuttleGate.setState(ShuttleGate.State.CLOSED);
+        Thread.sleep(1000);
+
+        // heading to park under bridge
+        driveTrain.goAngle(50, DriveTrain.LOADING_ZONE, .25);
+    }
 
     /**
      * Intake mechanisms

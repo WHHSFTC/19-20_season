@@ -7,24 +7,31 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
-@Autonomous(group = "Auto", name = "RedMovePark")
-public class RedMovePark extends LinearOpMode {
+
+@Autonomous(group = "Auto", name = "RedWaitFoundation")
+public class RedWaitFoundation extends LinearOpMode {
     private Sursum bot;
+
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
+        // Creating Bot
         bot = new Sursum(this);
-        // init
+
+        // Starting up the Bot
         bot.init(Sursum.Color.RED);
+
+        // Setting our global heading by changing offset
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
-        // start
+
+        // waiting for start
         waitForStart();
         bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
-        // move forward
-        //bot.driveTrain.goVector(0, 12, .5);
-        bot.driveTrain.goAngle(24,DriveTrain.BLUE_SIDE,0.5);
-        // park
-        bot.driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.5);
-        // stop
+
+        Thread.sleep(15000);
+        bot.fastFoundation();
+
+        // completely stops all bot movement
         bot.stop();
     }
+
 }

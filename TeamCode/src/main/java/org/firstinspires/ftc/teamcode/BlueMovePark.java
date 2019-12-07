@@ -14,7 +14,7 @@ public class BlueMovePark extends LinearOpMode {
     public void runOpMode() {
         bot = new Sursum(this);
         // init
-        bot.init();
+        bot.init(Sursum.Color.BLUE);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         // start
         waitForStart();
