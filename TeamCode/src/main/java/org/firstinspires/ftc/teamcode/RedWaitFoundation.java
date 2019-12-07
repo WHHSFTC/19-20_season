@@ -18,17 +18,16 @@ public class RedWaitFoundation extends LinearOpMode {
         bot = new Sursum(this);
 
         // Starting up the Bot
-        bot.init(Sursum.Color.RED);
+        bot.init(Sursum.Alliance.RED);
 
         // Setting our global heading by changing offset
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 
         // waiting for start
         waitForStart();
-        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        Thread.sleep(15000);
-        bot.fastFoundation();
+        bot.waitFoundation();
 
         // completely stops all bot movement
         bot.stop();

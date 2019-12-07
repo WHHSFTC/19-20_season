@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
@@ -81,7 +80,7 @@ public class Sursum {
     /**
      * generic initialization
      */
-    public void init(Color color) {
+    public void init(Alliance color) {
         switch(color) {
             case RED:
                 our_side = DriveTrain.RED_SIDE;
@@ -93,7 +92,6 @@ public class Sursum {
         }
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER);
-        driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
         shuttleGate.setState(ShuttleGate.State.CLOSED);
         arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);
@@ -102,15 +100,16 @@ public class Sursum {
         leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
         visionTF = new VisionTF(opMode, "Webcam 1");
+        driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
         opMode.telemetry.addLine("Initialization DONE");
         opMode.telemetry.update();
     }
 
     @Deprecated
     public void init() {
-        init(Color.RED);
+        init(Alliance.RED);
     }
-    public enum Color {
+    public enum Alliance {
         RED, BLUE
     }
 
@@ -136,7 +135,7 @@ public class Sursum {
      * picks up skystone found by findSkystone()
      * @throws InterruptedException
      */
-    public void intakeSkyStone() throws InterruptedException {
+    public void intakeSkyStoneRed() throws InterruptedException {
         // backing up
         driveTrain.goAngle(10, our_side, .5);
 
@@ -165,15 +164,49 @@ public class Sursum {
     }
 
     /**
+     * picks up skystone found by findSkystone()
+     * @throws InterruptedException
+     */
+    public void intakeSkyStoneBlue() throws InterruptedException {
+        // backing up
+        driveTrain.goAngle(10, our_side, .5);
+
+        // turn so sidearm faces stones
+        driveTrain.align(DriveTrain.LOADING_ZONE);
+
+        // lines up sidearm
+        driveTrain.goAngle(SIDEARM_Y + ROBOT_WIDTH - CAMERA_X - 2, DriveTrain.BUILDING_ZONE, .25);
+
+        leftArm.setArmPosition(LeftSideArm.Arm.State.DOWN);
+        leftArm.setClawPosition(LeftSideArm.Claw.State.OPEN);
+
+        // moves forward to be line with stone
+        driveTrain.goAngle(18  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
+
+        // claw closes on stone
+        leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
+        Thread.sleep(500);
+
+        // holding stone
+        leftArm.setArmPosition(LeftSideArm.Arm.State.HOLD);
+        Thread.sleep(500);
+
+        opMode.telemetry.addLine("Holding Stone");
+        opMode.telemetry.update();
+    }
+    /**
      * moves foundation fast
      * @throws InterruptedException
      */
-    public void fastFoundation() throws InterruptedException {
+    public void waitFoundation() throws InterruptedException {
+        driveTrain.align(our_side);
         // heading over 2 tiles to get lined up with the center of the foundation
         // in reference to the middle of the bot
-        driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.75);
+        driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.25);
 
-        driveTrain.align(opponents_side);
+        driveTrain.align(our_side);
+
+        Thread.sleep(13000);
 
         driveTrain.goAngle(54-ROBOT_LENGTH, opponents_side, 0.25); // Hard coded distance
         Thread.sleep(1000);
@@ -194,11 +227,12 @@ public class Sursum {
      * @throws InterruptedException
      */
     public void slowFoundation() throws InterruptedException {
+        driveTrain.align(our_side);
         // heading over 2 tiles to get lined up with the center of the foundation
         // in reference to the middle of the bot
         driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.25);
 
-        driveTrain.align(opponents_side);
+        driveTrain.align(our_side);
 
         driveTrain.goAngle(54-ROBOT_LENGTH, opponents_side, 0.25); // Hard coded distance
         Thread.sleep(1000);
@@ -212,6 +246,123 @@ public class Sursum {
 
         // heading to park under bridge
         driveTrain.goAngle(50, DriveTrain.LOADING_ZONE, .25);
+    }
+    public void skystoneFoundationRed() throws InterruptedException {
+        // drive towards stones
+        driveTrain.goAngle( 43-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
+
+        opMode.telemetry.addLine("Starting TensorFlow Search");
+        opMode.telemetry.update();
+
+        SkyStonePosition sky_stone_position = findSkystone();
+
+        intakeSkyStoneRed();
+
+        // TODO FORK IF PARTNER PARKED IN LINE
+
+        // heads back to go under skybridge
+        driveTrain.goAngle(20, our_side, .25);
+
+        // heads to wall to line up
+        driveTrain.goAngle(sky_stone_position.getDistance() - SIDE_ARM_OFFSET + 72, DriveTrain.BUILDING_ZONE, 1);
+//        bot.driveTrain.goAngle(tile_distance(0.75), DriveTrain.BUILDING_ZONE, POWER/2);
+
+        // heads back to foundation
+        driveTrain.goAngle(12, DriveTrain.LOADING_ZONE, 1.0);
+
+        driveTrain.goAngle(10, opponents_side, 1.0/4);
+
+        // drops stone onto foundation
+        rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
+        Thread.sleep(500);
+
+        // raises arm
+        rightArm.setArmPosition(RightSideArm.Arm.State.UP);
+        // closes claw so andrew doesn't have to make a new one
+        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
+        Thread.sleep(500);
+
+        // moving out to turn
+        driveTrain.goAngle(12, our_side, 1.0/2);
+
+        // turning back to face foundation
+        driveTrain.align(opponents_side);
+
+        // heads back to foundation
+        driveTrain.goAngle(18, opponents_side, 1.0/2);
+
+        // activate foundation hooks
+        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+        Thread.sleep(500);
+
+        // pulls foundation
+        driveTrain.goAngle(52, our_side, 1.0);
+
+        // deactivate foundation hooks
+        shuttleGate.setState(ShuttleGate.State.CLOSED);
+        Thread.sleep(500);
+
+        // parking
+        driveTrain.goAngle(48, DriveTrain.LOADING_ZONE, 1.0);
+    }
+
+    public void skystoneFoundationBlue() throws InterruptedException {
+        // drive towards stones
+        driveTrain.goAngle( 43-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
+
+        opMode.telemetry.addLine("Starting TensorFlow Search");
+        opMode.telemetry.update();
+
+        SkyStonePosition sky_stone_position = findSkystone();
+
+        intakeSkyStoneBlue();
+
+        // TODO FORK IF PARTNER PARKED IN LINE
+
+        // heads back to go under skybridge
+        driveTrain.goAngle(20, our_side, .25);
+
+        // heads to wall to line up
+        driveTrain.goAngle(sky_stone_position.getDistance() - SIDE_ARM_OFFSET + 72, DriveTrain.BUILDING_ZONE, 1);
+//        bot.driveTrain.goAngle(tile_distance(0.75), DriveTrain.BUILDING_ZONE, POWER/2);
+
+        // heads back to foundation
+        driveTrain.goAngle(12, DriveTrain.LOADING_ZONE, 1.0);
+
+        driveTrain.goAngle(10, opponents_side, 1.0/4);
+
+        // drops stone onto foundation
+        leftArm.setClawPosition(LeftSideArm.Claw.State.OPEN);
+        Thread.sleep(500);
+
+        // raises arm
+        leftArm.setArmPosition(LeftSideArm.Arm.State.UP);
+        // closes claw so andrew doesn't have to make a new one
+        leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
+        Thread.sleep(500);
+
+        // moving out to turn
+        driveTrain.goAngle(12, our_side, 1.0/2);
+
+        // turning back to face foundation
+        driveTrain.align(opponents_side);
+
+        // heads back to foundation
+        driveTrain.goAngle(18, opponents_side, 1.0/2);
+
+        // activate foundation hooks
+        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+        Thread.sleep(500);
+
+        // pulls foundation
+        driveTrain.goAngle(52, our_side, 1.0);
+
+        // deactivate foundation hooks
+        shuttleGate.setState(ShuttleGate.State.CLOSED);
+        Thread.sleep(500);
+
+        // parking
+        driveTrain.goAngle(48, DriveTrain.LOADING_ZONE, 1.0);
     }
 
     /**
@@ -241,5 +392,8 @@ public class Sursum {
         claw.stop();
         flywheels.setPower(0);
         belt.setPower(0);
+    }
+    public void start() {
+        driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 }

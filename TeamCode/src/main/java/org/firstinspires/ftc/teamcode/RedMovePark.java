@@ -14,11 +14,11 @@ public class RedMovePark extends LinearOpMode {
     public void runOpMode() {
         bot = new Sursum(this);
         // init
-        bot.init(Sursum.Color.RED);
+        bot.init(Sursum.Alliance.RED);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         // start
         waitForStart();
-        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
         // move forward
         //bot.driveTrain.goVector(0, 12, .5);
         bot.driveTrain.goAngle(24,DriveTrain.BLUE_SIDE,0.5);

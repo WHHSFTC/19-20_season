@@ -18,7 +18,7 @@ public class AlignTest extends LinearOpMode {
         bot.init();
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         waitForStart();
-        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
         bot.driveTrain.align(DriveTrain.BLUE_SIDE);
         bot.stop();
     }

@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
 
-@Autonomous(group = "Auto", name = "RedWaitFoundation")
+@Autonomous(group = "Auto", name = "RedFoundation")
 public class RedFoundation extends LinearOpMode {
     private Sursum bot;
 
@@ -18,14 +18,14 @@ public class RedFoundation extends LinearOpMode {
         bot = new Sursum(this);
 
         // Starting up the Bot
-        bot.init(Sursum.Color.RED);
+        bot.init(Sursum.Alliance.RED);
 
         // Setting our global heading by changing offset
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 
         // waiting for start
         waitForStart();
-        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
 
         bot.slowFoundation();
 

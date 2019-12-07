@@ -41,7 +41,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.Tele;
 import org.firstinspires.ftc.teamcode.implementations.Arm;
 import org.firstinspires.ftc.teamcode.implementations.Claw;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
@@ -375,7 +374,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     private boolean turtleX;
     public void runNormalTele() {
         bot = new Sursum(this);
-        bot.init(Sursum.Color.RED);
+        bot.init(Sursum.Alliance.RED);
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();

@@ -47,7 +47,7 @@ public class SideArmSkyStoneAutoRed extends LinearOpMode {
         bot = new Sursum(this);
 
         // initializing all bot functions
-        bot.init(Sursum.Color.RED);
+        bot.init(Sursum.Alliance.RED);
 
         // sets global heading of the bot
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);

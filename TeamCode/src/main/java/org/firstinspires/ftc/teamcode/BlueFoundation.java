@@ -18,14 +18,14 @@ public class BlueFoundation extends LinearOpMode {
         bot = new Sursum(this);
 
         // Starting up the Bot
-        bot.init(Sursum.Color.BLUE);
+        bot.init(Sursum.Alliance.BLUE);
 
         // Setting our global heading by changing offset
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 
         // waiting for start
         waitForStart();
-        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
 
         bot.slowFoundation();
 

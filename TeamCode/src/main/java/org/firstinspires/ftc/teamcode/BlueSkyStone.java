@@ -5,10 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
+import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
+import org.firstinspires.ftc.teamcode.implementations.RightSideArm;
+import org.firstinspires.ftc.teamcode.implementations.SkyStonePosition;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
-@Autonomous(name = "RedSkyStone", group = "Auto")
-public class RedSkyStone extends LinearOpMode {
+@Autonomous(name = "BlueSkyStone", group = "Auto")
+public class BlueSkyStone extends LinearOpMode {
     private Sursum bot;
 
     @Override
@@ -21,7 +24,7 @@ public class RedSkyStone extends LinearOpMode {
         bot = new Sursum(this);
 
         // initialization
-        bot.init(Sursum.Alliance.RED);
+        bot.init(Sursum.Alliance.BLUE);
 
         // set global heading
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
@@ -29,7 +32,7 @@ public class RedSkyStone extends LinearOpMode {
         waitForStart();
         bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        bot.skystoneFoundationRed();
+        bot.skystoneFoundationBlue();
 
         // stopping bot
         bot.visionTF.shutdown();

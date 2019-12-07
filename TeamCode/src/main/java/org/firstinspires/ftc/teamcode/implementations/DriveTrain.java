@@ -186,11 +186,17 @@ public class DriveTrain implements StrafingDriveTrain {
         }
         accelerate(0);
     }
+
     @Override
     public void align(double angle) {
+        align(angle, Side.FRONT);
+    }
+
+    @Override
+    public void align(double angle, Side side) {
         //Turn  to global angle using PID
         // clockwise = negative input, counter-clockwise = positive input
-        double angleWanted = angle;
+        double angleWanted = angle - side.getDegrees();
         double rcw = 1;
         double integral = 0;
         double previous_error = 0;

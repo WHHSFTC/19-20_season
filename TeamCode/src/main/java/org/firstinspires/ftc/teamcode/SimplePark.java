@@ -14,11 +14,11 @@ public class SimplePark extends LinearOpMode {
     public void runOpMode() {
         bot = new Sursum(this);
         // init
-        bot.init(Sursum.Color.RED);
+        bot.init(Sursum.Alliance.RED);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         // start
         waitForStart();
-        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
         // park
         bot.driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.5);
         // stop
