@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Created by khadija on 10/19/2019.
  */
+@Disabled
 @Autonomous(name = "AutoTest1", group = "Tests")
 public class AutoTestv1 extends LinearOpMode {
     private Bot robot = new Bot(this);

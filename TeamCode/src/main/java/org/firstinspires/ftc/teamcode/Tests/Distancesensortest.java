@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.implementations.Sursum;
 /**
  * Created by khadija on 11/16/2019.
  */
+@Disabled
 public class Distancesensortest extends LinearOpMode {
     private Sursum bot;
     public double distance;

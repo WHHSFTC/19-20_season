@@ -71,7 +71,7 @@ class Wrist extends StatefulServo<Wrist.State> {
     }
     enum State implements StatefulServo.State {
         // 0-1 is 270 degrees, so each 1/3 is 90 degrees apart
-        OUT(1), RIGHT(0.68), IN(0.38), LEFT(0.06), BELT(0.23);
+        OUT(1), RIGHT(0.68), IN(0.38), LEFT(0.04), BELT(0.23);
         private double value;
         State(double value) {
             this.value = value;

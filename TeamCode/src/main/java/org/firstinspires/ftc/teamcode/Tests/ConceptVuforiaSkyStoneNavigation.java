@@ -88,7 +88,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * is explained below.
  */
 
-
+@Disabled
 @TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
 public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
 
@@ -375,7 +375,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     private boolean turtleX;
     public void runNormalTele() {
         bot = new Sursum(this);
-        bot.init();
+        bot.init(Sursum.Color.RED);
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();

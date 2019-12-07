@@ -14,7 +14,7 @@ public class SimplePark extends LinearOpMode {
     public void runOpMode() {
         bot = new Sursum(this);
         // init
-        bot.init();
+        bot.init(Sursum.Color.RED);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         // start
         waitForStart();
