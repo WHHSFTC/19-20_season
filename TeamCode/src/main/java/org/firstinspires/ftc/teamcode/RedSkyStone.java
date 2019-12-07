@@ -54,7 +54,7 @@ public class RedSkyStone extends LinearOpMode {
         // TODO FORK IF PARTNER PARKED IN LINE
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(6, bot.our_side, POWER/4);
+        bot.driveTrain.goAngle(8, bot.our_side, POWER/4);
 
         // heads to wall to line up
         bot.driveTrain.goAngle(sky_stone_position.getDistance() - bot.SIDE_ARM_OFFSET + tile_distance(3.75), DriveTrain.BUILDING_ZONE, POWER/2);
@@ -62,7 +62,7 @@ public class RedSkyStone extends LinearOpMode {
         // heads back to foundation
         bot.driveTrain.goAngle(tile_distance(0.5), DriveTrain.LOADING_ZONE, POWER);
 
-        bot.driveTrain.goAngle(6, bot.opponents_side, POWER/4);
+        bot.driveTrain.goAngle(10, bot.opponents_side, POWER/4);
 
         // drops stone onto foundation
         bot.rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
@@ -81,14 +81,14 @@ public class RedSkyStone extends LinearOpMode {
         bot.driveTrain.rotate(90);
 
         // heads back to foundation
-        bot.driveTrain.goAngle(15, bot.opponents_side, POWER/2);
+        bot.driveTrain.goAngle(18, bot.opponents_side, POWER/2);
 
         // activate foundation hooks
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
         Thread.sleep(500);
 
         // pulls foundation
-        bot.driveTrain.goAngle(50, bot.our_side, POWER/2);
+        bot.driveTrain.goAngle(52, bot.our_side, POWER);
 
         // deactivate foundation hooks
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);

@@ -145,13 +145,13 @@ public class Sursum {
         driveTrain.rotate(angle);
 
         // lines up sidearm
-        driveTrain.goAngle(SIDEARM_Y + CAMERA_X, DriveTrain.BUILDING_ZONE, .25);
+        driveTrain.goAngle(SIDEARM_Y + CAMERA_X - 3, DriveTrain.BUILDING_ZONE, .25);
 
         rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
 
         // moves forward to be line with stone
-        driveTrain.goAngle(12  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
+        driveTrain.goAngle(14  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
 
         // claw closes on stone
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
