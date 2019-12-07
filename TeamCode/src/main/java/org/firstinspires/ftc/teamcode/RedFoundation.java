@@ -66,4 +66,5 @@ public class RedFoundation extends LinearOpMode {
         // completely stops all bot movement
         bot.stop();
     }
+
 }

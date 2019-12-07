@@ -65,8 +65,8 @@ public class Sursum {
         belt = opMode.hardwareMap.dcMotor.get("belt");
         leftArm = new LeftSideArm(opMode, "leftArm", "leftClaw");
         rightArm = new RightSideArm(opMode, "rightArm", "rightClaw");
-        rightArm.arm.setDirection(Servo.Direction.REVERSE);
-        rightArm.claw.setDirection(Servo.Direction.REVERSE);
+//        rightArm.arm.setDirection(Servo.Direction.REVERSE);
+//        rightArm.claw.setDirection(Servo.Direction.REVERSE);
         // }}}
 
         // sensors {{{
@@ -93,6 +93,8 @@ public class Sursum {
         leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
         visionTF = new VisionTF(opMode, "Webcam 1");
+        opMode.telemetry.addLine("Initialization DONE");
+        opMode.telemetry.update();
     }
 
     /**
@@ -119,12 +121,11 @@ public class Sursum {
      */
     public SkyStonePosition findSkystone() throws InterruptedException {
         for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
-            String object = visionTF.getStone().toLowerCase();
             Thread.sleep(1000);
-            opMode.telemetry.addData("Tensorflow Object", object);
-            opMode.telemetry.addData("Confidence: ", "N/A");
-            opMode.telemetry.update();
-            if (object.equals("skystone")) {
+//            opMode.telemetry.addData("Tensorflow Object", object);
+//            opMode.telemetry.addData("Confidence: ", "N/A");
+//            opMode.telemetry.update();
+            if (visionTF.getStone()) {
                 return position;
             }
             driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
@@ -138,30 +139,27 @@ public class Sursum {
      */
     public void pick_up_stone(double angle) throws InterruptedException {
         // backing up
-        driveTrain.goAngle(ROBOT_LENGTH/2, our_side, .5);
+        driveTrain.goAngle(10, our_side, .5);
 
         // turn so sidearm faces stones
         driveTrain.rotate(angle);
 
         // lines up sidearm
-        driveTrain.goAngle(4, DriveTrain.BUILDING_ZONE, .5);
+        driveTrain.goAngle(SIDEARM_Y + CAMERA_X, DriveTrain.BUILDING_ZONE, .25);
 
-        // moves forward to be line with stone
-        driveTrain.goAngle(13, opponents_side, .5);
-
-        // FAILSAFE
+        rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
 
-        // arm comes down
-        rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
-        Thread.sleep(1000);
+        // moves forward to be line with stone
+        driveTrain.goAngle(12  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
 
         // claw closes on stone
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // holding stone
         rightArm.setArmPosition(RightSideArm.Arm.State.HOLD);
+        Thread.sleep(500);
 
         opMode.telemetry.addLine("Holding Stone");
         opMode.telemetry.update();

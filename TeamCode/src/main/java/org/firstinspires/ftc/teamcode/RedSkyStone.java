@@ -39,13 +39,10 @@ public class RedSkyStone extends LinearOpMode {
         // set global heading
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 
-        telemetry.addLine("Initialization DONE");
-        telemetry.update();
-
         waitForStart();
 
         // drive towards stones
-        bot.driveTrain.goAngle(tile_distance(.8), DriveTrain.BLUE_SIDE, POWER/2);
+        bot.driveTrain.goAngle( 44-bot.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, POWER/4);
 
         telemetry.addLine("Starting TensorFlow Search");
         telemetry.update();
@@ -56,50 +53,46 @@ public class RedSkyStone extends LinearOpMode {
 
         // TODO FORK IF PARTNER PARKED IN LINE
 
-        // heads back to wall to line up going under skybridge
-        bot.driveTrain.goAngle(tile_distance(0.8), bot.our_side, POWER/4);
+        // heads back to go under skybridge
+        bot.driveTrain.goAngle(6, bot.our_side, POWER/4);
 
         // heads to wall to line up
-        bot.driveTrain.goAngle(sky_stone_position.getDistance() - bot.SIDE_ARM_OFFSET + tile_distance(3.75), DriveTrain.BUILDING_ZONE, POWER/4);
+        bot.driveTrain.goAngle(sky_stone_position.getDistance() - bot.SIDE_ARM_OFFSET + tile_distance(3.75), DriveTrain.BUILDING_ZONE, POWER/2);
 
         // heads back to foundation
-        bot.driveTrain.goAngle(tile_distance(0.5), DriveTrain.LOADING_ZONE, POWER/4);
+        bot.driveTrain.goAngle(tile_distance(0.5), DriveTrain.LOADING_ZONE, POWER);
 
-        // drops arm onto foundation
-        bot.rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
-        Thread.sleep(1000);
+        bot.driveTrain.goAngle(6, bot.opponents_side, POWER/4);
 
         // drops stone onto foundation
         bot.rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // raises arm
         bot.rightArm.setArmPosition(RightSideArm.Arm.State.UP);
-        Thread.sleep(1000);
-
         // closes claw so andrew doesn't have to make a new one
         bot.rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
-        Thread.sleep(100);
+        Thread.sleep(500);
 
         // moving out to turn
-        bot.driveTrain.goAngle(bot.ROBOT_LENGTH/2, bot.our_side, POWER/2);
+        bot.driveTrain.goAngle(12, bot.our_side, POWER/2);
 
         // turning back to face foundation
         bot.driveTrain.rotate(90);
 
         // heads back to foundation
-        bot.driveTrain.goAngle(bot.ROBOT_LENGTH/2 + 3, bot.opponents_side, POWER/2);
+        bot.driveTrain.goAngle(15, bot.opponents_side, POWER/2);
 
         // activate foundation hooks
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // pulls foundation
-        bot.driveTrain.goAngle(tile_distance(2.2), bot.our_side, POWER/2);
+        bot.driveTrain.goAngle(50, bot.our_side, POWER/2);
 
         // deactivate foundation hooks
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         // parking
         bot.driveTrain.goAngle(tile_distance(2), DriveTrain.LOADING_ZONE, POWER);
