@@ -126,7 +126,7 @@ public class Sursum {
             if (visionTF.getStone()) {
                 return position;
             }
-            driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
+            driveTrain.goAngle(8.5, DriveTrain.LOADING_ZONE, .25);
         }
         return SkyStonePosition.ONE_FOUR;
     }
@@ -175,7 +175,7 @@ public class Sursum {
         driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
-        driveTrain.goAngle(SIDEARM_Y + ROBOT_WIDTH - CAMERA_X - 2, DriveTrain.BUILDING_ZONE, .25);
+        driveTrain.goAngle(SIDEARM_Y + CAMERA_X - 2, DriveTrain.BUILDING_ZONE, .25);
 
         leftArm.setArmPosition(LeftSideArm.Arm.State.DOWN);
         leftArm.setClawPosition(LeftSideArm.Claw.State.OPEN);
@@ -194,6 +194,7 @@ public class Sursum {
         opMode.telemetry.addLine("Holding Stone");
         opMode.telemetry.update();
     }
+
     /**
      * moves foundation fast
      * @throws InterruptedException
@@ -249,7 +250,7 @@ public class Sursum {
     }
     public void skystoneFoundationRed() throws InterruptedException {
         // drive towards stones
-        driveTrain.goAngle( 43-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
+        driveTrain.goAngle( 41-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
 
         opMode.telemetry.addLine("Starting TensorFlow Search");
         opMode.telemetry.update();
@@ -258,19 +259,13 @@ public class Sursum {
 
         intakeSkyStoneRed();
 
-        // TODO FORK IF PARTNER PARKED IN LINE
-
         // heads back to go under skybridge
-        driveTrain.goAngle(20, our_side, .25);
+        driveTrain.goAngle(12, our_side, .25);
+        driveTrain.goAngle(sky_stone_position.getDistance() + 32, DriveTrain.BUILDING_ZONE, 1);
 
-        // heads to wall to line up
-        driveTrain.goAngle(sky_stone_position.getDistance() - SIDE_ARM_OFFSET + 72, DriveTrain.BUILDING_ZONE, 1);
-//        bot.driveTrain.goAngle(tile_distance(0.75), DriveTrain.BUILDING_ZONE, POWER/2);
+        driveTrain.align(DriveTrain.LOADING_ZONE);
 
-        // heads back to foundation
-        driveTrain.goAngle(12, DriveTrain.LOADING_ZONE, 1.0);
-
-        driveTrain.goAngle(10, opponents_side, 1.0/4);
+//        driveTrain.goAngle(14, opponents_side, 1.0/4);
 
         // drops stone onto foundation
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
@@ -280,35 +275,36 @@ public class Sursum {
         rightArm.setArmPosition(RightSideArm.Arm.State.UP);
         // closes claw so andrew doesn't have to make a new one
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
-        Thread.sleep(500);
-
-        // moving out to turn
-        driveTrain.goAngle(12, our_side, 1.0/2);
-
-        // turning back to face foundation
-        driveTrain.align(opponents_side);
-
-        // heads back to foundation
-        driveTrain.goAngle(18, opponents_side, 1.0/2);
-
-        // activate foundation hooks
-        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-        Thread.sleep(500);
-
-        // pulls foundation
-        driveTrain.goAngle(52, our_side, 1.0);
-
-        // deactivate foundation hooks
-        shuttleGate.setState(ShuttleGate.State.CLOSED);
-        Thread.sleep(500);
-
-        // parking
-        driveTrain.goAngle(48, DriveTrain.LOADING_ZONE, 1.0);
+//        driveTrain.goAngle(6, our_side, 0.25);
+        driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 0.25);
+//        // moving out to turn
+//        driveTrain.goAngle(12, our_side, 1.0);
+//
+//        // turning back to face foundation
+//        driveTrain.align(our_side);
+//
+//        // heads back to foundation
+//        driveTrain.goAngle(14, opponents_side, 1.0/2);
+//
+//        // activate foundation hooks
+//        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
+//        Thread.sleep(500);
+//
+//        // pulls foundation
+//        driveTrain.goAngle(52, our_side, 1.0);
+//
+//        // deactivate foundation hooks
+//        shuttleGate.setState(ShuttleGate.State.CLOSED);
+//        Thread.sleep(500);
+//
+//        // parking
+//        driveTrain.goAngle(54, DriveTrain.LOADING_ZONE, 0.5);
+//
     }
 
     public void skystoneFoundationBlue() throws InterruptedException {
         // drive towards stones
-        driveTrain.goAngle( 43-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
+        driveTrain.goAngle( 43-ROBOT_LENGTH, opponents_side, .25);
 
         opMode.telemetry.addLine("Starting TensorFlow Search");
         opMode.telemetry.update();
@@ -320,16 +316,15 @@ public class Sursum {
         // TODO FORK IF PARTNER PARKED IN LINE
 
         // heads back to go under skybridge
-        driveTrain.goAngle(20, our_side, .25);
+        driveTrain.goAngle(18, our_side, .25);
 
         // heads to wall to line up
         driveTrain.goAngle(sky_stone_position.getDistance() - SIDE_ARM_OFFSET + 72, DriveTrain.BUILDING_ZONE, 1);
 //        bot.driveTrain.goAngle(tile_distance(0.75), DriveTrain.BUILDING_ZONE, POWER/2);
 
-        // heads back to foundation
-        driveTrain.goAngle(12, DriveTrain.LOADING_ZONE, 1.0);
+        driveTrain.align(DriveTrain.LOADING_ZONE);
 
-        driveTrain.goAngle(10, opponents_side, 1.0/4);
+        driveTrain.goAngle(32, opponents_side, 1.0/4);
 
         // drops stone onto foundation
         leftArm.setClawPosition(LeftSideArm.Claw.State.OPEN);
@@ -345,7 +340,7 @@ public class Sursum {
         driveTrain.goAngle(12, our_side, 1.0/2);
 
         // turning back to face foundation
-        driveTrain.align(opponents_side);
+        driveTrain.align(our_side);
 
         // heads back to foundation
         driveTrain.goAngle(18, opponents_side, 1.0/2);
@@ -362,7 +357,8 @@ public class Sursum {
         Thread.sleep(500);
 
         // parking
-        driveTrain.goAngle(48, DriveTrain.LOADING_ZONE, 1.0);
+        driveTrain.goAngle(54, DriveTrain.LOADING_ZONE, 0.5);
+
     }
 
     /**
