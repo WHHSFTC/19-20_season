@@ -27,12 +27,18 @@ public class RedSkyStone extends LinearOpMode {
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 
         waitForStart();
+
+        // setting bot zero power settings to brake so that when we get hit by another bot we don't move along with them
         bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        // auto to drop sky-stones begins
         bot.skystoneFoundationRed();
+        // auto ends
 
-        // stopping bot
+        // shuts down tensor-flow
         bot.visionTF.shutdown();
+
+        // stops all bot actions
         bot.stop();
     }
 }

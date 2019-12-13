@@ -249,23 +249,27 @@ public class Sursum {
         driveTrain.goAngle(50, DriveTrain.LOADING_ZONE, .25);
     }
     public void skystoneFoundationRed() throws InterruptedException {
+
         // drive towards stones
-        driveTrain.goAngle( 41-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
+        driveTrain.goAngle( 41-ROBOT_LENGTH, opponents_side, .25);
 
         opMode.telemetry.addLine("Starting TensorFlow Search");
         opMode.telemetry.update();
 
+        // finds current position of skystone; Defaults to last position if none found
         SkyStonePosition sky_stone_position = findSkystone();
 
+        // intakes stone at current found
         intakeSkyStoneRed();
 
         // heads back to go under skybridge
         driveTrain.goAngle(12, our_side, .25);
+
+        // goes 32 inches past skybridge
         driveTrain.goAngle(sky_stone_position.getDistance() + 32, DriveTrain.BUILDING_ZONE, 1);
 
+        // aligns for loading zone to be lined up for later
         driveTrain.align(DriveTrain.LOADING_ZONE);
-
-//        driveTrain.goAngle(14, opponents_side, 1.0/4);
 
         // drops stone onto foundation
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
@@ -273,33 +277,21 @@ public class Sursum {
 
         // raises arm
         rightArm.setArmPosition(RightSideArm.Arm.State.UP);
+
         // closes claw so andrew doesn't have to make a new one
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
-//        driveTrain.goAngle(6, our_side, 0.25);
-        driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 0.25);
-//        // moving out to turn
-//        driveTrain.goAngle(12, our_side, 1.0);
-//
-//        // turning back to face foundation
-//        driveTrain.align(our_side);
-//
-//        // heads back to foundation
-//        driveTrain.goAngle(14, opponents_side, 1.0/2);
-//
-//        // activate foundation hooks
-//        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-//        Thread.sleep(500);
-//
-//        // pulls foundation
-//        driveTrain.goAngle(52, our_side, 1.0);
-//
-//        // deactivate foundation hooks
-//        shuttleGate.setState(ShuttleGate.State.CLOSED);
-//        Thread.sleep(500);
-//
-//        // parking
-//        driveTrain.goAngle(54, DriveTrain.LOADING_ZONE, 0.5);
-//
+
+        // heading back to pick up second skystone
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.LOADING_ZONE, 1);
+
+        // intakes stone at current position
+        intakeSkyStoneRed();
+
+        // returning back to right under sky-bridge to drop current stone
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.BUILDING_ZONE, 1);
+
+        // parking under sky-bridge (Next to neutral bridge)
+        driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 1);
     }
 
     public void skystoneFoundationBlue() throws InterruptedException {
