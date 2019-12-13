@@ -149,7 +149,7 @@ public class Sursum {
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
 
         // moves forward to be line with stone
-        driveTrain.goAngle(20  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
+        driveTrain.goAngle(19  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
 
         // claw closes on stone
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
@@ -266,7 +266,7 @@ public class Sursum {
         driveTrain.goAngle(12, our_side, .25);
 
         // goes 32 inches past skybridge
-        driveTrain.goAngle(sky_stone_position.getDistance() + 32, DriveTrain.BUILDING_ZONE, 1);
+        driveTrain.goAngle(sky_stone_position.getDistance() + 32, DriveTrain.BUILDING_ZONE, .5);
 
         // aligns for loading zone to be lined up for later
         driveTrain.align(DriveTrain.LOADING_ZONE);
@@ -282,16 +282,32 @@ public class Sursum {
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
 
         // heading back to pick up second skystone
-        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.LOADING_ZONE, 1);
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.LOADING_ZONE, .5);
 
         // intakes stone at current position
         intakeSkyStoneRed();
 
+        // heads back to go under skybridge
+        driveTrain.goAngle(12, our_side, .25);
+
         // returning back to right under sky-bridge to drop current stone
-        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.BUILDING_ZONE, 1);
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.BUILDING_ZONE, .5);
+
+        // aligns for loading zone to be lined up for later
+        driveTrain.align(DriveTrain.LOADING_ZONE);
+
+        // drops stone onto foundation
+        rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
+        Thread.sleep(500);
+
+        // raises arm
+        rightArm.setArmPosition(RightSideArm.Arm.State.UP);
+
+        // closes claw so andrew doesn't have to make a new one
+        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
 
         // parking under sky-bridge (Next to neutral bridge)
-        driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 1);
+        driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
     }
 
     public void skystoneFoundationBlue() throws InterruptedException {
