@@ -282,16 +282,24 @@ public class Sursum {
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
 
         // heading back to pick up second skystone
-        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.LOADING_ZONE, .5);
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 + 32), DriveTrain.LOADING_ZONE, .5);
 
-        // intakes stone at current position
-        intakeSkyStoneRed();
+        rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
+        Thread.sleep(500);
+
+        rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
+
+        // head towards quarry
+        driveTrain.goAngle(12, opponents_side, .25);
+
+        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
+        Thread.sleep(500);
 
         // heads back to go under skybridge
         driveTrain.goAngle(12, our_side, .25);
 
         // returning back to right under sky-bridge to drop current stone
-        driveTrain.goAngle(sky_stone_position.getDistance() + (24 /*One Tile Distance*/ + 32), DriveTrain.BUILDING_ZONE, .5);
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 + 32), DriveTrain.BUILDING_ZONE, .5);
 
         // aligns for loading zone to be lined up for later
         driveTrain.align(DriveTrain.LOADING_ZONE);
