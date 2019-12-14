@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 import java.util.*;
 
 public class DriveTrain implements StrafingDriveTrain {
-    private static final double MECANUM_WHEEL_CIRCUMFERENCE = 12.368475;
+    private static final double MECANUM_WHEEL_CIRCUMFERENCE = (100.0/25.4) * Math.PI;
     private double offset;
     private DcMotor motorRF;
     private DcMotor motorLF;
