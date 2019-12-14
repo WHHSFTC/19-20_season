@@ -38,7 +38,7 @@ public class Sursum {
     //public DistanceSensor ods;
     //public DigitalChannel limit;
     public ColorSensor color_sensor_bottom;
-//    public Vision vision;
+    public Vision vision;
     public VisionTF visionTF;
     public LinearOpMode opMode;
 
