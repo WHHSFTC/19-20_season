@@ -1,38 +1,40 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
-public abstract class Auto extends OpMode implements OpModeIF {
+public abstract class Auto extends LinearOpMode implements OpModeIF {
     private boolean active;
     protected Sursum bot;
 
-    // methods from OpMode:
     @Override
-    public void init() {
+    public void runOpMode() throws InterruptedException {
+        // init
+        genesis();
+        // wait for start
+        waitForStart();
+        // start
+        begin();
+        // run
+        run();
+        // stop
+        halt();
+    }
+    public void genesis() throws InterruptedException {
         bot = new Sursum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         bot.init();
     }
-
-    @Override
-    public void start() { bot.start(); }
-
-    @Override
-    public void loop() {}
-
-    @Override
-    public void stop() {
-        bot.stop();
+    public void begin() throws InterruptedException {
+        bot.start();
     }
-
-    // methods from OpModeIF:
-    @Override
-    public boolean opModeIsActive() {
-        return active;
+    public abstract void run() throws InterruptedException;
+    public void halt() throws InterruptedException {
+        bot.stop();
     }
 
     @Override
@@ -43,15 +45,5 @@ public abstract class Auto extends OpMode implements OpModeIF {
     @Override
     public HardwareMap getHardwareMap() {
         return hardwareMap;
-    }
-
-    // helper methods:
-    protected void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException ex) {
-            telemetry.addLine(ex.getMessage());
-            telemetry.update();
-        }
     }
 }

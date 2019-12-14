@@ -10,9 +10,7 @@ import org.firstinspires.ftc.teamcode.implementations.Sursum;
 @Autonomous(name = "SlowFoundation", group = "Auto")
 public class SlowFoundation extends Auto {
     @Override
-    public void start() {
-        super.start();
-
+    public void run() {
         bot.driveTrain.align(bot.our_side);
         // heading over 2 tiles to get lined up with the center of the foundation
         // in reference to the middle of the bot

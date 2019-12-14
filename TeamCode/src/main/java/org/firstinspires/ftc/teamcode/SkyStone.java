@@ -13,15 +13,8 @@ import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
 @Autonomous(name = "SkyStone", group = "Auto")
 public class SkyStone extends Auto {
-    private Sursum bot;
-
     @Override
-    public void init() {
-        super.init();
-    }
-
-    @Override
-    public void start() {
+    public void run() {
         // drive towards stones
         bot.driveTrain.goAngle( 41-Sursum.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
 
@@ -33,7 +26,7 @@ public class SkyStone extends Auto {
         } catch (InterruptedException ex) {
             telemetry.addLine(ex.getMessage());
             telemetry.update();
-            stop();
+            requestOpModeStop();
             return;
         }
 
@@ -80,9 +73,6 @@ public class SkyStone extends Auto {
 //        // parking
 //        driveTrain.goAngle(54, DriveTrain.LOADING_ZONE, 0.5);
 //
-
-        // stopping bot
-        stop();
     }
 
     private void intakeSkystone() {
@@ -118,10 +108,9 @@ public class SkyStone extends Auto {
         telemetry.addLine("Holding Stone");
         telemetry.update();
     }
-
     @Override
-    public void stop() {
-        super.stop();
+    public void halt() throws InterruptedException {
+        super.halt();
         bot.visionTF.shutdown();
     }
 }

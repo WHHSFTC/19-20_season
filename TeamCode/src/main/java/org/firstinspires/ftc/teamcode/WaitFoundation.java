@@ -10,8 +10,7 @@ import org.firstinspires.ftc.teamcode.implementations.Sursum;
 @Autonomous(name = "WaitFoundation", group = "Auto")
 public class WaitFoundation extends Auto {
     @Override
-    public void start() {
-        super.start();
+    public void run() {
         bot.driveTrain.align(bot.our_side);
         // heading over 2 tiles to get lined up with the center of the foundation
         // in reference to the middle of the bot
@@ -33,7 +32,5 @@ public class WaitFoundation extends Auto {
 
         // heading to park under bridge
         bot.driveTrain.goAngle(50, DriveTrain.LOADING_ZONE, 1);
-
-        stop();
     }
 }
