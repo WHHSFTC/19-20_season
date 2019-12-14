@@ -8,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 import java.util.List;
 
@@ -43,11 +44,11 @@ public class VisionTF {
      */
     private TFObjectDetector tfod;
 
-    private LinearOpMode opMode;
+    private OpModeIF opMode;
 
     private String webcam;
 
-    public VisionTF(LinearOpMode opMode, String webcam) {
+    public VisionTF(OpModeIF opMode, String webcam) {
         this.opMode = opMode;
         this.webcam = webcam;
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
@@ -57,7 +58,7 @@ public class VisionTF {
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod();
         } else {
-            opMode.telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+            opMode.getTelemetry().addData("Sorry!", "This device is not compatible with TFOD");
         }
 
         /**
@@ -69,7 +70,7 @@ public class VisionTF {
         }
 
         /** Wait for the game to begin */
-        opMode.telemetry.update();
+        opMode.getTelemetry().update();
     }
 
     public boolean getStone() throws InterruptedException {
@@ -82,7 +83,7 @@ public class VisionTF {
         Thread.sleep(1000);
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
 
-        opMode.telemetry.addData("# Object Detected", updatedRecognitions.size());
+        opMode.getTelemetry().addData("# Object Detected", updatedRecognitions.size());
         // step through the list of recognitions and display boundary info.
 //        int i = 0;
         for (Recognition r : updatedRecognitions) {
@@ -105,7 +106,7 @@ public class VisionTF {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = opMode.hardwareMap.get(WebcamName.class, webcam);
+        parameters.cameraName = opMode.getHardwareMap().get(WebcamName.class, webcam);
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -117,8 +118,8 @@ public class VisionTF {
      * Initialize the TensorFlow Object Detection engine.
      */
     private void initTfod() {
-        int tfodMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
+        int tfodMonitorViewId = opMode.getHardwareMap().appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", opMode.getHardwareMap().appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minimumConfidence = 0.8;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);

@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 import java.util.*;
@@ -23,7 +24,7 @@ public class DriveTrain implements StrafingDriveTrain {
     private DcMotor motorLF;
     private DcMotor motorLB;
     private DcMotor motorRB;
-    private LinearOpMode opMode;
+    private OpModeIF opMode;
     private BNO055IMU imu;
 
     private static final double P_TURN_COEFF = .018;
@@ -38,14 +39,14 @@ public class DriveTrain implements StrafingDriveTrain {
     public static final double BLUE_SIDE =  0;
     public static final double LOADING_ZONE = 90;
 
-    public DriveTrain(LinearOpMode opMode, String rf, String lf, String lb, String rb) {
+    public DriveTrain(OpModeIF opMode, String rf, String lf, String lb, String rb) {
         this.opMode = opMode;
-        motorRF = opMode.hardwareMap.dcMotor.get(rf);
-        motorLF = opMode.hardwareMap.dcMotor.get(lf);
-        motorLB = opMode.hardwareMap.dcMotor.get(lb);
-        motorRB = opMode.hardwareMap.dcMotor.get(rb);
+        motorRF = opMode.getHardwareMap().dcMotor.get(rf);
+        motorLF = opMode.getHardwareMap().dcMotor.get(lf);
+        motorLB = opMode.getHardwareMap().dcMotor.get(lb);
+        motorRB = opMode.getHardwareMap().dcMotor.get(rb);
         setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
-        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
+        imu = opMode.getHardwareMap().get(BNO055IMU.class, "imu");
         initImu();
     }
 
@@ -96,10 +97,10 @@ public class DriveTrain implements StrafingDriveTrain {
 
     @Override
     public void dumpMotors() {
-        opMode.telemetry.addData("motorRF", motorRF);
-        opMode.telemetry.addData("motorLF", motorLF);
-        opMode.telemetry.addData("motorLB", motorLB);
-        opMode.telemetry.addData("motorRB", motorRB);
+        opMode.getTelemetry().addData("motorRF", motorRF);
+        opMode.getTelemetry().addData("motorLF", motorLF);
+        opMode.getTelemetry().addData("motorLB", motorLB);
+        opMode.getTelemetry().addData("motorRB", motorRB);
     }
 
     public void setPowers(double rf, double lf, double lb, double rb) {
@@ -173,16 +174,16 @@ public class DriveTrain implements StrafingDriveTrain {
             previous_error = error;
             accelerate(rcw);
 
-            opMode.telemetry.addData("first angle", getHeading());
-            opMode.telemetry.addData("speed ", rcw);
-            opMode.telemetry.addData("error", angleWanted - getHeading());
-            opMode.telemetry.addData("angleWanted", angleWanted);
-            opMode.telemetry.addData("motor power", motorLF.getPower());
-            opMode.telemetry.addData("rcw", rcw);
-            opMode.telemetry.addData("P", P_TURN_COEFF * error);
-            opMode.telemetry.addData("I", I_TURN_COEFF * integral);
-            opMode.telemetry.addData("D", D_TURN_COEFF * derivative);
-            opMode.telemetry.update();
+            opMode.getTelemetry().addData("first angle", getHeading());
+            opMode.getTelemetry().addData("speed ", rcw);
+            opMode.getTelemetry().addData("error", angleWanted - getHeading());
+            opMode.getTelemetry().addData("angleWanted", angleWanted);
+            opMode.getTelemetry().addData("motor power", motorLF.getPower());
+            opMode.getTelemetry().addData("rcw", rcw);
+            opMode.getTelemetry().addData("P", P_TURN_COEFF * error);
+            opMode.getTelemetry().addData("I", I_TURN_COEFF * integral);
+            opMode.getTelemetry().addData("D", D_TURN_COEFF * derivative);
+            opMode.getTelemetry().update();
         }
         accelerate(0);
     }
@@ -225,16 +226,16 @@ public class DriveTrain implements StrafingDriveTrain {
             previous_error = error;
             accelerate(rcw);
 
-            opMode.telemetry.addData("first angle", getHeading());
-            opMode.telemetry.addData("speed ", rcw);
-            opMode.telemetry.addData("error", angleWanted - getHeading());
-            opMode.telemetry.addData("angleWanted", angleWanted);
-            opMode.telemetry.addData("motor power", motorLF.getPower());
-            opMode.telemetry.addData("rcw", rcw);
-            opMode.telemetry.addData("P", P_TURN_COEFF * error);
-            opMode.telemetry.addData("I", I_TURN_COEFF * integral);
-            opMode.telemetry.addData("D", D_TURN_COEFF * derivative);
-            opMode.telemetry.update();
+            opMode.getTelemetry().addData("first angle", getHeading());
+            opMode.getTelemetry().addData("speed ", rcw);
+            opMode.getTelemetry().addData("error", angleWanted - getHeading());
+            opMode.getTelemetry().addData("angleWanted", angleWanted);
+            opMode.getTelemetry().addData("motor power", motorLF.getPower());
+            opMode.getTelemetry().addData("rcw", rcw);
+            opMode.getTelemetry().addData("P", P_TURN_COEFF * error);
+            opMode.getTelemetry().addData("I", I_TURN_COEFF * integral);
+            opMode.getTelemetry().addData("D", D_TURN_COEFF * derivative);
+            opMode.getTelemetry().update();
         }
         accelerate(0);
     }
@@ -274,22 +275,22 @@ public class DriveTrain implements StrafingDriveTrain {
                 motorRB.isBusy() &&
                 motorRF.isBusy() &&
                 motorLF.isBusy()) {
-            opMode.telemetry.addData("Raw Heading", getRawHeading());
-            opMode.telemetry.addData("Heading", getHeading());
-            opMode.telemetry.addData("Angle", angel);
-            opMode.telemetry.addData("Path2", "Running at %7d :%7d",
+            opMode.getTelemetry().addData("Raw Heading", getRawHeading());
+            opMode.getTelemetry().addData("Heading", getHeading());
+            opMode.getTelemetry().addData("Angle", angel);
+            opMode.getTelemetry().addData("Path2", "Running at %7d :%7d",
                     motorLB.getCurrentPosition(),
                     motorLF.getCurrentPosition(),
                     motorRB.getCurrentPosition(),
                     motorRF.getCurrentPosition());
-            opMode.telemetry.addData("target", "Running at %7d :%7d",
+            opMode.getTelemetry().addData("target", "Running at %7d :%7d",
                     motorLB.getTargetPosition(),
                     motorLF.getTargetPosition(),
                     motorRB.getTargetPosition(),
                     motorRF.getTargetPosition());
-            opMode.telemetry.addData("gyroHeading", imu.getAngularOrientation());
+            opMode.getTelemetry().addData("gyroHeading", imu.getAngularOrientation());
             dumpMotors();
-            opMode.telemetry.update();
+            opMode.getTelemetry().update();
         }
         setPowers(0,0,0,0);
         setModes(DcMotor.RunMode.RUN_USING_ENCODER);

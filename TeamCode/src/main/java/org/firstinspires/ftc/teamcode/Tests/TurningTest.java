@@ -3,13 +3,16 @@ package org.firstinspires.ftc.teamcode.Tests;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 @Disabled
 @Autonomous(group = "test", name = "turning test")
-public class TurningTest extends LinearOpMode {
+public class TurningTest extends LinearOpMode implements OpModeIF {
     private static final double TILE = 24; // inches
     /**
      * get the distance in inches based on how many tiles are put into param
@@ -28,5 +31,14 @@ public class TurningTest extends LinearOpMode {
         waitForStart();
 
         bot.driveTrain.rotate(90);
+    }
+    @Override
+    public HardwareMap getHardwareMap() {
+        return hardwareMap;
+    }
+
+    @Override
+    public Telemetry getTelemetry() {
+        return telemetry;
     }
 }

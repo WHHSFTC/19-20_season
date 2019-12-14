@@ -1,20 +1,20 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 // drives slide motors using sensors and encoders
 public class OutputSlides implements ContinuousMechanism {
     private DcMotor motor1;
     private DcMotor motor2;
     private DcMotor motor3;
-    private LinearOpMode opMode;
-    public OutputSlides(LinearOpMode opMode, String str1, String str2, String str3) {
-        motor1 = opMode.hardwareMap.dcMotor.get(str1);
-        motor2 = opMode.hardwareMap.dcMotor.get(str2);
-        motor3 = opMode.hardwareMap.dcMotor.get(str3);
+    private OpModeIF opMode;
+    public OutputSlides(OpModeIF opMode, String str1, String str2, String str3) {
+        motor1 = opMode.getHardwareMap().dcMotor.get(str1);
+        motor2 = opMode.getHardwareMap().dcMotor.get(str2);
+        motor3 = opMode.getHardwareMap().dcMotor.get(str3);
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -50,9 +50,9 @@ public class OutputSlides implements ContinuousMechanism {
     }
 
     public void dumpEncoders() {
-        opMode.telemetry.addData("spool 1", motor1.getPower());
-        opMode.telemetry.addData("spool 2", motor2.getPower());
-        opMode.telemetry.addData("spool 3", motor3.getPower());
+        opMode.getTelemetry().addData("spool 1", motor1.getPower());
+        opMode.getTelemetry().addData("spool 2", motor2.getPower());
+        opMode.getTelemetry().addData("spool 3", motor3.getPower());
     }
     public void stop() {
         setState(0.0);

@@ -4,15 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.implementations.Alliance;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 import java.util.*;
 @Disabled
 @Autonomous(name = "ParkWithCS", group = "Test")
-public class ParkWithCS extends LinearOpMode {
+public class ParkWithCS extends LinearOpMode implements OpModeIF {
     private static final double TILE = 24; // inches
     /**
      * get the distance in inches based on how many tiles are put into param
@@ -51,7 +55,7 @@ public class ParkWithCS extends LinearOpMode {
 
         bot = new Sursum(this);
 
-        bot.init(Sursum.Alliance.RED);
+        bot.init(Alliance.RED);
 
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
 
@@ -71,5 +75,15 @@ public class ParkWithCS extends LinearOpMode {
         bot.driveTrain.halt();
 
         bot.stop();
+    }
+
+    @Override
+    public Telemetry getTelemetry() {
+        return telemetry;
+    }
+
+    @Override
+    public HardwareMap getHardwareMap() {
+        return hardwareMap;
     }
 }

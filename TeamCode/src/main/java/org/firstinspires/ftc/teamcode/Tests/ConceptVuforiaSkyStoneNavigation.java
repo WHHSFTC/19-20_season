@@ -32,8 +32,10 @@ package org.firstinspires.ftc.teamcode.Tests;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -41,12 +43,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.implementations.Alliance;
 import org.firstinspires.ftc.teamcode.implementations.Arm;
 import org.firstinspires.ftc.teamcode.implementations.Claw;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.OutputSlides;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +93,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 @Disabled
 @TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
-public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
+public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode implements OpModeIF {
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
@@ -374,7 +378,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     private boolean turtleX;
     public void runNormalTele() {
         bot = new Sursum(this);
-        bot.init(Sursum.Alliance.RED);
+        bot.init(Alliance.RED);
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();
@@ -454,5 +458,14 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
             bot.flywheels.setPower(0);
             bot.belt.setPower(0);
         }
+    }
+    @Override
+    public HardwareMap getHardwareMap() {
+        return hardwareMap;
+    }
+
+    @Override
+    public Telemetry getTelemetry() {
+        return telemetry;
     }
 }

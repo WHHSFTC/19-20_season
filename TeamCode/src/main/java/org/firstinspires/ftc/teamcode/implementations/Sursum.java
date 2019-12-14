@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 /**
@@ -22,7 +25,7 @@ public class Sursum {
     public static final double ROBOT_WIDTH = 17.75;
     public static final double ROBOT_LENGTH = 17.75;
     public static final double SIDEARM_Y = ROBOT_LENGTH/2 - 5;
-    public static final double CAMERA_X = ROBOT_WIDTH/2 - 2;
+    public static final double CAMERA_X = ROBOT_WIDTH/2 - 2.5;
     public static final double SIDE_ARM_OFFSET = 8; //inches
 
     // declarations of all systems
@@ -35,18 +38,21 @@ public class Sursum {
     public DcMotor belt;
     public LeftSideArm leftArm;
     public RightSideArm rightArm;
+    public SideArm sideArm;
     //public DistanceSensor ods;
     //public DigitalChannel limit;
     public ColorSensor color_sensor_bottom;
 //    public Vision vision;
     public VisionTF visionTF;
-    public LinearOpMode opMode;
+    public OpModeIF opMode;
+    public AnalogInput allianceSwitch;
+    public Alliance alliance;
 
     /**
      * Creation of all systems of the bot
      * @param opMode import current opMode to get initialize
      */
-    public Sursum(LinearOpMode opMode) {
+    public Sursum(OpModeIF opMode) {
         this.opMode = opMode;
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
         // ((DriveTrain) driveTrain).stubify();
@@ -61,7 +67,7 @@ public class Sursum {
 
         // intake {{{
         flywheels = new Flywheels(opMode, "leftFly", "rightFly");
-        belt = opMode.hardwareMap.dcMotor.get("belt");
+        belt = opMode.getHardwareMap().dcMotor.get("belt");
         leftArm = new LeftSideArm(opMode, "leftArm", "leftClaw");
         rightArm = new RightSideArm(opMode, "rightArm", "rightClaw");
 //        rightArm.arm.setDirection(Servo.Direction.REVERSE);
@@ -71,46 +77,44 @@ public class Sursum {
         // sensors {{{
         //ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         //limit = opMode.hardwareMap.digitalChannel.get("limit");
-        color_sensor_bottom = opMode.hardwareMap.colorSensor.get("color");
+        color_sensor_bottom = opMode.getHardwareMap().colorSensor.get("color");
+        allianceSwitch = opMode.getHardwareMap().analogInput.get("allianceSwitch");
         // }}}
 
 //        vision = new Vision(opMode, "Webcam 1");
     }
 
-    /**
-     * generic initialization
-     */
-    public void init(Alliance color) {
-        switch(color) {
+    public void init() {
+        //init(allianceSwitch.getVoltage() / allianceSwitch.getMaxVoltage() > 0.5 ? Alliance.RED : Alliance.BLUE);
+        init(Alliance.RED);
+    }
+
+    public void init(Alliance alliance) {
+        this.alliance = alliance;
+        switch(this.alliance) {
             case RED:
                 our_side = DriveTrain.RED_SIDE;
                 opponents_side = DriveTrain.BLUE_SIDE;
+                sideArm = rightArm;
                 break;
             case BLUE:
                 our_side = DriveTrain.BLUE_SIDE;
                 opponents_side = DriveTrain.RED_SIDE;
+                sideArm = leftArm;
         }
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER);
         shuttleGate.setState(ShuttleGate.State.CLOSED);
         arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);
-        leftArm.setArmPosition(LeftSideArm.Arm.State.UP);
-        rightArm.setArmPosition(RightSideArm.Arm.State.UP);
-        leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
-        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
+        leftArm.arm.setState(SideArm.Arm.State.UP);
+        rightArm.arm.setState(SideArm.Arm.State.UP);
+        leftArm.claw.setState(SideArm.Claw.State.CLOSED);
+        rightArm.claw.setState(SideArm.Claw.State.CLOSED);
         visionTF = new VisionTF(opMode, "Webcam 1");
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
-        opMode.telemetry.addLine("Initialization DONE");
-        opMode.telemetry.update();
-    }
-
-    @Deprecated
-    public void init() {
-        init(Alliance.RED);
-    }
-    public enum Alliance {
-        RED, BLUE
+        opMode.getTelemetry().addLine("Initialization DONE");
+        opMode.getTelemetry().update();
     }
 
     /**
@@ -136,31 +140,6 @@ public class Sursum {
      * @throws InterruptedException
      */
     public void intakeSkyStoneRed() throws InterruptedException {
-        // backing up
-        driveTrain.goAngle(10, our_side, .5);
-
-        // turn so sidearm faces stones
-        driveTrain.align(DriveTrain.LOADING_ZONE);
-
-        // lines up sidearm
-        driveTrain.goAngle(SIDEARM_Y + CAMERA_X - 2, DriveTrain.BUILDING_ZONE, .25);
-
-        rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
-        rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
-
-        // moves forward to be line with stone
-        driveTrain.goAngle(20  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
-
-        // claw closes on stone
-        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
-        Thread.sleep(500);
-
-        // holding stone
-        rightArm.setArmPosition(RightSideArm.Arm.State.HOLD);
-        Thread.sleep(500);
-
-        opMode.telemetry.addLine("Holding Stone");
-        opMode.telemetry.update();
     }
 
     /**
@@ -177,137 +156,37 @@ public class Sursum {
         // lines up sidearm
         driveTrain.goAngle(SIDEARM_Y + CAMERA_X - 2, DriveTrain.BUILDING_ZONE, .25);
 
-        leftArm.setArmPosition(LeftSideArm.Arm.State.DOWN);
-        leftArm.setClawPosition(LeftSideArm.Claw.State.OPEN);
+        leftArm.arm.setState(SideArm.Arm.State.DOWN);
+        leftArm.claw.setState(SideArm.Claw.State.OPEN);
 
         // moves forward to be line with stone
         driveTrain.goAngle(18  + (ROBOT_LENGTH - ROBOT_WIDTH)/2, opponents_side,.5);
 
         // claw closes on stone
-        leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
+        leftArm.claw.setState(SideArm.Claw.State.CLOSED);
         Thread.sleep(500);
 
         // holding stone
-        leftArm.setArmPosition(LeftSideArm.Arm.State.HOLD);
+        leftArm.arm.setState(SideArm.Arm.State.HOLD);
         Thread.sleep(500);
 
-        opMode.telemetry.addLine("Holding Stone");
-        opMode.telemetry.update();
-    }
-
-    /**
-     * moves foundation fast
-     * @throws InterruptedException
-     */
-    public void waitFoundation() throws InterruptedException {
-        driveTrain.align(our_side);
-        // heading over 2 tiles to get lined up with the center of the foundation
-        // in reference to the middle of the bot
-        driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.25);
-
-        driveTrain.align(our_side);
-
-        Thread.sleep(13000);
-
-        driveTrain.goAngle(54-ROBOT_LENGTH, opponents_side, 0.25); // Hard coded distance
-        Thread.sleep(1000);
-        // setting foundation hooks to hook onto the foundation
-        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-        Thread.sleep(1000);
-
-        driveTrain.goAngle(60 - ROBOT_LENGTH, our_side, .25);
-        shuttleGate.setState(ShuttleGate.State.CLOSED);
-        Thread.sleep(1000);
-
-        // heading to park under bridge
-        driveTrain.goAngle(50, DriveTrain.LOADING_ZONE, 1);
+        opMode.getTelemetry().addLine("Holding Stone");
+        opMode.getTelemetry().update();
     }
 
     /**
      * moves foundation slow
      * @throws InterruptedException
      */
-    public void slowFoundation() throws InterruptedException {
-        driveTrain.align(our_side);
-        // heading over 2 tiles to get lined up with the center of the foundation
-        // in reference to the middle of the bot
-        driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.25);
-
-        driveTrain.align(our_side);
-
-        driveTrain.goAngle(54-ROBOT_LENGTH, opponents_side, 0.25); // Hard coded distance
-        Thread.sleep(1000);
-        // setting foundation hooks to hook onto the foundation
-        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-        Thread.sleep(1000);
-
-        driveTrain.goAngle(60 - ROBOT_LENGTH, our_side, .25);
-        shuttleGate.setState(ShuttleGate.State.CLOSED);
-        Thread.sleep(1000);
-
-        // heading to park under bridge
-        driveTrain.goAngle(50, DriveTrain.LOADING_ZONE, .25);
-    }
     public void skystoneFoundationRed() throws InterruptedException {
-        // drive towards stones
-        driveTrain.goAngle( 41-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
-
-        opMode.telemetry.addLine("Starting TensorFlow Search");
-        opMode.telemetry.update();
-
-        SkyStonePosition sky_stone_position = findSkystone();
-
-        intakeSkyStoneRed();
-
-        // heads back to go under skybridge
-        driveTrain.goAngle(12, our_side, .25);
-        driveTrain.goAngle(sky_stone_position.getDistance() + 32, DriveTrain.BUILDING_ZONE, 1);
-
-        driveTrain.align(DriveTrain.LOADING_ZONE);
-
-//        driveTrain.goAngle(14, opponents_side, 1.0/4);
-
-        // drops stone onto foundation
-        rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
-        Thread.sleep(500);
-
-        // raises arm
-        rightArm.setArmPosition(RightSideArm.Arm.State.UP);
-        // closes claw so andrew doesn't have to make a new one
-        rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
-//        driveTrain.goAngle(6, our_side, 0.25);
-        driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 0.25);
-//        // moving out to turn
-//        driveTrain.goAngle(12, our_side, 1.0);
-//
-//        // turning back to face foundation
-//        driveTrain.align(our_side);
-//
-//        // heads back to foundation
-//        driveTrain.goAngle(14, opponents_side, 1.0/2);
-//
-//        // activate foundation hooks
-//        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-//        Thread.sleep(500);
-//
-//        // pulls foundation
-//        driveTrain.goAngle(52, our_side, 1.0);
-//
-//        // deactivate foundation hooks
-//        shuttleGate.setState(ShuttleGate.State.CLOSED);
-//        Thread.sleep(500);
-//
-//        // parking
-//        driveTrain.goAngle(54, DriveTrain.LOADING_ZONE, 0.5);
-//
     }
 
     public void skystoneFoundationBlue() throws InterruptedException {
         // drive towards stones
         driveTrain.goAngle( 43-ROBOT_LENGTH, opponents_side, .25);
 
-        opMode.telemetry.addLine("Starting TensorFlow Search");
-        opMode.telemetry.update();
+        opMode.getTelemetry().addLine("Starting TensorFlow Search");
+        opMode.getTelemetry().update();
 
         SkyStonePosition sky_stone_position = findSkystone();
 
@@ -327,13 +206,13 @@ public class Sursum {
         driveTrain.goAngle(32, opponents_side, 1.0/4);
 
         // drops stone onto foundation
-        leftArm.setClawPosition(LeftSideArm.Claw.State.OPEN);
+        leftArm.claw.setState(SideArm.Claw.State.OPEN);
         Thread.sleep(500);
 
         // raises arm
-        leftArm.setArmPosition(LeftSideArm.Arm.State.UP);
+        leftArm.arm.setState(SideArm.Arm.State.UP);
         // closes claw so andrew doesn't have to make a new one
-        leftArm.setClawPosition(LeftSideArm.Claw.State.CLOSED);
+        leftArm.claw.setState(SideArm.Claw.State.CLOSED);
         Thread.sleep(500);
 
         // moving out to turn

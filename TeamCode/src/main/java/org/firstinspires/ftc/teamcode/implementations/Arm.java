@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 public class Arm implements Mechanism<Arm.State> {
     public void stop() {}
@@ -12,9 +13,9 @@ public class Arm implements Mechanism<Arm.State> {
     private Wrist wrist;
     private State state;
 
-    Arm(LinearOpMode opMode, String elbowStr, String wristStr) {
-        elbow = new Elbow(opMode.hardwareMap.servo.get(elbowStr));
-        wrist = new Wrist(opMode.hardwareMap.servo.get(wristStr));
+    Arm(OpModeIF opMode, String elbowStr, String wristStr) {
+        elbow = new Elbow(opMode.getHardwareMap().servo.get(elbowStr));
+        wrist = new Wrist(opMode.getHardwareMap().servo.get(wristStr));
     }
 
     @Override
