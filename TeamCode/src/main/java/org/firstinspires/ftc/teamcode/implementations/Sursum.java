@@ -41,6 +41,7 @@ public class Sursum {
 //    public Vision vision;
     public VisionTF visionTF;
     public LinearOpMode opMode;
+    public RockerSwitch allianceSwitch;
 
     /**
      * Creation of all systems of the bot
@@ -80,7 +81,8 @@ public class Sursum {
     /**
      * generic initialization
      */
-    public void init(Alliance color) {
+    public void init() {
+        Alliance color = allianceSwitch.getAlliance();
         switch(color) {
             case RED:
                 our_side = DriveTrain.RED_SIDE;
