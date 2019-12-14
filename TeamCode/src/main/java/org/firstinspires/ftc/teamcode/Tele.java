@@ -2,16 +2,20 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.implementations.Arm;
 import org.firstinspires.ftc.teamcode.implementations.Claw;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.OutputSlides;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
+import org.firstinspires.ftc.teamcode.implementations.SideArm;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 @TeleOp(group = "Tele", name = "Tele")
-public class Tele extends LinearOpMode {
+public class Tele extends LinearOpMode implements OpModeIF {
 
     private static final double DEADZONE = 0.05;
 
@@ -22,10 +26,10 @@ public class Tele extends LinearOpMode {
     @Override
     public void runOpMode() {
         bot = new Sursum(this);
-        bot.leftArm.arm.setPosition(0.36);
-        bot.rightArm.arm.setPosition(.62);
-        bot.leftArm.claw.setPosition(1);
-        bot.rightArm.claw.setPosition(0);
+        bot.leftArm.arm.setState(SideArm.Arm.State.UP);
+        bot.rightArm.arm.setState(SideArm.Arm.State.UP);
+        bot.leftArm.claw.servo.setPosition(1);
+        bot.rightArm.claw.servo.setPosition(0);
 //        bot.driveTrain.
         waitForStart();
         while (opModeIsActive()) {
@@ -112,5 +116,15 @@ public class Tele extends LinearOpMode {
             bot.flywheels.setPower(0);
             bot.belt.setPower(0);
         }
+    }
+
+    @Override
+    public HardwareMap getHardwareMap() {
+        return hardwareMap;
+    }
+
+    @Override
+    public Telemetry getTelemetry() {
+        return telemetry;
     }
 }
