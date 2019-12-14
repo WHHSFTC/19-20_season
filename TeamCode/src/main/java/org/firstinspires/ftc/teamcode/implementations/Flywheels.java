@@ -6,16 +6,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ServoController;
 
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 // acts like a crservo but is actually two crservos in opposite directions
 public class Flywheels implements CRServo {
     private CRServo servoLeft;
     private CRServo servoRight;
-    private LinearOpMode opMode;
-    public Flywheels(LinearOpMode opMode, String leftStr, String rightStr) {
+    private OpModeIF opMode;
+    public Flywheels(OpModeIF opMode, String leftStr, String rightStr) {
         this.opMode = opMode;
-        servoLeft = opMode.hardwareMap.crservo.get(leftStr);
-        servoRight = opMode.hardwareMap.crservo.get(rightStr);
+        servoLeft = opMode.getHardwareMap().crservo.get(leftStr);
+        servoRight = opMode.getHardwareMap().crservo.get(rightStr);
     }
     @Override
     public ServoController getController() {

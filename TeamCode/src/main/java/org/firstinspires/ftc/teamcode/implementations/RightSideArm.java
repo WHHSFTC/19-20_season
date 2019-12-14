@@ -3,14 +3,16 @@ package org.firstinspires.ftc.teamcode.implementations;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
+
 public class RightSideArm {
     public Arm arm;
     public Claw claw;
-    private LinearOpMode opMode;
-    public RightSideArm(LinearOpMode opMode, String armStr, String clawStr) {
+    private OpModeIF opMode;
+    public RightSideArm(OpModeIF opMode, String armStr, String clawStr) {
         this.opMode = opMode;
-        arm = new Arm(opMode.hardwareMap.servo.get(armStr));
-        claw = new Claw(opMode.hardwareMap.servo.get(clawStr));
+        arm = new Arm(opMode.getHardwareMap().servo.get(armStr));
+        claw = new Claw(opMode.getHardwareMap().servo.get(clawStr));
     }
 
     public void setArmPosition(RightSideArm.Arm.State state) {

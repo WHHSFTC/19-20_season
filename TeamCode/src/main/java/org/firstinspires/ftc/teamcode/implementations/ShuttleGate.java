@@ -4,14 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 public class ShuttleGate implements Mechanism<ShuttleGate.State> {
     private State state;
     private LeftGate left;
     private RightGate right;
-    ShuttleGate(LinearOpMode opMode, String leftStr, String rightStr) {
-        left = new LeftGate(opMode.hardwareMap.servo.get(leftStr));
-        right = new RightGate(opMode.hardwareMap.servo.get(rightStr));
+    ShuttleGate(OpModeIF opMode, String leftStr, String rightStr) {
+        left = new LeftGate(opMode.getHardwareMap().servo.get(leftStr));
+        right = new RightGate(opMode.getHardwareMap().servo.get(rightStr));
     }
 
     @Override

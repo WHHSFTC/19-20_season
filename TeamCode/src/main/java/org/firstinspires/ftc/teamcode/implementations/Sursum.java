@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 /**
@@ -40,14 +42,15 @@ public class Sursum {
     public ColorSensor color_sensor_bottom;
 //    public Vision vision;
     public VisionTF visionTF;
-    public LinearOpMode opMode;
-    public RockerSwitch allianceSwitch;
+    public OpModeIF opMode;
+    public AnalogInput allianceSwitch;
+    public Alliance color;
 
     /**
      * Creation of all systems of the bot
      * @param opMode import current opMode to get initialize
      */
-    public Sursum(LinearOpMode opMode) {
+    public Sursum(OpModeIF opMode) {
         this.opMode = opMode;
         driveTrain = new DriveTrain(opMode, "motorRF", "motorLF", "motorLB", "motorRB");
         // ((DriveTrain) driveTrain).stubify();
@@ -62,7 +65,7 @@ public class Sursum {
 
         // intake {{{
         flywheels = new Flywheels(opMode, "leftFly", "rightFly");
-        belt = opMode.hardwareMap.dcMotor.get("belt");
+        belt = opMode.getHardwareMap().dcMotor.get("belt");
         leftArm = new LeftSideArm(opMode, "leftArm", "leftClaw");
         rightArm = new RightSideArm(opMode, "rightArm", "rightClaw");
 //        rightArm.arm.setDirection(Servo.Direction.REVERSE);
@@ -72,17 +75,15 @@ public class Sursum {
         // sensors {{{
         //ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         //limit = opMode.hardwareMap.digitalChannel.get("limit");
-        color_sensor_bottom = opMode.hardwareMap.colorSensor.get("color");
+        color_sensor_bottom = opMode.getHardwareMap().colorSensor.get("color");
+        allianceSwitch = opMode.getHardwareMap().analogInput.get("allianceSwitch");
         // }}}
 
 //        vision = new Vision(opMode, "Webcam 1");
     }
 
-    /**
-     * generic initialization
-     */
-    public void init() {
-        Alliance color = allianceSwitch.getAlliance();
+    public Alliance init() {
+        color = allianceSwitch.getVoltage() / allianceSwitch.getMaxVoltage() > 0.5 ? Alliance.RED : Alliance.BLUE;
         switch(color) {
             case RED:
                 our_side = DriveTrain.RED_SIDE;
@@ -103,14 +104,11 @@ public class Sursum {
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
         visionTF = new VisionTF(opMode, "Webcam 1");
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
-        opMode.telemetry.addLine("Initialization DONE");
-        opMode.telemetry.update();
+        opMode.getTelemetry().addLine("Initialization DONE");
+        opMode.getTelemetry().update();
+        return color;
     }
 
-    @Deprecated
-    public void init() {
-        init(Alliance.RED);
-    }
     public enum Alliance {
         RED, BLUE
     }
@@ -161,8 +159,8 @@ public class Sursum {
         rightArm.setArmPosition(RightSideArm.Arm.State.HOLD);
         Thread.sleep(500);
 
-        opMode.telemetry.addLine("Holding Stone");
-        opMode.telemetry.update();
+        opMode.getTelemetry().addLine("Holding Stone");
+        opMode.getTelemetry().update();
     }
 
     /**
@@ -193,8 +191,8 @@ public class Sursum {
         leftArm.setArmPosition(LeftSideArm.Arm.State.HOLD);
         Thread.sleep(500);
 
-        opMode.telemetry.addLine("Holding Stone");
-        opMode.telemetry.update();
+        opMode.getTelemetry().addLine("Holding Stone");
+        opMode.getTelemetry().update();
     }
 
     /**
@@ -254,8 +252,8 @@ public class Sursum {
         // drive towards stones
         driveTrain.goAngle( 41-ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
 
-        opMode.telemetry.addLine("Starting TensorFlow Search");
-        opMode.telemetry.update();
+        opMode.getTelemetry().addLine("Starting TensorFlow Search");
+        opMode.getTelemetry().update();
 
         SkyStonePosition sky_stone_position = findSkystone();
 
@@ -308,8 +306,8 @@ public class Sursum {
         // drive towards stones
         driveTrain.goAngle( 43-ROBOT_LENGTH, opponents_side, .25);
 
-        opMode.telemetry.addLine("Starting TensorFlow Search");
-        opMode.telemetry.update();
+        opMode.getTelemetry().addLine("Starting TensorFlow Search");
+        opMode.getTelemetry().update();
 
         SkyStonePosition sky_stone_position = findSkystone();
 

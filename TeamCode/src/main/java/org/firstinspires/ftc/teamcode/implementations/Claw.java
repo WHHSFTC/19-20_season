@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 public class Claw implements Mechanism<Claw.State> {
     private State state;
@@ -13,9 +14,9 @@ public class Claw implements Mechanism<Claw.State> {
     // outer claw farther from wrist
     private OuterClaw outerClaw;
 
-    public Claw(LinearOpMode opMode, String innerStr, String outerStr) {
-        innerClaw = new InnerClaw(opMode.hardwareMap.servo.get(innerStr));
-        outerClaw = new OuterClaw(opMode.hardwareMap.servo.get(outerStr));
+    public Claw(OpModeIF opMode, String innerStr, String outerStr) {
+        innerClaw = new InnerClaw(opMode.getHardwareMap().servo.get(innerStr));
+        outerClaw = new OuterClaw(opMode.getHardwareMap().servo.get(outerStr));
     }
 
     public void setState(State state) throws IllegalArgumentException {

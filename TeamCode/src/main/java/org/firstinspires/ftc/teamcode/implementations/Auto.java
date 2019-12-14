@@ -11,6 +11,14 @@ public abstract class Auto extends OpMode implements OpModeIF {
 
     @Override
     public void init() {
-        bot.init();
+        alliance = bot.init();
+    }
+    @Override
+    public void start() { bot.start(); }
+    @Override
+    public void loop() {}
+    @Override
+    public void stop() {
+        bot.driveTrain.halt();
     }
 }

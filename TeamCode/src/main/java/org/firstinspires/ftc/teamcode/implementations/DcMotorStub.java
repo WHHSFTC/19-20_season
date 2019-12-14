@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
+
 import java.util.Locale;
 
 // a stub that implements the methods of DcMotor for logging
@@ -18,9 +20,9 @@ public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
     private double power;
     private Direction direction;
     private RunMode mode;
-    private LinearOpMode opMode;
+    private OpModeIF opMode;
 
-    DcMotorStub(LinearOpMode opMode) {
+    DcMotorStub(OpModeIF opMode) {
         this.opMode = opMode;
     }
 
