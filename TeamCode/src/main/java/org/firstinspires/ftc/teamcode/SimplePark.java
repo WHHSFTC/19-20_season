@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 
 @Autonomous(group = "Auto", name = "SimplePark")
 public class SimplePark extends Auto {
+
     @Override
     public void run() {
         // park

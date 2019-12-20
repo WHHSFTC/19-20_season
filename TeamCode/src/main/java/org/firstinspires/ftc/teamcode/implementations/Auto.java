@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 public abstract class Auto extends LinearOpMode implements OpModeIF {
-    private boolean active;
+
     protected Sursum bot;
 
     @Override
@@ -24,15 +24,19 @@ public abstract class Auto extends LinearOpMode implements OpModeIF {
         // stop
         halt();
     }
+
     public void genesis() throws InterruptedException {
         bot = new Sursum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         bot.init();
     }
+
     public void begin() throws InterruptedException {
         bot.start();
     }
+
     public abstract void run() throws InterruptedException;
+
     public void halt() throws InterruptedException {
         bot.stop();
     }

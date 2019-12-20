@@ -50,29 +50,6 @@ public class SkyStone extends Auto {
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
 //        driveTrain.goAngle(6, our_side, 0.25);
         bot.driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 0.25);
-//        // moving out to turn
-//        driveTrain.goAngle(12, our_side, 1.0);
-//
-//        // turning back to face foundation
-//        driveTrain.align(our_side);
-//
-//        // heads back to foundation
-//        driveTrain.goAngle(14, opponents_side, 1.0/2);
-//
-//        // activate foundation hooks
-//        shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-//        Thread.sleep(500);
-//
-//        // pulls foundation
-//        driveTrain.goAngle(52, our_side, 1.0);
-//
-//        // deactivate foundation hooks
-//        shuttleGate.setState(ShuttleGate.State.CLOSED);
-//        Thread.sleep(500);
-//
-//        // parking
-//        driveTrain.goAngle(54, DriveTrain.LOADING_ZONE, 0.5);
-//
     }
 
     private void intakeSkystone() {
