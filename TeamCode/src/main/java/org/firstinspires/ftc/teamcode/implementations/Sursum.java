@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
@@ -45,7 +46,7 @@ public class Sursum {
     public Vision vision;
     public VisionTF visionTF;
     public OpModeIF opMode;
-    public AnalogInput allianceSwitch;
+    public DigitalChannel allianceSwitch;
     public Alliance alliance;
 
     /**
@@ -78,7 +79,8 @@ public class Sursum {
         //ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
         //limit = opMode.hardwareMap.digitalChannel.get("limit");
         color_sensor_bottom = opMode.getHardwareMap().colorSensor.get("color");
-        allianceSwitch = opMode.getHardwareMap().analogInput.get("allianceSwitch");
+        allianceSwitch = opMode.getHardwareMap().digitalChannel.get("allianceSwitch");
+        allianceSwitch.setMode(DigitalChannel.Mode.INPUT);
         // }}}
 
 //        vision = new Vision(opMode, "Webcam 1");
@@ -86,7 +88,10 @@ public class Sursum {
 
     public void init() {
         //init(allianceSwitch.getVoltage() / allianceSwitch.getMaxVoltage() > 0.5 ? Alliance.RED : Alliance.BLUE);
-        init(Alliance.RED);
+        init(allianceSwitch.getState() ? Alliance.BLUE : Alliance.RED);
+        opMode.getTelemetry().addData("Alliance", alliance.toString());
+        opMode.getTelemetry().update();
+        //init(Alliance.RED);
     }
 
     public void init(Alliance alliance) {

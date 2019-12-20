@@ -16,7 +16,7 @@ public class SkyStone extends Auto {
     @Override
     public void run() {
         // drive towards stones
-        bot.driveTrain.goAngle( 41-Sursum.ROBOT_LENGTH, DriveTrain.BLUE_SIDE, .25);
+        bot.driveTrain.goAngle( 41-Sursum.ROBOT_LENGTH, bot.opponents_side, .25);
 
         bot.opMode.getTelemetry().addLine("Starting TensorFlow Search");
         bot.opMode.getTelemetry().update();
@@ -35,7 +35,7 @@ public class SkyStone extends Auto {
         // heads back to go under skybridge
         bot.driveTrain.goAngle(12, bot.our_side, .25);
         // goes 36 inches into building zone
-        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 36, DriveTrain.BUILDING_ZONE, 1);
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 36, DriveTrain.BUILDING_ZONE, .5);
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
@@ -45,14 +45,17 @@ public class SkyStone extends Auto {
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
         sleep(500);
 
+        bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
+
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + (24 + 36), DriveTrain.LOADING_ZONE, .5);
 
+        bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
-
         sleep(500);
 
+
         // intake
-        bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
+        bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
         bot.driveTrain.goAngle(12, bot.opponents_side, .25);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
         sleep(500);

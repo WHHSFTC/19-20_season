@@ -6,8 +6,6 @@ import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 public class RightSideArm extends SideArm {
-    public RightSideArm.Arm arm;
-    public RightSideArm.Claw claw;
     private OpModeIF opMode;
     public RightSideArm(OpModeIF opMode, String armStr, String clawStr) {
         this.opMode = opMode;

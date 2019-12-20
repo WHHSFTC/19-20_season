@@ -8,7 +8,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.implementations.Arm;
 import org.firstinspires.ftc.teamcode.implementations.Claw;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
+import org.firstinspires.ftc.teamcode.implementations.LeftSideArm;
 import org.firstinspires.ftc.teamcode.implementations.OutputSlides;
+import org.firstinspires.ftc.teamcode.implementations.RightSideArm;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.SideArm;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
@@ -28,8 +30,8 @@ public class Tele extends LinearOpMode implements OpModeIF {
         bot = new Sursum(this);
         bot.leftArm.arm.setState(SideArm.Arm.State.UP);
         bot.rightArm.arm.setState(SideArm.Arm.State.UP);
-        bot.leftArm.claw.servo.setPosition(1);
-        bot.rightArm.claw.servo.setPosition(0);
+        ((LeftSideArm.Claw) bot.leftArm.claw).servo.setPosition(1);
+        ((RightSideArm.Claw) bot.rightArm.claw).servo.setPosition(0);
 //        bot.driveTrain.
         waitForStart();
         while (opModeIsActive()) {
