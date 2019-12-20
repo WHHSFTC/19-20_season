@@ -143,7 +143,7 @@ public class Sursum {
         driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
-        driveTrain.goAngle(SIDEARM_Y + CAMERA_X - 2, DriveTrain.BUILDING_ZONE, .25);
+        driveTrain.goAngle(2, DriveTrain.BUILDING_ZONE, .25);
 
         rightArm.setArmPosition(RightSideArm.Arm.State.DOWN);
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
@@ -265,8 +265,8 @@ public class Sursum {
         // heads back to go under skybridge
         driveTrain.goAngle(12, our_side, .25);
 
-        // goes 32 inches past skybridge
-        driveTrain.goAngle(sky_stone_position.getDistance() + 32, DriveTrain.BUILDING_ZONE, .5);
+        // goes 36 inches past skybridge
+        driveTrain.goAngle(sky_stone_position.getDistance() + 36, DriveTrain.BUILDING_ZONE, .5);
 
         // aligns for loading zone to be lined up for later
         driveTrain.align(DriveTrain.LOADING_ZONE);
@@ -282,7 +282,7 @@ public class Sursum {
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
 
         // heading back to pick up second skystone
-        driveTrain.goAngle(sky_stone_position.getDistance() + (24 + 32), DriveTrain.LOADING_ZONE, .5);
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 + 36), DriveTrain.LOADING_ZONE, .5);
 
         rightArm.setClawPosition(RightSideArm.Claw.State.OPEN);
         Thread.sleep(500);
@@ -299,7 +299,7 @@ public class Sursum {
         driveTrain.goAngle(12, our_side, .25);
 
         // returning back to right under sky-bridge to drop current stone
-        driveTrain.goAngle(sky_stone_position.getDistance() + (24 + 32), DriveTrain.BUILDING_ZONE, .5);
+        driveTrain.goAngle(sky_stone_position.getDistance() + (24 + 36), DriveTrain.BUILDING_ZONE, .5);
 
         // aligns for loading zone to be lined up for later
         driveTrain.align(DriveTrain.LOADING_ZONE);
@@ -315,7 +315,7 @@ public class Sursum {
         rightArm.setClawPosition(RightSideArm.Claw.State.CLOSED);
 
         // parking under sky-bridge (Next to neutral bridge)
-        driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, .25);
+        driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .25);
     }
 
     public void skystoneFoundationBlue() throws InterruptedException {
