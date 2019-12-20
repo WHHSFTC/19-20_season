@@ -34,7 +34,8 @@ public class SkyStone extends Auto {
 
         // heads back to go under skybridge
         bot.driveTrain.goAngle(12, bot.our_side, .25);
-        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 32, DriveTrain.BUILDING_ZONE, 1);
+        // goes 36 inches into building zone
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 36, DriveTrain.BUILDING_ZONE, 1);
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
@@ -44,12 +45,30 @@ public class SkyStone extends Auto {
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
         sleep(500);
 
-        // raises arm
-        bot.sideArm.arm.setState(SideArm.Arm.State.UP);
-        // closes claw so andrew doesn't have to make a new one
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() + (24 + 36), DriveTrain.LOADING_ZONE, .5);
+
+        bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
+
+        sleep(500);
+
+        // intake
+        bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
+        bot.driveTrain.goAngle(12, bot.opponents_side, .25);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
-//        driveTrain.goAngle(6, our_side, 0.25);
-        bot.driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 0.25);
+        sleep(500);
+
+        // heads back with stone
+        bot.driveTrain.goAngle(12, bot.our_side, .25);
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 24 + 36, DriveTrain.BUILDING_ZONE, .5);
+
+        // drop stone
+        bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
+        sleep(500);
+
+        bot.sideArm.arm.setState(SideArm.Arm.State.UP);
+        bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
+
+        bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .25);
     }
 
     private void intakeSkystone() {
@@ -60,13 +79,7 @@ public class SkyStone extends Auto {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
-        switch (bot.alliance) {
-            case RED:
-                bot.driveTrain.goAngle(Sursum.SIDEARM_Y + Sursum.CAMERA_X, DriveTrain.BUILDING_ZONE, .25);
-                break;
-            case BLUE:
-                bot.driveTrain.goAngle(-Sursum.SIDEARM_Y + Sursum.CAMERA_X, DriveTrain.BUILDING_ZONE, .25);
-        }
+        bot.driveTrain.goAngle(2, DriveTrain.BUILDING_ZONE, .25);
 
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);

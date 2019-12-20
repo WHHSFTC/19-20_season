@@ -39,7 +39,7 @@ public class Tele extends LinearOpMode implements OpModeIF {
             if(gamepad2.a) bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
             if(gamepad2.y) bot.shuttleGate.setState(ShuttleGate.State.OPEN);
             if(gamepad2.x) bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
-            //if(gamepad2.right_trigger > 0.5) ((OutputSlides) bot.outputSlides).runToZero();
+//            if(gamepad2.right_trigger > 0.5) ((OutputSlides) bot.outputSlides).runToZero();
             bot.driveTrain.dumpMotors();
             telemetry.update();
         }
