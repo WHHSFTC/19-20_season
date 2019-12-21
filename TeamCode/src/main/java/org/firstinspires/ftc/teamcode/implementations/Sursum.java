@@ -90,7 +90,6 @@ public class Sursum {
         //init(allianceSwitch.getVoltage() / allianceSwitch.getMaxVoltage() > 0.5 ? Alliance.RED : Alliance.BLUE);
         init(allianceSwitch.getState() ? Alliance.BLUE : Alliance.RED);
         opMode.getTelemetry().addData("Alliance", alliance.toString());
-        opMode.getTelemetry().update();
         //init(Alliance.RED);
     }
 
@@ -124,7 +123,6 @@ public class Sursum {
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
         // tell Kaden the bot can now be pushed
         opMode.getTelemetry().addLine("Initialization DONE");
-        opMode.getTelemetry().update();
     }
 
     /**
@@ -133,7 +131,7 @@ public class Sursum {
      */
     public SkyStonePosition findSkystone() throws InterruptedException {
         for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
-            Thread.sleep(1000);
+            Thread.sleep(500);
 //            opMode.telemetry.addData("Tensorflow Object", object);
 //            opMode.telemetry.addData("Confidence: ", "N/A");
 //            opMode.telemetry.update();

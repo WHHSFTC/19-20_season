@@ -33,7 +33,7 @@ public class LeftSideArm extends SideArm {
         }
 
         public enum State implements StatefulServo.State {
-            UP(0.36), HOLD(0.56), DOWN(0.79);
+            UP(0.34), HOLD(0.59), DOWN(0.83);
             private double position;
             State(double position) {
                 this.position = position;
@@ -65,7 +65,7 @@ public class LeftSideArm extends SideArm {
             return Enum.valueOf(SideArm.Claw.State.class, servo.getState().toString());
         }
         public enum State implements StatefulServo.State {
-            OPEN(0.49), CLOSED(.89);
+            OPEN(0.53), CLOSED(.92);
             double position;
             State(double position) {
                 this.position = position;

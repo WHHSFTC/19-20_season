@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 import java.util.List;
 
-@Disabled
+//@Disabled
 @TeleOp(name = "ServoTest", group = "Test")
 public class ServoTest extends LinearOpMode implements OpModeIF {
     @Override
@@ -52,7 +52,7 @@ public class ServoTest extends LinearOpMode implements OpModeIF {
                 if(gamepad1.a) a = servo.getPosition();
                 if(gamepad1.b) b = servo.getPosition();
                 if(gamepad1.y) y = servo.getPosition();
-            } else if (gamepad2.right_trigger > 0.5) {
+            } else if (gamepad1.right_trigger > 0.5) {
                 if(gamepad1.a) servo.setPosition(a);
                 if(gamepad1.b) servo.setPosition(b);
                 if(gamepad1.y) servo.setPosition(y);

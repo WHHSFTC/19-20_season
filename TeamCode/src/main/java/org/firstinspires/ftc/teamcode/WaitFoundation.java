@@ -20,7 +20,6 @@ public class WaitFoundation extends Auto {
         bot.driveTrain.goAngle(12, DriveTrain.BUILDING_ZONE, 0.25);
 
         bot.driveTrain.align(bot.our_side);
-        sleep(13000);
 
         bot.driveTrain.goAngle(54 - Sursum.ROBOT_LENGTH, bot.opponents_side, 0.25); // Hard coded distance
         sleep(1000);

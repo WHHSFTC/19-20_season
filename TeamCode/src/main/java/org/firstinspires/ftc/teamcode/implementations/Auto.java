@@ -29,6 +29,7 @@ public abstract class Auto extends LinearOpMode implements OpModeIF {
         bot = new Sursum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         bot.init();
+        telemetry.update();
     }
 
     public void begin() throws InterruptedException {

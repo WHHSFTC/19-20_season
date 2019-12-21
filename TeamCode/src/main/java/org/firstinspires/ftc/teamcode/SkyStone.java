@@ -33,73 +33,69 @@ public class SkyStone extends Auto {
         intakeSkystone();
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(12, bot.our_side, .25);
+        bot.driveTrain.goAngle(12, bot.our_side, .5);
         // goes 36 inches into building zone
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + 36, DriveTrain.BUILDING_ZONE, .5);
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
-//        driveTrain.goAngle(14, opponents_side, 1.0/4);
-
-        // drops stone onto foundation
+        // drops stone
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
-        sleep(500);
-
+        sleep(250);
+        bot.sideArm.arm.setState(SideArm.Arm.State.UP);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
 
+        // second cycle
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE);
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + (24 + 36), DriveTrain.LOADING_ZONE, .5);
 
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
-        sleep(500);
+        sleep(250);
 
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
-        // intake
+        // intake second stone
+        bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
-        bot.driveTrain.goAngle(12, bot.opponents_side, .25);
+        bot.driveTrain.goAngle(12, bot.opponents_side, .5);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
-        sleep(500);
+        sleep(250);
 
         // heads back with stone
-        bot.driveTrain.goAngle(12, bot.our_side, .25);
+        bot.driveTrain.goAngle(14, bot.our_side, .5);
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + 24 + 36, DriveTrain.BUILDING_ZONE, .5);
 
         // drop stone
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
-        sleep(500);
+        sleep(250);
 
         bot.sideArm.arm.setState(SideArm.Arm.State.UP);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
 
-        bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .25);
+        bot.driveTrain.goAngle(2, bot.opponents_side, .5);
+        bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .5);
     }
 
     private void intakeSkystone() {
         // backing up
-        bot.driveTrain.goAngle(10, bot.our_side, .5);
+        bot.driveTrain.goAngle(6, bot.our_side, .5);
 
         // turn so sidearm faces stones
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
-        bot.driveTrain.goAngle(2, DriveTrain.BUILDING_ZONE, .25);
+        bot.driveTrain.goAngle(2, DriveTrain.BUILDING_ZONE, .5);
 
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
 
         // moves forward to be line with stone
-        bot.driveTrain.goAngle(20, bot.opponents_side,.5);
+        bot.driveTrain.goAngle(16, bot.opponents_side,.5);
 
         // claw closes on stone
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
-        sleep(500);
-
-        // holding stone
-        bot.sideArm.arm.setState(SideArm.Arm.State.HOLD);
-        sleep(500);
-
-        telemetry.addLine("Holding Stone");
-        telemetry.update();
+        sleep(250);
     }
     @Override
     public void halt() throws InterruptedException {
