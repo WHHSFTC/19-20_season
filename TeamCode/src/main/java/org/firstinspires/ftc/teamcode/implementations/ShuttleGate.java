@@ -70,7 +70,7 @@ public class ShuttleGate implements Mechanism<ShuttleGate.State> {
             super(servo);
         }
         enum State implements StatefulServo.State {
-            FOUNDATION(.38), OPEN(1), CLOSED(0.52);
+            FOUNDATION(.44), OPEN(1), CLOSED(0.57);
             private double value;
             State(double value) {
                 this.value = value;
