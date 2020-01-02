@@ -26,4 +26,5 @@ public enum SkyStonePosition {
     public double getPosition() {
         return position-1;
     }
+
 }

@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
 
-import android.support.annotation.NonNull;
+
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorController;
@@ -26,7 +26,7 @@ public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
         this.opMode = opMode;
     }
 
-    @NonNull
+
     @Override
     public String toString() {
         return String.format(Locale.ENGLISH, "MotorType: %s%nZeroPowerBehavior: %s%nPowerFloat: %b%nTargetPosition: %d%nPower: %a%nDirection: %s%nRunMode %s%n", motorType, zeroPowerBehavior, powerFloat, targetPosition, powerFloat, direction, mode);
