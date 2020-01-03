@@ -77,7 +77,7 @@ public class SkyStone extends Auto {
         sleep(250);
 
         // heads back with stone
-        bot.driveTrain.align(DriveTrain.BUILDING_ZONE);
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         bot.driveTrain.goAngle(14, bot.our_side, .5);
 
@@ -98,8 +98,8 @@ public class SkyStone extends Auto {
         bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .5);
         */
 
-        //THIRD CYCLE (runs only if stone was in closet position)
-        if(!(skyStonePosition.getPosition() == 1.0)){
+        //THIRD CYCLE (runs only if stone was not in farthest position)
+        if(skyStonePosition != SkyStonePosition.ONE_FOUR) {
 
             bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
@@ -157,7 +157,7 @@ public class SkyStone extends Auto {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
-        bot.driveTrain.goAngle(2, DriveTrain.BUILDING_ZONE, .5);
+        bot.driveTrain.goAngle(2, DriveTrain.LOADING_ZONE, .5);
 
        // bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         //bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);

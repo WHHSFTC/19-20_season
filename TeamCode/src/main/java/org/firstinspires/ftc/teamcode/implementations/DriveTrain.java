@@ -278,13 +278,13 @@ public class DriveTrain implements StrafingDriveTrain {
                 motorRB.isBusy() &&
                 motorRF.isBusy() &&
                 motorLF.isBusy()) {
-            opMode.getTelemetry().addData("Motor Power",
-                    "%3d %3d %3d %3d",
-                    power * (y - x),
-                    -power * (-y - x),
-                    -power * (-y + x),
-                    power * (y + x)
-            );
+//            opMode.getTelemetry().addData("Motor Power",
+//                    "%3d %3d %3d %3d",
+//                    power * (y - x),
+//                    -power * (-y - x),
+//                    -power * (-y + x),
+//                    power * (y + x)
+//            );
             opMode.getTelemetry().addData("Raw Heading", getRawHeading());
             opMode.getTelemetry().addData("Heading", getHeading());
             opMode.getTelemetry().addData("Angle", angel);
