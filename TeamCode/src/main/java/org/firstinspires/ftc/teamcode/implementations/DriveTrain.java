@@ -27,9 +27,9 @@ public class DriveTrain implements StrafingDriveTrain {
     private OpModeIF opMode;
     private BNO055IMU imu;
 
-    private static final double P_TURN_COEFF = .018;
-    private static final double I_TURN_COEFF = 0.01;
-    private static final double D_TURN_COEFF = 0.026;
+    private static double P_TURN_COEFF; //.018;
+    private static double I_TURN_COEFF; //0.01;
+    private static double D_TURN_COEFF; //0.02;
     private static final double HEADING_THRESHOLD = 1;
     private static final double ANTI_WINDUP = 2;
     private static final double TICKSPERROTATION = 537.6;
@@ -48,6 +48,9 @@ public class DriveTrain implements StrafingDriveTrain {
         setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
         imu = opMode.getHardwareMap().get(BNO055IMU.class, "imu");
         initImu();
+        P_TURN_COEFF = RobotConstants.TURNING_PID.p * RobotConstants.SCALAR;
+        I_TURN_COEFF = RobotConstants.TURNING_PID.i * RobotConstants.SCALAR;
+        D_TURN_COEFF = RobotConstants.TURNING_PID.d * RobotConstants.SCALAR;
     }
 
     public void stubify() {
@@ -176,7 +179,7 @@ public class DriveTrain implements StrafingDriveTrain {
 
             opMode.getTelemetry().addData("first angle", getHeading());
             opMode.getTelemetry().addData("speed ", rcw);
-            opMode.getTelemetry().addData("error", angleWanted - getHeading());
+            opMode.getTelemetry().addData("x", angleWanted - getHeading());
             opMode.getTelemetry().addData("angleWanted", angleWanted);
             opMode.getTelemetry().addData("motor power", motorLF.getPower());
             opMode.getTelemetry().addData("rcw", rcw);
@@ -275,6 +278,13 @@ public class DriveTrain implements StrafingDriveTrain {
                 motorRB.isBusy() &&
                 motorRF.isBusy() &&
                 motorLF.isBusy()) {
+            opMode.getTelemetry().addData("Motor Power",
+                    "%3d %3d %3d %3d",
+                    power * (y - x),
+                    -power * (-y - x),
+                    -power * (-y + x),
+                    power * (y + x)
+            );
             opMode.getTelemetry().addData("Raw Heading", getRawHeading());
             opMode.getTelemetry().addData("Heading", getHeading());
             opMode.getTelemetry().addData("Angle", angel);
