@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -33,11 +34,12 @@ public abstract class Auto extends LinearOpMode implements OpModeIF {
     }
 
     public void genesis() throws InterruptedException {
+//        FtcDashboard dashboard = FtcDashboard.getInstance();
+//        this.telemetry = dashboard.getTelemetry();
         bot = new Sursum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         bot.init();
         telemetry.update();
-
     }
 
     public void begin() throws InterruptedException {

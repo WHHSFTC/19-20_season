@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
-@Disabled
+//@Disabled
 @Autonomous(group = "test", name = "turning test")
 public class TurningTest extends LinearOpMode implements OpModeIF {
     private static final double TILE = 24; // inches
@@ -22,6 +23,10 @@ public class TurningTest extends LinearOpMode implements OpModeIF {
     public static double tile_distance(double number_of_tiles) {return TILE*number_of_tiles;}
     private Sursum bot;
     public void runOpMode() {
+
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        this.telemetry = dashboard.getTelemetry();
+
         bot = new Sursum(this);
 
         bot.init();

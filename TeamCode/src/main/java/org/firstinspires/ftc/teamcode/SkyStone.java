@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.implementations.Auto;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
-import org.firstinspires.ftc.teamcode.implementations.RightSideArm;
 import org.firstinspires.ftc.teamcode.implementations.SideArm;
 import org.firstinspires.ftc.teamcode.implementations.SkyStonePosition;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
@@ -14,6 +11,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 
 @Autonomous(name = "SkyStone", group = "Auto")
 public class SkyStone extends Auto {
+
     @Override
     public void run() {
         // drive towards stones
@@ -38,18 +36,22 @@ public class SkyStone extends Auto {
         // heads back to go under skybridge
         bot.driveTrain.goAngle(12, bot.our_side, .5);
         // goes 36 inches into building zone
+
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + 36, DriveTrain.BUILDING_ZONE, .25);
+
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // drops stone
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
         sleep(250);
+
         bot.sideArm.arm.setState(SideArm.Arm.State.UP);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
 
         // second cycle
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
+
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + (24 + 36), DriveTrain.LOADING_ZONE, .25);
 
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
@@ -61,11 +63,13 @@ public class SkyStone extends Auto {
         // intake second stone
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
+
         bot.driveTrain.goAngle(12, bot.opponents_side, .25);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
         sleep(250);
 
         // heads back with stone
+
         bot.driveTrain.goAngle(14, bot.our_side, .5);
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + 24 + 36, DriveTrain.BUILDING_ZONE, .25);
 
@@ -79,6 +83,7 @@ public class SkyStone extends Auto {
 
         bot.driveTrain.goAngle(2, bot.opponents_side, .5);
         bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .5);
+
 
 
         //THIRD CYCLE
@@ -96,11 +101,13 @@ public class SkyStone extends Auto {
             // intake  stone
             bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
             bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
+
             bot.driveTrain.goAngle(12, bot.opponents_side, .75);
             bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
             sleep(250);
 
             // heads back with stone
+
             bot.driveTrain.goAngle(14, bot.our_side, .75);
             bot.driveTrain.goAngle(skyStonePosition.getDistance() + 24 + 15, DriveTrain.BUILDING_ZONE, 1);
 
@@ -132,6 +139,7 @@ public class SkyStone extends Auto {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
+
        bot.driveTrain.goAngle(2, DriveTrain.LOADING_ZONE, .5);
 
        // bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
@@ -144,6 +152,7 @@ public class SkyStone extends Auto {
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
         sleep(250);
     }
+
     @Override
     public void halt() throws InterruptedException {
         super.halt();
