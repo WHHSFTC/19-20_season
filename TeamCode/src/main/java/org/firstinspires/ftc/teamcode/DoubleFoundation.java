@@ -39,14 +39,14 @@ public class DoubleFoundation extends Auto {
         intakeSkystone();
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(14, bot.our_side, .5);
+        bot.driveTrain.goAngle(18, bot.our_side, .5);
 
         // goes 75 inches into building zone
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + 73, DriveTrain.BUILDING_ZONE, .5);
 
+        bot.sideArm.arm.setState(SideArm.Arm.State.HOLD);
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
-        bot.sideArm.arm.setState(SideArm.Arm.State.HOLD);
         bot.driveTrain.goAngle(7,bot.opponents_side,.5);
 
         // drops stone
@@ -79,12 +79,13 @@ public class DoubleFoundation extends Auto {
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
+        bot.driveTrain.goAngle(2, bot.our_side, .75);
         // intake second stone
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
 
-        bot.driveTrain.goAngle(12, bot.opponents_side, .5);
+        bot.driveTrain.goAngle(14, bot.opponents_side, .25);
 
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
 

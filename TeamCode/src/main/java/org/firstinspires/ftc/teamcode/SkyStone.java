@@ -60,11 +60,12 @@ public class SkyStone extends Auto {
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
+        bot.driveTrain.goAngle(2, bot.our_side, .75);
         // intake second stone
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
 
-        bot.driveTrain.goAngle(12, bot.opponents_side, .25);
+        bot.driveTrain.goAngle(14, bot.opponents_side, .25);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
         sleep(250);
 
