@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
+@Disabled
 @Autonomous(group = "Auto", name = "DistanceTest")
 public class MovementTest extends LinearOpMode implements OpModeIF {
 

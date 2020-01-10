@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
-//@Disabled
+@Disabled
 @Autonomous(group = "test", name = "turning test")
 public class TurningTest extends LinearOpMode implements OpModeIF {
     private static final double TILE = 24; // inches

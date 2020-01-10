@@ -52,7 +52,7 @@ import java.util.List;
  * is explained below.
  */
 
-//@Disabled
+@Disabled
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";

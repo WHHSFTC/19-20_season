@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 import java.util.List;
 
-//@Disabled
+@Disabled
 @TeleOp(name = "ServoTest", group = "Test")
 public class ServoTest extends LinearOpMode implements OpModeIF {
     @Override
