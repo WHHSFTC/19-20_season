@@ -23,8 +23,7 @@ public interface StrafingDriveTrain {
     public void goAngle(double dist, double angle, double power);
     // strafe following vector
     public void goVector(double x, double y, double power);
-    // follow arc around (centerX, centerY) for angle degrees counterclockwise
-    public void goArc(double centerX, double centerY, double angle, double power);
+    public void goArc(double distance, double frontAngle, double turnAngle, double power) throws InterruptedException;
     // begins driving at angle
     public void startAngle(double angle, double power);
     // log to telemetry
