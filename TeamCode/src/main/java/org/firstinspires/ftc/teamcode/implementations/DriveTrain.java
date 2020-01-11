@@ -30,7 +30,7 @@ public class DriveTrain implements StrafingDriveTrain {
     private static double P_TURN_COEFF; //.018;
     private static double I_TURN_COEFF; //0.01;
     private static double D_TURN_COEFF; //0.02;
-    private static final double HEADING_THRESHOLD = 1;
+    private static final double HEADING_THRESHOLD = .5;
     private static final double ANTI_WINDUP = 2;
     private static final double TICKSPERROTATION = 537.6;
 
