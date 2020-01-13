@@ -14,12 +14,12 @@ public class SkyStone extends Auto {
 
     @Override
     public void run() {
-        // drive towards stones
-        bot.driveTrain.goAngle( 41-Sursum.ROBOT_LENGTH, bot.opponents_side, .5);
-
-        // preparing arm to grab
+        // servo calls
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
+
+        // preparing arm to grab
+        bot.driveTrain.goAngle( 41-Sursum.ROBOT_LENGTH, bot.opponents_side, .5);
 
         bot.opMode.getTelemetry().addLine("Starting TensorFlow Search");
         bot.opMode.getTelemetry().update();
@@ -91,10 +91,10 @@ public class SkyStone extends Auto {
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
 
         // adjustment
-        bot.driveTrain.goAngle(2, bot.opponents_side, .5);
+        bot.driveTrain.goAngle(2, bot.opponents_side, .75);
 
         // park
-        bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .5);
+        bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, .75);
 
 
 

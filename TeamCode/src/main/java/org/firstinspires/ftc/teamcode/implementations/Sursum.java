@@ -31,10 +31,10 @@ public class Sursum {
 
     // declarations of all systems
     public StrafingDriveTrain driveTrain;
-    public Mechanism shuttleGate;
+    public Mechanism<ShuttleGate.State> shuttleGate;
     public ContinuousMechanism outputSlides;
-    public Mechanism arm;
-    public Mechanism claw;
+    public Mechanism<Arm.State> arm;
+    public Mechanism<Claw.State> claw;
     public CRServo flywheels;
     public DcMotor belt;
     public LeftSideArm leftArm;

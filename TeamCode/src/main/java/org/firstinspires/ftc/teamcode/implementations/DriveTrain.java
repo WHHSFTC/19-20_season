@@ -74,7 +74,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
     private static double P_TURN_COEFF; //.018;
     private static double I_TURN_COEFF; //0.01;
     private static double D_TURN_COEFF; //0.02;
-    private static final double HEADING_THRESHOLD = 1;
+    private static final double HEADING_THRESHOLD = .5;
     private static final double ANTI_WINDUP = 2;
     private static final double TICKSPERROTATION = 537.6;
 
@@ -171,9 +171,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
         double powerLB = power * Math.pow(ratio, expLB) * Math.signum(-yFront + xFront);
         double powerRB = power * Math.pow(ratio, expRB) * Math.signum(yFront + xFront);
 
-        //sets up the PID turn`
-        Orientation ref = imu.getAngularOrientation();
-        double heading = ref.firstAngle;
+        double heading = getHeading();
         double angleWanted = turnAngle + heading;
         double integral = 0;
         double previous_error = 0;
@@ -181,18 +179,16 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
         //combines the tick condition with a gyroscopic sensor condition to ensure accuracy
         while (rcw !=0 && opMode.opModeIsActive()) {
-
-            ref = imu.getAngularOrientation();
-
-            double firstAngle = ref.firstAngle;
-            if(ref.firstAngle<0&&turnAngle>0){
-                firstAngle = 360 + ref.firstAngle;
-            }
-            if(ref.firstAngle>0&&turnAngle<0){
-                firstAngle = -360+ ref.firstAngle;
-            }
-
-            double error = Math.abs(angleWanted) - Math.abs(firstAngle);
+            double currentHeading = getHeading();
+            double error = angleWanted - currentHeading;
+            //if(currentHeading<0&&turnAngle>0){
+            //    currentHeading = 360 + currentHeading;
+            //}
+            //if(currentHeading>0&&turnAngle<0){
+            //    currentHeading = -360+ currentHeading;
+            //}
+            while (error > 180 && opMode.opModeIsActive()) error -= 360;
+            while (error < -180 && opMode.opModeIsActive()) error += 360;
 
             double derivative = error - previous_error;
             //small margin of error for increased speed
@@ -212,8 +208,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
                 derivative = 0;
             }
             previous_error = error;
-            integral=0;
-            derivative=0;
+
             rcw = P_TURN_COEFF * error + I_TURN_COEFF*integral + D_TURN_COEFF * derivative;
             //sets the power, which, due to the exponents, is either the ratio or 1. User can change power factor for lower rcws.
             motorRF.setPower(-powerRF * rcw);
@@ -231,11 +226,9 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
                     motorLF.getTargetPosition(),
                     motorRB.getTargetPosition(),
                     motorRF.getTargetPosition());
-            opMode.getTelemetry().addData("first angle", firstAngle);
-            opMode.getTelemetry().addData("second angle", ref.secondAngle);
-            opMode.getTelemetry().addData("third angle", ref.thirdAngle);
+            opMode.getTelemetry().addData("heading", currentHeading);
             opMode.getTelemetry().addData("target", turnAngle);
-            opMode.getTelemetry().addData("error", angleWanted - ref.firstAngle);
+            opMode.getTelemetry().addData("error", angleWanted - currentHeading);
             opMode.getTelemetry().addData("angleWanted", angleWanted);
             opMode.getTelemetry().addData("motor power", motorLF.getPower());
             opMode.getTelemetry().addData("rcw", rcw);
@@ -407,7 +400,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
             opMode.getTelemetry().addData("first angle", getHeading());
             opMode.getTelemetry().addData("speed ", rcw);
-            opMode.getTelemetry().addData("x", angleWanted - getHeading());
+            opMode.getTelemetry().addData("error", angleWanted - getHeading());
             opMode.getTelemetry().addData("angleWanted", angleWanted);
             opMode.getTelemetry().addData("motor power", motorLF.getPower());
             opMode.getTelemetry().addData("rcw", rcw);
