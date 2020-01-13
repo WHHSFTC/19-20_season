@@ -27,15 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Tests;
+package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -43,14 +42,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.implementations.Alliance;
-import org.firstinspires.ftc.teamcode.implementations.Arm;
-import org.firstinspires.ftc.teamcode.implementations.Claw;
-import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
-import org.firstinspires.ftc.teamcode.implementations.OutputSlides;
-import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
-import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,17 +81,12 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-
 @Disabled
-@TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
-public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode implements OpModeIF {
+@TeleOp(name="SKYSTONE Vuforia Nav Webcam", group ="Concept")
+//@Disabled
+public class ConceptVuforiaSkyStoneNavigationWebcam extends LinearOpMode {
 
-    // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
-    // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
-    // 2) Phone Orientation. Choices are: PHONE_IS_PORTRAIT = true (portrait) or PHONE_IS_PORTRAIT = false (landscape)
-    //
-    // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
-    //
+    // IMPORTANT: If you are using a USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false  ;
 
@@ -141,6 +127,13 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode implements Op
     // Class Members
     private OpenGLMatrix lastLocation = null;
     private VuforiaLocalizer vuforia = null;
+
+    /**
+     * This is the webcam we are to use. As with other hardware devices such as motors and
+     * servos, this device is identified using the robot configuration tool in the FTC application.
+     */
+    WebcamName webcamName = null;
+
     private boolean targetVisible = false;
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
@@ -148,23 +141,26 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode implements Op
 
     @Override public void runOpMode() {
         /*
+         * Retrieve the camera we are to use.
+         */
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
+        /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runNormalTele();
-            }
-        }).start();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection   = CAMERA_CHOICE;
+
+        /**
+         * We also indicate which camera on the RC we wish to use.
+         */
+        parameters.cameraName = webcamName;
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -307,7 +303,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode implements Op
 
         // Next, translate the camera lens to where it is on the robot.
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
-        final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
+        final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot-center
         final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
         final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
@@ -371,101 +367,5 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode implements Op
 
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
-    }
-    private static final double DEADZONE = 0.05;
-    private Sursum bot;
-    private boolean turtle;
-    private boolean turtleX;
-    public void runNormalTele() {
-        bot = new Sursum(this);
-        bot.init(Alliance.RED);
-        waitForStart();
-        while (opModeIsActive()) {
-            driveDriveTrain();
-            driveInput();
-            driveOutput();
-            if(gamepad1.dpad_down) bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-            if(gamepad1.dpad_up) bot.shuttleGate.setState(ShuttleGate.State.OPEN);
-            if(gamepad1.dpad_left || gamepad1.dpad_right) bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
-            bot.driveTrain.dumpMotors();
-            telemetry.update();
-        }
-        bot.stop();
-    }
-
-    // drives the drivetrain
-    private void driveDriveTrain() {
-        if(gamepad1.x && !turtleX) {
-            turtle = !turtle;
-            telemetry.addData("turtle", turtle);
-        }
-        turtleX = gamepad1.x;
-        double xpow = gamepad1.left_stick_x;
-        double ypow = -gamepad1.left_stick_y;
-        double zpow = gamepad1.right_stick_x;
-        // ternaries for dead-zone logic
-        xpow = Math.abs(xpow) > DEADZONE ? xpow : 0;
-        ypow = Math.abs(ypow) > DEADZONE ? ypow : 0;
-        zpow = Math.abs(zpow) > DEADZONE ? zpow : 0;
-        double theta = Math.atan2(ypow, xpow); //angle of joystick
-        double power = Math.pow(Math.max(Math.abs(xpow), Math.abs(ypow)), 2); //logarithmic drive
-        power = turtle ? power/3 : power;
-        // offset of pi/4 makes wheels strafe correctly at cardinal and intermediate directions
-        double cos = Math.cos(theta - Math.PI / 4);
-        double sin = Math.sin(theta - Math.PI / 4);
-        //eliminates incorrect signs resulting from double precision
-        if(Math.abs(cos)<.0000001){
-            cos=0;
-        }
-        if(Math.abs(sin)<.0000001){
-            sin=0;
-        }
-        double x = Math.signum(cos);
-        double y = Math.signum(sin);
-
-        ((DriveTrain) bot.driveTrain).setPowers(
-                power * -y + zpow,
-                power * x + zpow,
-                power * y + zpow,
-                power * -x + zpow
-        );
-    }
-
-    // drives the output
-    private void driveOutput() {
-        if(gamepad2.dpad_down) bot.arm.setState(Arm.State.IN);
-        if(gamepad2.dpad_left) bot.arm.setState(Arm.State.LEFT);
-        if(gamepad2.dpad_up) bot.arm.setState(Arm.State.OUT);
-        if(gamepad2.dpad_right) bot.arm.setState(Arm.State.RIGHT);
-        if(gamepad2.b) bot.arm.setState(Arm.State.BELT);
-        if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
-        if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);
-        bot.outputSlides.setState(Math.abs(gamepad2.left_stick_y) >= DEADZONE ? (double) gamepad2.left_stick_y : 0);
-        ((OutputSlides) bot.outputSlides).dumpEncoders();
-    }
-
-    // drives the input
-    private void driveInput() {
-        if(gamepad1.a) {
-            bot.flywheels.setPower(1);
-            bot.belt.setPower(1);
-        }
-        if(gamepad1.y) {
-            bot.flywheels.setPower(-1);
-            bot.belt.setPower(-1);
-        }
-        if(gamepad1.b) {
-            bot.flywheels.setPower(0);
-            bot.belt.setPower(0);
-        }
-    }
-    @Override
-    public HardwareMap getHardwareMap() {
-        return hardwareMap;
-    }
-
-    @Override
-    public Telemetry getTelemetry() {
-        return telemetry;
     }
 }

@@ -1,14 +1,20 @@
 package org.firstinspires.ftc.teamcode.interfaces;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import java.util.List;
 
 public interface StrafingDriveTrain {
     // rotate about center angle degrees counterclockwise
-    public void rotate(double angle);
-    public void align(double angle, Side side);
+    void rotate(double angle);
+    void align(double angle, Side side);
+
     // defaults to front
-    public void align(double angle);
-    public enum Side {
+    void align(double angle);
+    enum Side {
         FRONT(90), BACK(270), LEFT(180), RIGHT(0);
         private double degrees;
         Side(double degrees) {
@@ -19,18 +25,37 @@ public interface StrafingDriveTrain {
             return degrees;
         }
     }
+
     // strafe dist distance at angle degrees counterclockwise (relative to bot orientation)
-    public void goAngle(double dist, double angle, double power);
+    void goAngle(double dist, double angle, double power);
+
     // strafe following vector
-    public void goVector(double x, double y, double power);
-    public void goArc(double distance, double frontAngle, double turnAngle, double power) throws InterruptedException;
+    void goVector(double x, double y, double power);
+    void goArc(double distance, double frontAngle, double turnAngle, double power) throws InterruptedException;
+
     // begins driving at angle
-    public void startAngle(double angle, double power);
+    void startAngle(double angle, double power);
+
     // log to telemetry
-    public void dumpMotors();
-    public void stop();
-    public void halt();
-    public void setModes(DcMotor.RunMode mode);
-    public void setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior behavior);
-    public void setHeading(double angle);
+    void dumpMotors();
+    void stop();
+    void halt();
+    void setModes(DcMotor.RunMode mode);
+    void setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior behavior);
+    void setHeading(double angle);
+
+    // required for splines
+    void setMotorPowers(double rf, double lf, double lb, double rb);
+    List<Double> getWheelPositions();
+    List<Double> getWheelVelocities();
+    double getRawExternalHeading();
+    void turn(double angle);
+    void turnSync(double angle);
+    Pose2d getLastError();
+    void update();
+    boolean isBusy();
+    void waitForRest();
+    TrajectoryBuilder trajectoryBuilder();
+    void followTrajectory(Trajectory trajectory);
+    void followTrajectorySync(Trajectory trajectory);
 }

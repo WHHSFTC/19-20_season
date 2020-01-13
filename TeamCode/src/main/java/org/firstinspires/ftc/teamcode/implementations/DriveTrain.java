@@ -1,11 +1,23 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.control.PIDFController;
+import com.acmerobotics.roadrunner.drive.DriveSignal;
+import com.acmerobotics.roadrunner.drive.MecanumDrive;
+import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
+import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.profile.MotionProfile;
+import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+import com.acmerobotics.roadrunner.profile.MotionState;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
+import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumConstraints;
+import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -17,7 +29,39 @@ import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 import java.util.*;
 
-public class DriveTrain implements StrafingDriveTrain {
+
+public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
+
+    private NanoClock clock;
+
+    private double turnStart;
+
+    public enum Mode{
+        REST,
+        TURN,
+        FOLLOW
+    }
+
+    private Mode mode;
+
+    private List<DcMotor> motors;
+    private List<Double> lastWheelPositions;
+
+    private double lastTimeStamp;
+
+    private DriveConstraints constraints;
+    private TrajectoryFollower follower;
+    private MotionProfile turnProfile;
+    private PIDFController turnController;
+
+    private PIDCoefficients DUMMY_PID = new PIDCoefficients(
+            RobotConstants.TURNING_PID.p * RobotConstants.SCALAR,
+            RobotConstants.TURNING_PID.i * RobotConstants.SCALAR,
+            RobotConstants.TURNING_PID.d * RobotConstants.SCALAR
+    );
+    private PIDCoefficients TRANSLATIONAL_PID = DUMMY_PID;
+    private PIDCoefficients HEADING_PIG = DUMMY_PID;
+
     private static final double MECANUM_WHEEL_CIRCUMFERENCE = 12.368475;
     private double offset;
     private DcMotor motorRF;
@@ -40,18 +84,48 @@ public class DriveTrain implements StrafingDriveTrain {
     public static final double LOADING_ZONE = 90;
 
     public DriveTrain(OpModeIF opMode, String rf, String lf, String lb, String rb) {
+        super(
+                new DriveConstants().getKV(),
+                new DriveConstants().getKA(),
+                new DriveConstants().getKStatic(),
+                new DriveConstants().getTRACK_WIDTH()
+        );
+
         this.opMode = opMode;
+
+        this.mode = Mode.REST;
+
         motorRF = opMode.getHardwareMap().dcMotor.get(rf);
         motorLF = opMode.getHardwareMap().dcMotor.get(lf);
         motorLB = opMode.getHardwareMap().dcMotor.get(lb);
         motorRB = opMode.getHardwareMap().dcMotor.get(rb);
+        motors = Arrays.asList(motorRF, motorLF, motorLB, motorRB);
         setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
+
         imu = opMode.getHardwareMap().get(BNO055IMU.class, "imu");
         initImu();
+
+        constraints = new MecanumConstraints(
+                new DriveConstants().getBASE_CONSTRAINTS(),
+                new DriveConstants().getTRACK_WIDTH()
+        );
+
+        follower = new HolonomicPIDVAFollower(
+                TRANSLATIONAL_PID,
+                TRANSLATIONAL_PID,
+                HEADING_PIG
+        );
+
+        turnController = new PIDFController(HEADING_PIG);
+        turnController.setInputBounds(0, 2 * Math.PI);
+
+        clock = NanoClock.system();
+
         P_TURN_COEFF = RobotConstants.TURNING_PID.p * RobotConstants.SCALAR;
         I_TURN_COEFF = RobotConstants.TURNING_PID.i * RobotConstants.SCALAR;
         D_TURN_COEFF = RobotConstants.TURNING_PID.d * RobotConstants.SCALAR;
     }
+
 
     public void stubify() {
         motorRF = new DcMotorStub(opMode);
@@ -223,6 +297,51 @@ public class DriveTrain implements StrafingDriveTrain {
         motorRB.setPower(rb);
     }
 
+    public void setMotorPowers(double rf, double lf, double lb, double rb) {
+        setPowers(
+                rf,
+                lf,
+                lb,
+                rb
+        );
+    }
+
+    public List<Double> getWheelPositions() {
+        List<Double> wheelPositions = new ArrayList<>();
+        for (DcMotor motor : this.motors) {
+            wheelPositions.add(new DriveConstants().encoderTicksToInches(motor.getCurrentPosition()));
+        }
+        return wheelPositions;
+    }
+
+    public List<Double> getWheelVelocities() {
+        List<Double> positions = getWheelPositions();
+        double currentTimeStamp = clock.seconds();
+
+        List<Double> velocities = new ArrayList<>();
+        if (lastWheelPositions != null) {
+            double dt = currentTimeStamp - lastTimeStamp;
+            for (int i = 0; i < positions.size(); i++) {
+                velocities.add(
+                        (positions.get(i) - lastWheelPositions.get(i)) / dt
+                );
+            }
+        } else {
+            for (int i = 0; i < positions.size(); i++) {
+                velocities.add(0.0);
+            }
+        }
+
+        lastTimeStamp = currentTimeStamp;
+        lastWheelPositions = positions;
+
+        return velocities;
+    }
+
+    public double getRawExternalHeading() {
+        return getRawHeadings().firstAngle;
+    }
+
     @Override
     public void setModes(DcMotor.RunMode mode) {
         motorLF.setMode(mode);
@@ -242,14 +361,13 @@ public class DriveTrain implements StrafingDriveTrain {
     public void stop() {
         halt();
     }
+
     public void halt() {
         motorRF.setPower(0);
         motorLF.setPower(0);
         motorLB.setPower(0);
         motorRB.setPower(0);
     }
-
-    // absolute
 
     /**
      * turns robot
@@ -299,6 +417,102 @@ public class DriveTrain implements StrafingDriveTrain {
             opMode.getTelemetry().update();
         }
         accelerate(0);
+    }
+
+    public void turn(double angle) {
+        double heading = getPoseEstimate().getHeading();
+        turnProfile = MotionProfileGenerator.generateSimpleMotionProfile(
+                new MotionState(heading, 0, 0, 0),
+                new MotionState(heading + angle, 0, 0, 0),
+                constraints.maxVel,
+                constraints.maxAccel,
+                constraints.maxJerk
+        );
+        turnStart = clock.seconds();
+        mode = Mode.TURN;
+    }
+
+    public void turnSync(double angle) {
+        turn(angle);
+        waitForRest();
+    }
+
+    public Pose2d getLastError() {
+        switch (mode) {
+            case FOLLOW:
+                return follower.getLastError();
+            case TURN:
+                return new Pose2d(0, 0, turnController.getLastError());
+            case REST:
+                return new Pose2d();
+        }
+        throw new AssertionError();
+    }
+
+    public void update() {
+        updatePoseEstimate();
+
+        Pose2d currentPose = getPoseEstimate();
+        Pose2d lastError = getLastError(); // put into packets to send to FTC Dashboard if needed
+
+        switch(mode) {
+            case REST:
+                break;
+            case TURN:
+                double time = clock.seconds() - turnStart;
+
+                MotionState targetState = turnProfile.get(time);
+
+                turnController.setTargetPosition(targetState.getX());
+
+                double targetOmega = targetState.getV();
+                double targetAlpha = targetState.getA();
+
+                double correction = turnController.update(currentPose.getHeading(), targetOmega);
+
+                setDriveSignal(
+                        new DriveSignal(
+                                new Pose2d(
+                                        0,
+                                        0,
+                                        targetOmega + correction
+                                ),
+                                new Pose2d(
+                                        0,
+                                        0,
+                                        targetAlpha
+                                )
+                        )
+                );
+
+                if (time >= turnProfile.duration()) {
+                    mode = Mode.REST;
+                    setDriveSignal(new DriveSignal());
+                }
+
+                break;
+            case FOLLOW:
+                setDriveSignal(follower.update(currentPose));
+
+                Trajectory trajectory = follower.getTrajectory();
+
+                if (!follower.isFollowing()) {
+                    mode = Mode.REST;
+                    setDriveSignal(new DriveSignal());
+                }
+
+                break;
+        }
+    }
+
+    public boolean isBusy() {
+        return mode != Mode.REST;
+    }
+
+    public void waitForRest() {
+        while (!Thread.currentThread().isInterrupted() && isBusy()) {
+            update();
+        }
     }
 
     @Override
@@ -427,6 +641,7 @@ public class DriveTrain implements StrafingDriveTrain {
         motorLB.setPower(-power * (-y + x));
         motorRB.setPower(power * (y + x));
     }
+
     @Override
     public void setHeading(double angle) {
         offset = angle - getRawHeading();
@@ -439,4 +654,19 @@ public class DriveTrain implements StrafingDriveTrain {
         encoders.add(motorRB.getCurrentPosition());
         return encoders;
     }
+
+    public TrajectoryBuilder trajectoryBuilder() {
+        return new TrajectoryBuilder(getPoseEstimate(), constraints);
+    }
+
+    public void followTrajectory(Trajectory trajectory) {
+        follower.followTrajectory(trajectory);
+        mode = Mode.FOLLOW;
+    }
+
+    public void followTrajectorySync(Trajectory trajectory) {
+        followTrajectory(trajectory);
+        waitForRest();
+    }
+
 }
