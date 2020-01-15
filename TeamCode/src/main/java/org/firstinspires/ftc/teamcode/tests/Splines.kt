@@ -15,8 +15,8 @@ class Splines : Auto() {
                 bot.driveTrain.trajectoryBuilder()
                         .splineTo(
                                 pose = Pose2d(
-                                        x = 10.0,
-                                        y = 10.0,
+                                        x = 30.0,
+                                        y = 0.0,
                                         heading = 0.0
                                 )
                         )

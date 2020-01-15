@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.implementations
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.control.PIDCoefficients
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints
 import com.qualcomm.hardware.motors.NeveRest20Gearmotor
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType
 
+@Config
 class DriveConstants {
 
     val MOTOR_CONFIG = MotorConfigurationType.getMotorType(NeveRest20Gearmotor::class.java)
@@ -16,18 +18,22 @@ class DriveConstants {
     val GEAR_RATIO = 1.0 // output (wheel) speed / input (motor) speed
     val TRACK_WIDTH = 1.0
 
-    val kV : Double get() = 1.0 / rpmToVelocity(maxRpm)
-    val kA : Double get() = 0.0
-    val kStatic : Double get() = 0.0
+    val kV : Double
+        get() = 1.0 / rpmToVelocity(maxRpm)
+    val kA : Double
+        get() = 0.0
+    val kStatic : Double
+        get() = 0.0
 
-    val BASE_CONSTRAINTS : DriveConstraints get() = DriveConstraints(
+    val BASE_CONSTRAINTS : DriveConstraints
+        get() = DriveConstraints(
             maxVel = 30.0,
             maxAccel = 30.0,
             maxJerk = 0.0,
             maxAngVel = Math.toRadians(180.0),
             maxAngAccel = Math.toRadians(180.0),
             maxAngJerk = 0.0
-    )
+        )
 
     fun encoderTicksToInches(ticks: Double): Double {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / MOTOR_CONFIG.ticksPerRev

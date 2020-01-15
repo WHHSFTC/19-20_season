@@ -17,8 +17,8 @@ public class SplinesTest extends Auto {
                 bot.driveTrain.trajectoryBuilder()
                 .splineTo(
                         new Pose2d(
-                                10,
-                                10,
+                                30,
+                                0,
                                 0
                         )
                 )
