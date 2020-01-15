@@ -21,6 +21,8 @@ public class SkyStone extends Auto {
         // preparing arm to grab
         bot.driveTrain.goAngle( 41-Sursum.ROBOT_LENGTH, bot.opponents_side, .5);
 
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE);
+
         bot.opMode.getTelemetry().addLine("Starting TensorFlow Search");
         bot.opMode.getTelemetry().update();
 
@@ -42,7 +44,7 @@ public class SkyStone extends Auto {
         bot.driveTrain.goAngle(12, bot.our_side, .5);
 
         // goes 36 inches into building zone
-        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 36, DriveTrain.BUILDING_ZONE, .25);
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 36, DriveTrain.BUILDING_ZONE, .5);
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
@@ -59,7 +61,7 @@ public class SkyStone extends Auto {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // heading back to get second sky stone
-        bot.driveTrain.goAngle(skyStonePosition.getDistance() + (24 + 36), DriveTrain.LOADING_ZONE, .25);
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() + (24 + 36), DriveTrain.LOADING_ZONE, .75);
 
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
@@ -67,9 +69,6 @@ public class SkyStone extends Auto {
         sleep(250);
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
-
-        // adjustment
-        bot.driveTrain.goAngle(2, bot.our_side, .75);
 
         // driving to get the stone
         bot.driveTrain.goAngle(14, bot.opponents_side, .25);
@@ -79,6 +78,7 @@ public class SkyStone extends Auto {
 
         // heads back with stone
         bot.driveTrain.goAngle(14, bot.our_side, .5);
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE);
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + 24 + 36, DriveTrain.BUILDING_ZONE, .25);
 
         // drop stone
