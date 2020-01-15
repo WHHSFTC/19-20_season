@@ -146,6 +146,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
         */
 
         double turnAngel = Math.toRadians(turnAngle);
+        double posTurnAngel = Math.abs(turnAngel);
         double radius = (distance/2)/Math.sin(Math.abs(turnAngel)/2);
 
         //compute how many rotations to move desired distance
@@ -161,15 +162,15 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
         //find the ratio between the radius of the outer and inner circles, each 9 inches from the center of the robot
         double ratio = (radius - 9) / (radius + 9);
 
-        int expRF = (int) Math.signum((yFront - xFront)) >>> 31;
-        int expLF = (int) Math.signum((-yFront - xFront)) >>> 31;
-        int expLB = (int) Math.signum((-yFront + xFront)) >>> 31;
-        int expRB = (int) Math.signum((yFront + xFront)) >>> 31;
+        int expRF = (int) Math.signum((yFront - xFront) * turnAngle) >>> 31;
+        int expLF = (int) Math.signum((-yFront - xFront) * turnAngle) >>> 31;
+        int expLB = (int) Math.signum((-yFront + xFront) * turnAngle) >>> 31;
+        int expRB = (int) Math.signum((yFront + xFront) * turnAngle) >>> 31;
 
-        double powerRF = power * Math.pow(ratio, expRF) * Math.signum(yFront - xFront);
-        double powerLF = power * Math.pow(ratio, expLF) * Math.signum(-yFront - xFront);
-        double powerLB = power * Math.pow(ratio, expLB) * Math.signum(-yFront + xFront);
-        double powerRB = power * Math.pow(ratio, expRB) * Math.signum(yFront + xFront);
+        double powerRF = power * Math.pow(ratio, expRF) * Math.signum(yFront - xFront) * Math.signum(turnAngle);
+        double powerLF = power * Math.pow(ratio, expLF) * Math.signum(-yFront - xFront) * Math.signum(turnAngle);
+        double powerLB = power * Math.pow(ratio, expLB) * Math.signum(-yFront + xFront) * Math.signum(turnAngle);
+        double powerRB = power * Math.pow(ratio, expRB) * Math.signum(yFront + xFront) * Math.signum(turnAngle);
 
         double heading = getHeading();
         double angleWanted = turnAngle + heading;
