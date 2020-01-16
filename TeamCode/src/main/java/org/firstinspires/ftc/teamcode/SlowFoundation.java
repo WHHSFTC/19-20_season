@@ -1,18 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.implementations.Auto;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 
+@Disabled
 @Autonomous(name = "SlowFoundation", group = "Auto")
 public class SlowFoundation extends Auto {
 
     @Override
     public void run() {
-
         bot.driveTrain.align(bot.our_side);
 
         // heading over 2 tiles to get lined up with the center of the foundation

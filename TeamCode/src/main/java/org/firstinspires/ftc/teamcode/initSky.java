@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.implementations.Auto;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
@@ -14,6 +15,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 /**
  * Created by khadija on 12/27/2019.
  */
+@Disabled
 @Autonomous(name = "InitSky", group = "Auto")
 public class initSky extends Auto {
     public OpenCvCamera Cam;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.tests;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
-//@Disabled
+@Disabled
 @Autonomous(name = "ArcTest", group = "Test")
 public class ArcTest extends LinearOpMode implements OpModeIF {
     private Sursum bot;

@@ -1,14 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.implementations.Auto;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
-
-@Autonomous(name = "FoundArc", group = "Auto")
-public class FoundArc extends Auto {
+@Disabled
+@Autonomous(name = "FoundArc: Park by the wall", group = "Auto")
+public class FoundArcJava extends Auto {
     @Override
     public void run() throws InterruptedException {
         bot.driveTrain.align(bot.our_side);
@@ -26,7 +27,7 @@ public class FoundArc extends Auto {
         switch(bot.alliance) {
             case BLUE:
                 bot.driveTrain.goArc(15, 90, 90, 0.5);
-            break;
+                break;
             case RED:
                 bot.driveTrain.goArc(15, 90, -90, 0.5);
         }

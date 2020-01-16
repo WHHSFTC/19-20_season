@@ -93,10 +93,8 @@ public class Tele extends LinearOpMode implements OpModeIF {
 
     // drives the output
     private void driveOutput() {
-        if(gamepad2.dpad_down) bot.arm.setState(Arm.State.OUT);
-        if(gamepad2.dpad_left) bot.arm.setState(Arm.State.RIGHT);
-        if(gamepad2.dpad_up) bot.arm.setState(Arm.State.OUT);
-        if(gamepad2.dpad_right) bot.arm.setState(Arm.State.RIGHT);
+        if(gamepad2.dpad_left || gamepad2.dpad_right) bot.arm.setState(Arm.State.OUT);
+        if(gamepad2.dpad_down || gamepad2.dpad_up) bot.arm.setState(Arm.State.RIGHT);
         if(gamepad2.b) bot.arm.setState(Arm.State.BELT);
         if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
         if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);

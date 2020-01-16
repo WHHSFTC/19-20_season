@@ -448,7 +448,6 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
         Pose2d currentPose = getPoseEstimate();
         Pose2d lastError = getLastError(); // put into packets to send to FTC Dashboard if needed
-
         switch(mode) {
             case REST:
                 break;
