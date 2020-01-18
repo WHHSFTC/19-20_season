@@ -15,7 +15,6 @@ public class SkyInit extends Auto {
     public void run() {
 
         // finding position of sky stone
-        pos = bot.vuforiaStuff.vuforiascan(false,true);
         switch(pos){
             case RIGHT:
                 bot.driveTrain.goAngle(53, bot.opponents_side,.5);
