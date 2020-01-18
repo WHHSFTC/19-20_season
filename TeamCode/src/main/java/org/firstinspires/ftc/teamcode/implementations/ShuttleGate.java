@@ -46,8 +46,10 @@ public class ShuttleGate implements Mechanism<ShuttleGate.State> {
             return right;
         }
     }
+
     @Override
     public void stop() {}
+
     public static class LeftGate extends StatefulServo<LeftGate.State> {
         LeftGate(Servo servo) {
             super(servo);
@@ -65,12 +67,13 @@ public class ShuttleGate implements Mechanism<ShuttleGate.State> {
             }
         }
     }
+
     public static class RightGate extends StatefulServo<RightGate.State> {
         RightGate(Servo servo) {
             super(servo);
         }
         enum State implements StatefulServo.State {
-            FOUNDATION(.44), OPEN(1), CLOSED(0.57);
+            FOUNDATION(.44), OPEN(.9), CLOSED(0.6);
             private double value;
             State(double value) {
                 this.value = value;

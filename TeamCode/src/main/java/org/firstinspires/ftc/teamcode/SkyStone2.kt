@@ -91,7 +91,7 @@ class SkyStone2 : Auto() {
         // adjustment
         bot.driveTrain.goAngle(2.0, bot.opponents_side, .75)
 
-        // parkz
+        // park
         bot.driveTrain.goAngle(16.0, DriveTrain.LOADING_ZONE, .75)
     }
 

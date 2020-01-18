@@ -36,7 +36,7 @@ class SkyStone : Auto() {
         bot.driveTrain.goAngle(14.0, bot.our_side, .5)
 
         // goes 36 inches into building zone
-        bot.driveTrain.goAngle(skyStonePosition.distance + 36, DriveTrain.BUILDING_ZONE, .5)
+        bot.driveTrain.goAngle(skyStonePosition.distance + 40, DriveTrain.BUILDING_ZONE, .5)
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // drops stone
@@ -52,7 +52,7 @@ class SkyStone : Auto() {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // heading back to get second sky stone
-        bot.driveTrain.goAngle(skyStonePosition.distance + (24 + 36), DriveTrain.LOADING_ZONE, .75)
+        bot.driveTrain.goAngle(skyStonePosition.distance + (24 + 40), DriveTrain.LOADING_ZONE, .75)
 
         bot.sideArm.arm.state = SideArm.Arm.State.DOWN
         bot.sideArm.claw.state = SideArm.Claw.State.OPEN
@@ -73,7 +73,7 @@ class SkyStone : Auto() {
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
-        bot.driveTrain.goAngle(skyStonePosition.distance + 24 + 36, DriveTrain.BUILDING_ZONE, .5)
+        bot.driveTrain.goAngle(skyStonePosition.distance + 24 + 40, DriveTrain.BUILDING_ZONE, .5)
 
         // drop stone
         bot.sideArm.claw.state = SideArm.Claw.State.OPEN

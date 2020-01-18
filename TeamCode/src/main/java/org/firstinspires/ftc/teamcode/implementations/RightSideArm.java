@@ -32,7 +32,7 @@ public class RightSideArm extends SideArm {
         }
 
         public enum State implements StatefulServo.State {
-            UP(0.65), HOLD(0.4), DOWN(.21); //todo positions
+            UP(0.65), HOLD(0.4), DOWN(.21);
             private double position;
             State(double position) {
                 this.position = position;

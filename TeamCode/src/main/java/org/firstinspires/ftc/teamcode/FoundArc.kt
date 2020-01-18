@@ -28,7 +28,7 @@ class FoundArc : Auto() {
 
         bot.shuttleGate.state = ShuttleGate.State.CLOSED
 
-        bot.driveTrain.goAngle(24.0, DriveTrain.BUILDING_ZONE, .5)
+        bot.driveTrain.goAngle(24.0, DriveTrain.BUILDING_ZONE, .25)
 
         bot.driveTrain.goAngle(24.0, bot.our_side, .5)
 

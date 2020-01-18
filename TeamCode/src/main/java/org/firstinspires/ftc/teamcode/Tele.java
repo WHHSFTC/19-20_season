@@ -32,7 +32,6 @@ public class Tele extends LinearOpMode implements OpModeIF {
         bot.rightArm.arm.setState(SideArm.Arm.State.UP);
         ((LeftSideArm.Claw) bot.leftArm.claw).servo.setPosition(1);
         ((RightSideArm.Claw) bot.rightArm.claw).servo.setPosition(0);
-//        bot.driveTrain.
         waitForStart();
         while (opModeIsActive()) {
             driveDriveTrain();
