@@ -7,11 +7,14 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
+import org.firstinspires.ftc.teamcode.tests.VuforiaStuff;
 
 /**
  * Bot Class
@@ -43,6 +46,11 @@ public class Sursum {
     //public DistanceSensor ods;
     //public DigitalChannel limit;
     public ColorSensor color_sensor_bottom;
+    //public Vision vision;
+    public VuforiaStuff vuforiaStuff;
+    public VuforiaLocalizer vuforia;
+    VuforiaStuff.skystonePos pos;
+    public static final String VUFORIA_KEY = "AZjnTyD/////AAABmWbY5Kf/tUDGlNmyg0to/Ocsr2x5NKR0bN0q9InlH4shr90xC/iovUPDBu+PWzwD2+F8moAWhCpUivQDuKp/j2IHVtyjoKOQvPkTaXAb1IgPtAM6pMDltXDTkQ8Olwds22Z97Wdx+RAPK8WrC809Hj+JDZJJ3/Lx3bqAwcR1TRJ4OejxkWVSAKvFX8rOp5gE82jPNEv1bQ5S+iTgFtToZNQTj2ldtYJjoSkyUHqfODyV3JUazYSu82UEak0My2Ks/zIXYrDEY0y5MgNzRr9pzg3AiA8pbUT3SVk3SSUYmjlml+H9HovgDuiGrnJnmNMSjQGfcGpliGW6fs61ePYuAHvN4+Rwa1esR/prFgYKrTTn";
     public VisionTF visionTF;
     public OpModeIF opMode;
     public DigitalChannel allianceSwitch;
@@ -80,6 +88,7 @@ public class Sursum {
         color_sensor_bottom = opMode.getHardwareMap().colorSensor.get("color");
         allianceSwitch = opMode.getHardwareMap().digitalChannel.get("allianceSwitch");
         allianceSwitch.setMode(DigitalChannel.Mode.INPUT);
+        vuforiaStuff = new VuforiaStuff(vuforia);
         // }}}
 
 //        vision = new Vision(opMode, "Webcam 1");
@@ -94,16 +103,25 @@ public class Sursum {
 
     public void init(Alliance alliance) {
         this.alliance = alliance;
+        int cameraMonitorViewId = opMode.getHardwareMap().appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.getHardwareMap().appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
         switch(this.alliance) {
             case RED:
                 our_side = DriveTrain.RED_SIDE;
                 opponents_side = DriveTrain.BLUE_SIDE;
                 sideArm = rightArm;
+                pos = vuforiaStuff.vuforiascan(false,true);
                 break;
             case BLUE:
                 our_side = DriveTrain.BLUE_SIDE;
                 opponents_side = DriveTrain.RED_SIDE;
                 sideArm = leftArm;
+                pos = vuforiaStuff.vuforiascan(false,false);
+
         }
         // reset the motors
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -118,6 +136,22 @@ public class Sursum {
         rightArm.claw.setState(SideArm.Claw.State.CLOSED);
         // start vision
         visionTF = new VisionTF(opMode, "Webcam 1");
+        switch (pos){
+            case RIGHT:
+                opMode.getTelemetry().addLine("Skystone Pos: RIGHT");
+                opMode.getTelemetry().update();
+                break;
+            case CENTER:
+                opMode.getTelemetry().addLine("Skystone Pos: CENTER");
+                opMode.getTelemetry().update();
+                break;
+            case LEFT:
+                opMode.getTelemetry().addLine("Skystone Pos: LEFT");
+                opMode.getTelemetry().update();
+                break;
+        }
+
+
         // set zero power behaviors to float so Kaden can turn the bot
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
         // tell Kaden the bot can now be pushed
