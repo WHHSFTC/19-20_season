@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain
 class Splines : Auto() {
 
     override fun run() {
-        (bot.driveTrain as DriveTrain).stubify()
 
         if (isStopRequested) return
 
