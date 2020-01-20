@@ -4,12 +4,14 @@ import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.implementations.Auto
+import org.firstinspires.ftc.teamcode.implementations.DriveTrain
 
-@Disabled
+//@Disabled
 @Autonomous(name = "Splines.kt", group = "Test")
 class Splines : Auto() {
 
     override fun run() {
+        (bot.driveTrain as DriveTrain).stubify()
 
         if (isStopRequested) return
 

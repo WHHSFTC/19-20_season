@@ -21,9 +21,11 @@ public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
     private Direction direction;
     private RunMode mode;
     private OpModeIF opMode;
+    private String name;
 
-    DcMotorStub(OpModeIF opMode) {
+    DcMotorStub(OpModeIF opMode, String name) {
         this.opMode = opMode;
+        this.name = name;
     }
 
 
@@ -115,6 +117,8 @@ public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
     @Override
     public void setPower(double power) {
         this.power = power;
+        opMode.getTelemetry().addData(name, power);
+        opMode.getTelemetry().update();
     }
 
     @Override

@@ -28,6 +28,7 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
 
 import java.util.*;
+import java.util.stream.*;
 
 
 public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
@@ -85,10 +86,10 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
     public DriveTrain(OpModeIF opMode, String rf, String lf, String lb, String rb) {
         super(
-                new DriveConstants().getKV(),
-                new DriveConstants().getKA(),
-                new DriveConstants().getKStatic(),
-                new DriveConstants().getTRACK_WIDTH()
+                DriveConstants.getKV(),
+                DriveConstants.getKA(),
+                DriveConstants.getKStatic(),
+                DriveConstants.getTRACK_WIDTH()
         );
 
         this.opMode = opMode;
@@ -106,8 +107,8 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
         initImu();
 
         constraints = new MecanumConstraints(
-                new DriveConstants().getBASE_CONSTRAINTS(),
-                new DriveConstants().getTRACK_WIDTH()
+                DriveConstants.getBASE_CONSTRAINTS(),
+                DriveConstants.getTRACK_WIDTH()
         );
 
         follower = new HolonomicPIDVAFollower(
@@ -128,10 +129,10 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
 
     public void stubify() {
-        motorRF = new DcMotorStub(opMode);
-        motorLF = new DcMotorStub(opMode);
-        motorLB = new DcMotorStub(opMode);
-        motorRB = new DcMotorStub(opMode);
+        motorRF = new DcMotorStub(opMode, "rf");
+        motorLF = new DcMotorStub(opMode, "lf");
+        motorLB = new DcMotorStub(opMode, "lb");
+        motorRB = new DcMotorStub(opMode, "rb");
         setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
@@ -303,7 +304,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
     public List<Double> getWheelPositions() {
         List<Double> wheelPositions = new ArrayList<>();
         for (DcMotor motor : this.motors) {
-            wheelPositions.add(new DriveConstants().encoderTicksToInches(motor.getCurrentPosition()));
+            wheelPositions.add(DriveConstants.encoderTicksToInches(motor.getCurrentPosition()));
         }
         return wheelPositions;
     }
@@ -315,15 +316,12 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
         List<Double> velocities = new ArrayList<>();
         if (lastWheelPositions != null) {
             double dt = currentTimeStamp - lastTimeStamp;
-            for (int i = 0; i < positions.size(); i++) {
-                velocities.add(
-                        (positions.get(i) - lastWheelPositions.get(i)) / dt
-                );
-            }
+            IntStream.range(0, positions.size())
+                    .forEach(i -> velocities.add(
+                            positions.get(i) - lastWheelPositions.get(i) / dt
+                    ));
         } else {
-            for (int i = 0; i < positions.size(); i++) {
-                velocities.add(0.0);
-            }
+            IntStream.range(0, positions.size()).forEach(i -> velocities.add(0.0));
         }
 
         lastTimeStamp = currentTimeStamp;

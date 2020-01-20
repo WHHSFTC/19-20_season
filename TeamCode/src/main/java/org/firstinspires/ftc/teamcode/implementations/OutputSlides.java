@@ -50,9 +50,9 @@ public class OutputSlides implements ContinuousMechanism {
     }
 
     public void dumpEncoders() {
-        opMode.getTelemetry().addData("spool 1", motor1.getPower());
-        opMode.getTelemetry().addData("spool 2", motor2.getPower());
-        opMode.getTelemetry().addData("spool 3", motor3.getPower());
+        opMode.getTelemetry().addData("spool 1", motor1.getCurrentPosition());
+        opMode.getTelemetry().addData("spool 2", motor2.getCurrentPosition());
+        opMode.getTelemetry().addData("spool 3", motor3.getCurrentPosition());
     }
     public void stop() {
         setState(0.0);
@@ -68,5 +68,22 @@ public class OutputSlides implements ContinuousMechanism {
         motor1.setPower(0.5);
         motor2.setPower(0.5);
         motor3.setPower(0.5);
+    }
+
+    public void runToPosition(int position, double power) {
+        int threshold = 1;
+        motor1.setTargetPosition(position);
+        motor2.setTargetPosition(position);
+        motor3.setTargetPosition(position);
+        motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor1.setPower(power);
+        motor2.setPower(power);
+        motor3.setPower(power);
+        while (
+                Math.abs(position - motor1.getCurrentPosition()) <= threshold &&
+                Math.abs(position - motor2.getCurrentPosition()) <= threshold &&
+                Math.abs(position - motor3.getCurrentPosition()) <= threshold) {}
     }
 }
