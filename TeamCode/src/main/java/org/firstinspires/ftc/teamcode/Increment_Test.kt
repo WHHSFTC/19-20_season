@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 
 @Autonomous(name = "Slides Increment Test", group = "Tele")
 class Increment_Test : LinearOpMode(), OpModeIF{
+    // creating the Sursum object
+    val bot = Sursum(this)
 
     /**
      * companion object to create constant value threshold
@@ -33,6 +35,10 @@ class Increment_Test : LinearOpMode(), OpModeIF{
         // private val of increment between levels
         private val levelIncrement: Int = 250
 
+        // constant value of the height of foundation hooks
+        // TODO check if this location is correct
+        private val foundationHookHeight: Int = 200
+
         // increments level based on the number of levels
         fun increment(levels: Int = 1) {
             level += levelIncrement * levels
@@ -46,13 +52,23 @@ class Increment_Test : LinearOpMode(), OpModeIF{
         /**
          * functionality
          * automation of reaching stone level
-         * TODO automate turning arm and claw
          */
-        fun gotoLevel(power: Double = 1.0) {
+        fun gotoLevel(power: Double = 1.0, location: Arm.State = Arm.State.OUT) {
             increment()
             (bot.outputSlides as OutputSlides).runToPosition(level, power)
+            bot.arm.state = location
             decrement()
             (bot.outputSlides as OutputSlides).runToPosition(level, power)
+            returnToZero()
+        }
+
+        private fun returnToZero(power: Double = 1.0) {
+            if (level < foundationHookHeight) {
+                increment(levels = 2)
+                (bot.outputSlides as OutputSlides).runToPosition(level, power)
+            }
+            bot.arm.state = Arm.State.BELT
+            (bot.outputSlides as OutputSlides).runToPosition(0, power)
         }
     }
 
@@ -60,9 +76,6 @@ class Increment_Test : LinearOpMode(), OpModeIF{
      * override of runOpMode from LinearOpMode
      */
     override fun runOpMode() {
-        // creating Sursum object
-        val bot = Sursum(this)
-
         // creating CurrentLevel counter object
         val level = CurrentLevel(bot)
 
