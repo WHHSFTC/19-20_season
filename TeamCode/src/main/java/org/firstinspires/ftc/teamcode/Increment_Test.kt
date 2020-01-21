@@ -86,6 +86,12 @@ class Increment_Test : LinearOpMode(), OpModeIF{
             if (gamepad2.left_bumper) bot.claw.state = Claw.State.CLOSED
 
             if (gamepad2.right_bumper) bot.claw.state = Claw.State.OPEN
+
+            if (gamepad2.dpad_left || gamepad2.dpad_right) bot.arm.state = Arm.State.OUT
+
+            if (gamepad2.dpad_down || gamepad2.dpad_up) bot.arm.state = Arm.State.RIGHT
+
+            if (gamepad2.b) bot.arm.state = Arm.State.BELT
         }
     }
 }
