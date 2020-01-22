@@ -135,7 +135,7 @@ public class Sursum {
         leftArm.claw.setState(SideArm.Claw.State.CLOSED);
         rightArm.claw.setState(SideArm.Claw.State.CLOSED);
         // start vision
-        visionTF = new VisionTF(opMode, "Webcam 1");
+//        visionTF = new VisionTF(opMode, "Webcam 1");
         /*switch (pos){
             case RIGHT:
                 opMode.getTelemetry().addLine("Skystone Pos: RIGHT");

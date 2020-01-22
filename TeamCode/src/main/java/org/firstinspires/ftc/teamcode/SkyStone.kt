@@ -6,6 +6,12 @@ import org.firstinspires.ftc.teamcode.implementations.*
 @Autonomous(name = "SkyStone: Park near bridge", group = "Auto")
 class SkyStone : Auto() {
 
+    override fun genesis() {
+        super.genesis()
+        // start vision
+//        var visionTF = VisionTF(, "Webcam 1")
+    }
+
     override fun run() {
         // servo calls
         bot.sideArm.arm.state = SideArm.Arm.State.DOWN

@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
+import static java.lang.Thread.sleep;
+
 // drives slide motors using sensors and encoders
 public class OutputSlides implements ContinuousMechanism {
     private DcMotor motor1;
@@ -70,20 +72,16 @@ public class OutputSlides implements ContinuousMechanism {
         motor3.setPower(0.5);
     }
 
-    public void runToPosition(int position, double power) {
-        int threshold = 1;
-        motor1.setTargetPosition(position);
-        motor2.setTargetPosition(position);
-        motor3.setTargetPosition(position);
+    public void runToPosition(int position, double power) throws InterruptedException {
+        int threshold = 100;
+        motor1.setTargetPosition(-position);
+        motor2.setTargetPosition(-position);
+        motor3.setTargetPosition(-position);
         motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor1.setPower(power);
-        motor2.setPower(power);
-        motor3.setPower(power);
-        while (
-                Math.abs(position - motor1.getCurrentPosition()) <= threshold &&
-                Math.abs(position - motor2.getCurrentPosition()) <= threshold &&
-                Math.abs(position - motor3.getCurrentPosition()) <= threshold) {}
+        setState(power);
+        Thread.sleep(500);
+        setState(0.0);
     }
 }

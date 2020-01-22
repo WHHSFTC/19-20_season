@@ -31,8 +31,8 @@ public abstract class Auto extends LinearOpMode implements OpModeIF {
     }
 
     public void genesis() throws InterruptedException {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        this.telemetry = dashboard.getTelemetry();
+//        FtcDashboard dashboard = FtcDashboard.getInstance();
+//        this.telemetry = dashboard.getTelemetry();
         bot = new Sursum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         bot.init();
