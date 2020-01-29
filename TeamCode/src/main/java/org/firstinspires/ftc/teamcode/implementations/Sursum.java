@@ -43,14 +43,16 @@ public class Sursum {
     public LeftSideArm leftArm;
     public RightSideArm rightArm;
     public SideArm sideArm;
-    //public DistanceSensor ods;
-    //public DigitalChannel limit;
+
+//    public DistanceSensor ods;
+//    public DigitalChannel limit;
 //    public ColorSensor color_sensor_bottom;
-    //public Vision vision;
-    //public VuforiaStuff vuforiaStuff;
-   // public VuforiaLocalizer vuforia;
-    //VuforiaStuff.skystonePos pos;
-    //public static final String VUFORIA_KEY = "AZjnTyD/////AAABmWbY5Kf/tUDGlNmyg0to/Ocsr2x5NKR0bN0q9InlH4shr90xC/iovUPDBu+PWzwD2+F8moAWhCpUivQDuKp/j2IHVtyjoKOQvPkTaXAb1IgPtAM6pMDltXDTkQ8Olwds22Z97Wdx+RAPK8WrC809Hj+JDZJJ3/Lx3bqAwcR1TRJ4OejxkWVSAKvFX8rOp5gE82jPNEv1bQ5S+iTgFtToZNQTj2ldtYJjoSkyUHqfODyV3JUazYSu82UEak0My2Ks/zIXYrDEY0y5MgNzRr9pzg3AiA8pbUT3SVk3SSUYmjlml+H9HovgDuiGrnJnmNMSjQGfcGpliGW6fs61ePYuAHvN4+Rwa1esR/prFgYKrTTn";
+//    public Vision vision;
+//    public VuforiaStuff vuforiaStuff;
+//    public VuforiaLocalizer vuforia;
+//    VuforiaStuff.skystonePos pos;
+//    public static final String VUFORIA_KEY = "AZjnTyD/////AAABmWbY5Kf/tUDGlNmyg0to/Ocsr2x5NKR0bN0q9InlH4shr90xC/iovUPDBu+PWzwD2+F8moAWhCpUivQDuKp/j2IHVtyjoKOQvPkTaXAb1IgPtAM6pMDltXDTkQ8Olwds22Z97Wdx+RAPK8WrC809Hj+JDZJJ3/Lx3bqAwcR1TRJ4OejxkWVSAKvFX8rOp5gE82jPNEv1bQ5S+iTgFtToZNQTj2ldtYJjoSkyUHqfODyV3JUazYSu82UEak0My2Ks/zIXYrDEY0y5MgNzRr9pzg3AiA8pbUT3SVk3SSUYmjlml+H9HovgDuiGrnJnmNMSjQGfcGpliGW6fs61ePYuAHvN4+Rwa1esR/prFgYKrTTn";
+
     public VisionTF visionTF;
     public OpModeIF opMode;
     public DigitalChannel allianceSwitch;
@@ -83,8 +85,8 @@ public class Sursum {
         // }}}
 
         // sensors {{{
-        //ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
-        //limit = opMode.hardwareMap.digitalChannel.get("limit");
+//        ods = opMode.hardwareMap.get(DistanceSensor.class, "ods");
+//        limit = opMode.hardwareMap.digitalChannel.get("limit");
 //        color_sensor_bottom = opMode.getHardwareMap().colorSensor.get("color");
         allianceSwitch = opMode.getHardwareMap().digitalChannel.get("allianceSwitch");
         allianceSwitch.setMode(DigitalChannel.Mode.INPUT);
@@ -135,7 +137,6 @@ public class Sursum {
         leftArm.claw.setState(SideArm.Claw.State.CLOSED);
         rightArm.claw.setState(SideArm.Claw.State.CLOSED);
         // start vision
-//        visionTF = new VisionTF(opMode, "Webcam 1");
         /*switch (pos){
             case RIGHT:
                 opMode.getTelemetry().addLine("Skystone Pos: RIGHT");
@@ -164,8 +165,8 @@ public class Sursum {
      */
     public SkyStonePosition findSkystone() throws InterruptedException {
         for(SkyStonePosition position : new SkyStonePosition[] {SkyStonePosition.THREE_SIX, SkyStonePosition.TWO_FIVE}) {
-            Thread.sleep(500);
-//            opMode.telemetry.addData("Tensorflow Object", object);
+//            Thread.sleep(500);
+////            opMode.telemetry.addData("Tensorflow Object", object);
 //            opMode.telemetry.addData("Confidence: ", "N/A");
 //            opMode.telemetry.update();
             if (visionTF.getStone()) {

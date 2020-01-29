@@ -40,7 +40,7 @@ class Increment_Test : LinearOpMode(), OpModeIF{
         companion object {
             private val levelValues: List<StoneLevel> = StoneLevel.values().toList()
         }
-        
+
         var l: Int = 0
 
         init {
@@ -70,7 +70,7 @@ class Increment_Test : LinearOpMode(), OpModeIF{
          * functionality
          * automation of reaching stone level
          */
-        fun gotoLevel(power: Double = 1.0, location: Arm.State = Arm.State.OUT) {
+        fun gotoLevel(power: Double = 1.0) {
             increment()
             (bot.outputSlides as OutputSlides).runToPosition(level, power)
         }

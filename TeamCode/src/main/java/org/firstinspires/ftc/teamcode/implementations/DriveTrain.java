@@ -26,6 +26,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.*;
@@ -301,6 +302,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
         );
     }
 
+    @NotNull
     public List<Double> getWheelPositions() {
         List<Double> wheelPositions = new ArrayList<>();
         for (DcMotor motor : this.motors) {
@@ -513,7 +515,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
     @Override
     public void align(double angle, Side side) {
-        //Turn  to global angle using PID
+        //Turn to global angle using PID
         // clockwise = negative input, counter-clockwise = positive input
         double angleWanted = angle - side.getDegrees();
         double rcw = 1;
@@ -568,38 +570,80 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
     // takes global angle
     public void goAngle(double dist, double angle, double power) {
-        // local angle
+        double angleWanted = getHeading();
+        double rcw = 0;
+        double integral = 0;
+        double previous_error = 0;
         double angel = Math.toRadians(angle+180-getHeading());
+
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModes(DcMotor.RunMode.RUN_TO_POSITION);
+
         double x = Math.cos(angel);
         double y = Math.sin(angel);
+
         double distance = dist / (MECANUM_WHEEL_CIRCUMFERENCE);
         double ticks = TICKSPERROTATION * distance;
+
         int ticksRF = (int) Math.round(ticks * (y - x));
         int ticksLF = (int) Math.round(ticks * (-y - x));
         int ticksLB = (int) Math.round(ticks * (-y + x));
         int ticksRB = (int) Math.round(ticks * (y + x));
+
         motorLF.setTargetPosition(ticksLF);
         motorRF.setTargetPosition(ticksRF);
         motorRB.setTargetPosition(ticksRB);
         motorLB.setTargetPosition(ticksLB);
+
         motorRF.setPower(power * (y - x));
         motorLF.setPower(-power * (-y - x));
         motorLB.setPower(-power * (-y + x));
         motorRB.setPower(power * (y + x));
+
         while (opMode.opModeIsActive()  &&
                 motorLB.isBusy() &&
                 motorRB.isBusy() &&
                 motorRF.isBusy() &&
                 motorLF.isBusy()) {
-//            opMode.getTelemetry().addData("Motor Power",
-//                    "%3d %3d %3d %3d",
-//                    power * (y - x),
-//                    -power * (-y - x),
-//                    -power * (-y + x),
-//                    power * (y + x)
-//            );
+
+//            motorRF.setPower(power * (y - x) + rcw);
+//            motorLF.setPower(-power * (-y - x) + rcw);
+//            motorLB.setPower(-power * (-y + x) + rcw);
+//            motorRB.setPower(power * (y + x) + rcw);
+
+            // maintain angle
+//            double error = angleWanted - getHeading();
+//
+//            while (error > 180 && opMode.opModeIsActive()) error -= 360;
+//
+//            while (error < -180 && opMode.opModeIsActive()) error += 360;
+//
+//            double derivative = error - previous_error;
+//
+//            // small margin of error for increased speed
+//            if (Math.abs(error) < HEADING_THRESHOLD) {
+//                error = 0;
+//            }
+//
+//            // prevents integral from growing too large
+//            if (Math.abs(error) < ANTI_WINDUP && error != 0) {
+//                integral += error;
+//            } else {
+//                integral = 0;
+//            }
+//
+//            if (integral > (50 / I_TURN_COEFF)) {
+//                integral = 50 / I_TURN_COEFF;
+//            }
+//
+//            if (error == 0) {
+//                derivative = 0;
+//            }
+//
+//            rcw = P_TURN_COEFF * error + I_TURN_COEFF * integral + D_TURN_COEFF * derivative;
+//
+//            previous_error = error;
+
             opMode.getTelemetry().addData("Raw Heading", getRawHeading());
             opMode.getTelemetry().addData("Heading", getHeading());
             opMode.getTelemetry().addData("Angle", angel);
@@ -614,12 +658,15 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
                     motorRB.getTargetPosition(),
                     motorRF.getTargetPosition());
             opMode.getTelemetry().addData("gyroHeading", imu.getAngularOrientation());
+
             dumpMotors();
+
             opMode.getTelemetry().update();
         }
-        setPowers(0,0,0,0);
-        setModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        accelerate(0);
+
+        setModes(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
@@ -637,6 +684,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
     public void setHeading(double angle) {
         offset = angle - getRawHeading();
     }
+
     public List<Integer> getEncoders() {
         List<Integer> encoders = new ArrayList<>();
         encoders.add(motorRF.getCurrentPosition());

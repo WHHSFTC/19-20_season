@@ -8,8 +8,7 @@ class SkyStone : Auto() {
 
     override fun genesis() {
         super.genesis()
-        // start vision
-//        var visionTF = VisionTF(, "Webcam 1")
+        bot.visionTF = VisionTF(this, "Webcam 1")
     }
 
     override fun run() {
@@ -57,6 +56,8 @@ class SkyStone : Auto() {
         // second cycle
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
+        sleep(100)
+
         // heading back to get second sky stone
         bot.driveTrain.goAngle(skyStonePosition.distance + (24 + 40), DriveTrain.LOADING_ZONE, .75)
 
@@ -78,6 +79,8 @@ class SkyStone : Auto() {
         bot.driveTrain.goAngle(14.0, bot.our_side, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+
+        sleep(100)
 
         bot.driveTrain.goAngle(skyStonePosition.distance + 24 + 40, DriveTrain.BUILDING_ZONE, .5)
 
