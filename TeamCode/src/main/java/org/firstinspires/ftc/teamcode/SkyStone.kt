@@ -6,6 +6,11 @@ import org.firstinspires.ftc.teamcode.implementations.*
 @Autonomous(name = "SkyStone: Park near bridge", group = "Auto")
 class SkyStone : Auto() {
 
+    override fun genesis() {
+        super.genesis()
+        bot.visionTF = VisionTF(this, "Webcam 1")
+    }
+
     override fun run() {
         // servo calls
         bot.sideArm.arm.state = SideArm.Arm.State.DOWN
@@ -51,6 +56,8 @@ class SkyStone : Auto() {
         // second cycle
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
+        sleep(100)
+
         // heading back to get second sky stone
         bot.driveTrain.goAngle(skyStonePosition.distance + (24 + 40), DriveTrain.LOADING_ZONE, .75)
 
@@ -72,6 +79,8 @@ class SkyStone : Auto() {
         bot.driveTrain.goAngle(14.0, bot.our_side, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+
+        sleep(100)
 
         bot.driveTrain.goAngle(skyStonePosition.distance + 24 + 40, DriveTrain.BUILDING_ZONE, .5)
 

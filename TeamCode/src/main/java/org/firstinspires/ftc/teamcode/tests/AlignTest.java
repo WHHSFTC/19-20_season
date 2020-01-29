@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
-@Disabled
+//@Disabled
 @Autonomous(name = "AlignTest", group = "Test")
 public class AlignTest extends LinearOpMode implements OpModeIF {
     private Sursum bot;
