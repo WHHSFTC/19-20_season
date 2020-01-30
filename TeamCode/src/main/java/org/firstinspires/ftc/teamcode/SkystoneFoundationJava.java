@@ -53,13 +53,16 @@ public class SkystoneFoundationJava extends Auto {
         bot.driveTrain.goAngle(14.0, bot.our_side, .5);
 
         // goes 36 inches into building zone
-        //If we keep losing time, then change the 65 to 70 and take out the other line
+        // If we keep losing time, then change the 65 to 70 and take out the other line
         bot.driveTrain.goAngle(skyStonePosition.getDistance() + 65, DriveTrain.BUILDING_ZONE, .5);
 
+        // moving the arm to hold position
         bot.sideArm.arm.setState(SideArm.Arm.State.HOLD);
 
+        // alignment
         bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
+        // moving to side of foundation to drop stone on it
         bot.driveTrain.goAngle(14, bot.opponents_side, .5);
 
         // drops stone
@@ -77,35 +80,44 @@ public class SkystoneFoundationJava extends Auto {
 
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
 
+        // heading back to rotate
         bot.driveTrain.goAngle(10, bot.our_side, .75);
+
         // If we keep losing time, then take out this next line
         bot.driveTrain.goAngle(5,DriveTrain.BUILDING_ZONE,1);
 
+        // aligning the robot to turn to have foundation hooks facing foundation
         bot.driveTrain.align(bot.our_side);
 
+        // heading back to the foundation to be flushed to put down foundation hooks
         bot.driveTrain.goAngle(16, bot.opponents_side, .5);
 
+        // closing foundation hooks
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
 
         sleep(250);
 
+        // checking which alliance side we are on to find which direction to turn
         switch(bot.alliance) {
             case BLUE:
                 bot.driveTrain.goArc(15, 90, 90, 0.75);
                 break;
             case RED:
                 bot.driveTrain.goArc(15, 90, -90, 0.75);
+                break;
         }
 
+        // releasing foundation hooks
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
 
-        bot.driveTrain.goAngle(24.0, DriveTrain.BUILDING_ZONE, .5);
+        // heading back to push foundation into location
+        bot.driveTrain.goAngle(10.0, DriveTrain.BUILDING_ZONE, .5);
 
+        // wolfgang align
         bot.driveTrain.goAngle(24.0, bot.our_side, .5);
 
-
+        // heading back to park next to bridge
         bot.driveTrain.goAngle(48.0, DriveTrain.LOADING_ZONE, .5);
-
     }
 
     private void intakeSkystone() {

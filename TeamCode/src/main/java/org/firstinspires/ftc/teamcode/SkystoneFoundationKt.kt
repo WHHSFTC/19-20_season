@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.implementations.*
 
 /**
  * Created by khadija on 1/29/2020.
  */
+@Disabled
 @Autonomous(name = "One Sky Stone and move Foundation : Park near bridge", group = "Auto")
 class SkystoneFoundationKt : Auto() {
 
@@ -28,10 +30,8 @@ class SkystoneFoundationKt : Auto() {
         bot.opMode.telemetry.update()
 
         // finding position of sky stone
-        val skyStonePosition: SkyStonePosition
-
-        try {
-            skyStonePosition = bot.findSkystone()
+        val skyStonePosition: SkyStonePosition = try {
+            bot.findSkystone()
         } catch (ex: InterruptedException) {
             telemetry.addLine(ex.message)
             telemetry.update()
@@ -46,13 +46,17 @@ class SkystoneFoundationKt : Auto() {
         bot.driveTrain.goAngle(14.0, bot.our_side, .5)
 
         // goes 36 inches into building zone
-        bot.driveTrain.goAngle(skyStonePosition.distance + 70, DriveTrain.BUILDING_ZONE, .5)
+        // If we keep losing time, then change the 65 to 70 and take out the other line
+        bot.driveTrain.goAngle(skyStonePosition.distance + 65, DriveTrain.BUILDING_ZONE, .5)
 
+        // moving the arm to hold position
         bot.sideArm.arm.state = SideArm.Arm.State.HOLD
 
+        // alignment
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
-        bot.driveTrain.goAngle(10.0, bot.opponents_side, .5)
+        // moving to side of foundation to drop stone on it
+        bot.driveTrain.goAngle(14.0, bot.opponents_side, .5)
 
         // drops stone
         bot.sideArm.arm.state = SideArm.Arm.State.DOWN
@@ -69,30 +73,41 @@ class SkystoneFoundationKt : Auto() {
 
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
 
-        bot.driveTrain.goAngle(10.0, bot.our_side, .5)
+        // heading back to rotate
+        bot.driveTrain.goAngle(10.0, bot.our_side, .75)
 
+        // If we keep losing time, then take out this next line
+        bot.driveTrain.goAngle(5.0, DriveTrain.BUILDING_ZONE, 1.0)
+
+        // aligning the robot to turn to have foundation hooks facing foundation
         bot.driveTrain.align(bot.our_side)
 
-        bot.driveTrain.goAngle(12.0, bot.opponents_side, .5)
+        // heading back to the foundation to be flushed to put down foundation hooks
+        bot.driveTrain.goAngle(16.0, bot.opponents_side, .5)
 
-        bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION)
+        // closing foundation hooks
+        bot.shuttleGate.state = ShuttleGate.State.FOUNDATION
 
+        sleep(250)
+
+        // checking which alliance side we are on to find which direction to turn
         when (bot.alliance) {
-            Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 0.5)
-            Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 0.5)
+            Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 0.75)
+            Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 0.75)
             null -> {}
         }
 
-        bot.shuttleGate.setState(ShuttleGate.State.CLOSED)
+        // releasing foundation hooks
+        bot.shuttleGate.state = ShuttleGate.State.CLOSED
 
-        bot.driveTrain.goAngle(24.0, DriveTrain.BUILDING_ZONE, .25)
+        // heading back to push foundation into location
+        bot.driveTrain.goAngle(10.0, DriveTrain.BUILDING_ZONE, .5)
 
+        // wolfgang align
         bot.driveTrain.goAngle(24.0, bot.our_side, .5)
 
-        bot.driveTrain.goAngle(22.0, bot.opponents_side, .5)
-
+        // heading back to park next to bridge
         bot.driveTrain.goAngle(48.0, DriveTrain.LOADING_ZONE, .5)
-
     }
 
     private fun intakeSkystone() {
