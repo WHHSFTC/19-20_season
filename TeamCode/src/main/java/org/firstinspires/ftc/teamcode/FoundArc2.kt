@@ -23,7 +23,7 @@ class FoundArc2 : Auto() {
         when (bot.alliance) {
             Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 0.5)
             Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 0.5)
-            null -> throw InterruptedException("No Alliance Detected")
+            null -> {}
         }
 
         bot.shuttleGate.state = ShuttleGate.State.CLOSED
@@ -36,6 +36,5 @@ class FoundArc2 : Auto() {
 
         bot.driveTrain.goAngle(48.0, DriveTrain.LOADING_ZONE, .5)
 
-        stop()
     }
 }
