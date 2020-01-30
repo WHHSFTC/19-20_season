@@ -53,8 +53,7 @@ public class SkystoneFoundationJava extends Auto {
         bot.driveTrain.goAngle(14.0, bot.our_side, .5);
 
         // goes 36 inches into building zone
-        // If we keep losing time, then change the 65 to 70 and take out the other line
-        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 65, DriveTrain.BUILDING_ZONE, .5);
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() + 70, DriveTrain.BUILDING_ZONE, .5);
 
         // moving the arm to hold position
         bot.sideArm.arm.setState(SideArm.Arm.State.HOLD);
@@ -83,9 +82,6 @@ public class SkystoneFoundationJava extends Auto {
         // heading back to rotate
         bot.driveTrain.goAngle(10, bot.our_side, .75);
 
-        // If we keep losing time, then take out this next line
-        bot.driveTrain.goAngle(5,DriveTrain.BUILDING_ZONE,1);
-
         // aligning the robot to turn to have foundation hooks facing foundation
         bot.driveTrain.align(bot.our_side);
 
@@ -111,7 +107,7 @@ public class SkystoneFoundationJava extends Auto {
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);
 
         // heading back to push foundation into location
-        bot.driveTrain.goAngle(10.0, DriveTrain.BUILDING_ZONE, .5);
+        bot.driveTrain.goAngle(14.0, DriveTrain.BUILDING_ZONE, .5);
 
         // wolfgang align
         bot.driveTrain.goAngle(24.0, bot.our_side, .5);
