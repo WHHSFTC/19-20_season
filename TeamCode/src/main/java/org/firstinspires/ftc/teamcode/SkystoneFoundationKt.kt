@@ -46,16 +46,15 @@ class SkystoneFoundationKt : Auto() {
         bot.driveTrain.goAngle(14.0, bot.our_side, .5)
 
         // goes 36 inches into building zone
-        // If we keep losing time, then change the 65 to 70 and take out the other line
-        bot.driveTrain.goAngle(skyStonePosition.distance + 65, DriveTrain.BUILDING_ZONE, .5)
+        bot.driveTrain.goAngle(skyStonePosition.distance + 68, DriveTrain.BUILDING_ZONE, .5)
 
         // moving the arm to hold position
         bot.sideArm.arm.state = SideArm.Arm.State.HOLD
 
         // alignment
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+//        bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
-        // moving to side of foundation to drop stone on it
+// moving to side of foundation to drop stone on it
         bot.driveTrain.goAngle(14.0, bot.opponents_side, .5)
 
         // drops stone
@@ -76,43 +75,41 @@ class SkystoneFoundationKt : Auto() {
         // heading back to rotate
         bot.driveTrain.goAngle(10.0, bot.our_side, .75)
 
-        // If we keep losing time, then take out this next line
-        bot.driveTrain.goAngle(5.0, DriveTrain.BUILDING_ZONE, 1.0)
-
         // aligning the robot to turn to have foundation hooks facing foundation
         bot.driveTrain.align(bot.our_side)
 
+        // moving so it doesnt hit the sky stone
+        // bot.driveTrain.goAngle(5, DriveTrain.BUILDING_ZONE, .75);
+
         // heading back to the foundation to be flushed to put down foundation hooks
-        bot.driveTrain.goAngle(16.0, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(14.0, bot.opponents_side, .25)
+
+        sleep(250)
 
         // closing foundation hooks
         bot.shuttleGate.state = ShuttleGate.State.FOUNDATION
 
         sleep(250)
 
-        // checking which alliance side we are on to find which direction to turn
         when (bot.alliance) {
-            Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 0.75)
-            Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 0.75)
+            Alliance.BLUE -> bot.driveTrain.goArc(18.0, 90.0, 90.0, 1.0)
+            Alliance.RED -> bot.driveTrain.goArc(18.0, 90.0, -90.0, 1.0)
             null -> {}
         }
 
         // releasing foundation hooks
         bot.shuttleGate.state = ShuttleGate.State.CLOSED
 
-        // heading back to push foundation into location
-        bot.driveTrain.goAngle(10.0, DriveTrain.BUILDING_ZONE, .5)
+        bot.driveTrain.goAngle(14.0, DriveTrain.BUILDING_ZONE, .5)
 
-        // wolfgang align
-        bot.driveTrain.goAngle(24.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(8.0, bot.opponents_side, .5)
 
-        // heading back to park next to bridge
         bot.driveTrain.goAngle(48.0, DriveTrain.LOADING_ZONE, .5)
     }
 
     private fun intakeSkystone() {
         // turn so sidearm faces stones
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+        // bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // lines up sidearm
         bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
@@ -120,9 +117,10 @@ class SkystoneFoundationKt : Auto() {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // moves forward to be line with stone
+
         bot.driveTrain.goAngle(13.0, bot.opponents_side, .75)
 
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+        //  bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // claw closes on stone
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
