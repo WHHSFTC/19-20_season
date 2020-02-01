@@ -138,7 +138,7 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
     }
 
     @Override
-    public void goArc(double distance,double frontAngle, double turnAngle,double power) throws InterruptedException {
+    public void goArc(double distance, double frontAngle, double turnAngle, double power, double time) throws InterruptedException {
         setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModes(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -180,8 +180,10 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
         double previous_error = 0;
         double rcw = 1;
 
+        double startTime = clock.seconds();
+
         //combines the tick condition with a gyroscopic sensor condition to ensure accuracy
-        while (rcw !=0 && opMode.opModeIsActive()) {
+        while (rcw !=0 && opMode.opModeIsActive() && Math.abs(clock.seconds() - startTime) < time) {
             double currentHeading = getHeading();
             double error = angleWanted - currentHeading;
             //if(currentHeading<0&&turnAngle>0){

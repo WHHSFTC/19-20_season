@@ -25,7 +25,8 @@ public class ArcTest extends LinearOpMode implements OpModeIF {
         waitForStart();
         bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
-        bot.driveTrain.goArc(ArcConstants.distance, ArcConstants.frontAngle, ArcConstants.turnAngle, ArcConstants.power);
+        bot.driveTrain.goArc(ArcConstants.distance, ArcConstants.frontAngle, ArcConstants.turnAngle, ArcConstants.power, ArcConstants.waitTime);
+        sleep(10000);
         bot.stop();
     }
 
@@ -35,6 +36,7 @@ public class ArcTest extends LinearOpMode implements OpModeIF {
         public static double frontAngle = 90;
         public static double turnAngle = 90;
         public static double power = .5;
+        public static double waitTime = 5;
     }
 
     @Override

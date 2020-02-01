@@ -92,8 +92,8 @@ class SkystoneFoundationKt : Auto() {
         sleep(250)
 
         when (bot.alliance) {
-            Alliance.BLUE -> bot.driveTrain.goArc(18.0, 90.0, 90.0, 1.0)
-            Alliance.RED -> bot.driveTrain.goArc(18.0, 90.0, -90.0, 1.0)
+            Alliance.BLUE -> bot.driveTrain.goArc(18.0, 90.0, 90.0, 1.0, 5.0)
+            Alliance.RED -> bot.driveTrain.goArc(18.0, 90.0, -90.0, 1.0, 5.0)
             null -> {}
         }
 
