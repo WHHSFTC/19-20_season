@@ -26,10 +26,10 @@ public class FoundArcJava extends Auto {
 
         switch(bot.alliance) {
             case BLUE:
-                bot.driveTrain.goArc(15, 90, 90, 0.5);
+                bot.driveTrain.goArc(15, 90, 90, 0.5, 5);
                 break;
             case RED:
-                bot.driveTrain.goArc(15, 90, -90, 0.5);
+                bot.driveTrain.goArc(15, 90, -90, 0.5, 5);
         }
 
         bot.shuttleGate.setState(ShuttleGate.State.CLOSED);

@@ -31,7 +31,7 @@ public interface StrafingDriveTrain {
 
     // strafe following vector
     void goVector(double x, double y, double power);
-    void goArc(double distance, double frontAngle, double turnAngle, double power) throws InterruptedException;
+    void goArc(double distance, double frontAngle, double turnAngle, double power, double time) throws InterruptedException;
 
     // begins driving at angle
     void startAngle(double angle, double power);
