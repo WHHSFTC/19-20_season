@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.implementations.*
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
-
+@Disabled
 @TeleOp(name = "Slides Increment Test", group = "Tele")
 class Increment_Test : LinearOpMode(), OpModeIF{
     /**

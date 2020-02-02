@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.implementations.*
 
-@Autonomous(name = "SkyStone: Park near bridge", group = "Auto")
-class SkyStone : Auto() {
+@Autonomous(group = "Auto", name = "One Sky Stone only: Park by Bridge")
+class SkyStone1Only : Auto() {
 
     override fun genesis() {
         super.genesis()
@@ -53,51 +53,7 @@ class SkyStone : Auto() {
         bot.sideArm.arm.state = SideArm.Arm.State.UP
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
 
-        // second cycle
-//        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
-
-        sleep(100)
-
-        // heading back to get second sky stone
-        bot.driveTrain.goAngle(skyStonePosition.distance + (24 + 40), DriveTrain.LOADING_ZONE, .75)
-
-        bot.sideArm.arm.state = SideArm.Arm.State.DOWN
-        bot.sideArm.claw.state = SideArm.Claw.State.OPEN
-
-        sleep(250)
-
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
-
-        // driving to get the stone
-        bot.driveTrain.goAngle(10.0, bot.opponents_side, .25)
-
-        bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
-
-        sleep(250)
-
-        // heads back with stone
-        bot.driveTrain.goAngle(10.0, bot.our_side, .5)
-
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
-
-        sleep(100)
-
-        bot.driveTrain.goAngle(skyStonePosition.distance + 24 + 40, DriveTrain.BUILDING_ZONE, .5)
-
-        // drop stone
-        bot.sideArm.claw.state = SideArm.Claw.State.OPEN
-
-        sleep(250)
-
-        // bring up arm
-        bot.sideArm.arm.state = SideArm.Arm.State.UP
-        bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
-
-        // adjustment
-        bot.driveTrain.goAngle(4.0, bot.opponents_side, .75)
-
-        // park
-        bot.driveTrain.goAngle(16.0, DriveTrain.LOADING_ZONE, .75)
+        bot.driveTrain.goAngle(10.0, DriveTrain.LOADING_ZONE, .5)
     }
 
     private fun intakeSkystone() {

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.implementations.Auto
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain
 
-//@Disabled
+@Disabled
 @Autonomous(name = "Splines.kt", group = "Test")
 class Splines : Auto() {
 

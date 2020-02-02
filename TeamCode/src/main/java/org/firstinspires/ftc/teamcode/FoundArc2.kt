@@ -28,13 +28,11 @@ class FoundArc2 : Auto() {
 
         bot.shuttleGate.state = ShuttleGate.State.CLOSED
 
-        bot.driveTrain.goAngle(24.0, DriveTrain.BUILDING_ZONE, .25)
+        bot.driveTrain.goAngle(5.0, bot.opponents_side, .5)
 
-        bot.driveTrain.goAngle(24.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(14.0, DriveTrain.BUILDING_ZONE, .5)
 
-        bot.driveTrain.goAngle(22.0, bot.opponents_side, .5)
-
-        bot.driveTrain.goAngle(48.0, DriveTrain.LOADING_ZONE, .5)
+        bot.driveTrain.goAngle(45.0, DriveTrain.LOADING_ZONE, .5)
 
     }
 }

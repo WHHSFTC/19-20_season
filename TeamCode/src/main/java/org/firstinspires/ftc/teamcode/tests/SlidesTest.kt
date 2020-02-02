@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.tests
 
 import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.implementations.Auto
 import org.firstinspires.ftc.teamcode.implementations.OutputSlides
 
+@Disabled
 @Autonomous(name = "Slides Test", group = "Auto")
 class SlidesTest : Auto() {
 

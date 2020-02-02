@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.implementations.VisionTF;
 /**
  * Created by khadija on 1/29/2020.
  */
-//@Disabled
+@Disabled
 @Autonomous(name = "One Sky Stone and move Foundation : Park near bridge", group = "Auto")
 public class SkystoneFoundationJava extends Auto {
 
