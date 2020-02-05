@@ -1,19 +1,27 @@
-package org.firstinspires.ftc.teamcode.tests
+package org.firstinspires.ftc.teamcode.implementations
 
+import android.graphics.Bitmap
 import android.graphics.Color
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import org.firstinspires.ftc.robotcore.external.ClassFactory
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
-import java.util.*
+import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import kotlin.math.roundToInt
 
-@Autonomous(name = "Find Skystones Share", group = "Auto")
-internal class FindSkystonesShare : LinearOpMode() {
+class SursumFinder(opMode: OpModeIF) : Sursum(opMode) {
+
+    companion object {
+        private const val RED = 0
+        private const val GREEN = 1
+        private const val BLUE = 2
+    }
+
+    val telemetry: Telemetry = opMode.telemetry
+
+    val hardwareMap: HardwareMap = opMode.hardwareMap
 
     private var colorSide = 1
 
-    private var vuforia: VuforiaLocalizer? = null
+    private var vuforia: VisionVuforia = VisionVuforia(opMode = opMode, webcam = "Webcam 1")
 
     private var farTest = false
     private var centerTest = false
@@ -24,48 +32,14 @@ internal class FindSkystonesShare : LinearOpMode() {
     private var testWidth = 722
     private var testHeight = 120
 
-    // Telemetry outputs the average red value, average green value, average blue value,
-    // number of yellow pixels, and number of black pixels.
-    // we found the number of yellow pixels to be more accurate so that is what this
-    // file does.
-    // in order to run you need to define the pixel locations of the blocks... the pixels
-    // must be measured from the bottom right pixel, though phone orientation may affect this
-    //the test width is for the entire 3 block row. We found the best way to find these
-    // measurements by opening up the built in Concept: VuMark Id and using a ruler to measure
-    //the distance from the bottom right corner. Then use the entire distance across the view
-    // to get the total x distance and using the fact that the camera is 100x720 to get
-    //the partial x distance. This is repeated to get every number and then fine tuned.
-
     @Throws(InterruptedException::class)
-    override fun runOpMode() {
-        initVuforia()
-        waitForStart()
-        while (opModeIsActive()) {
-            findSkystone()
-            telemetry.update()
-        }
-    }
-
-    private fun initVuforia() {
-        val parameters = VuforiaLocalizer.Parameters()
-
-        parameters.vuforiaLicenseKey = "PASTE VUFORIA KEY HERE"
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK
-
-        vuforia = ClassFactory.getInstance().createVuforia(parameters)
-
-        vuforia!!.frameQueueCapacity = 1
-        vuforia!!.enableConvertFrameToBitmap()
-    }
-
-    @Throws(InterruptedException::class)
-    fun findSkystone() {
+    override fun findSkystone(): SkyStonePosition {
         farTest = false
         centerTest = false
         closeTest = false
 
-        val bitmap = vuforia!!.convertFrameToBitmap(vuforia!!.frameQueue.take())
-        val width = bitmap!!.width
+        val bitmap: Bitmap = vuforia.bitmap!!
+        val width = bitmap.width
         val height = bitmap.height
 
         val rawColorArray = IntArray(bitmap.width * bitmap.height)
@@ -80,32 +54,29 @@ internal class FindSkystonesShare : LinearOpMode() {
 
                 val pixelValue: Int = rawColorArray[j * width + i]
 
-                pixels[i][j][RED] = Color.red(pixelValue) as Double // (rawColorArray[j * width + i] shr 16 and 0xFF).toDouble()  RED
-                pixels[i][j][GREEN] = Color.green(pixelValue) as Double // (rawColorArray[j * width + i] shr 8 and 0xFF).toDouble()  GREEN
-                pixels[i][j][BLUE] = Color.blue(pixelValue) as Double // (rawColorArray[j * width + i] and 0xFF).toDouble()  BLUE
+                pixels[i][j][RED] = Color.red(pixelValue).toDouble() // (rawColorArray[j * width + i] shr 16 and 0xFF).toDouble()  RED
+                pixels[i][j][GREEN] = Color.green(pixelValue).toDouble() // (rawColorArray[j * width + i] shr 8 and 0xFF).toDouble()  GREEN
+                pixels[i][j][BLUE] = Color.blue(pixelValue).toDouble() // (rawColorArray[j * width + i] and 0xFF).toDouble()  BLUE
             }
         }
 
         val increment = testWidth / 3
 
-        val block1Test = averageValues(
-                pixels = pixels,
+        val block1Test = pixels.averageValues(
                 xStart = testXStart + 10,
                 xLength = increment - 20,
                 yStart = testYStart,
                 yLength = testHeight
         )
 
-        val block2Test = averageValues(
-                pixels = pixels,
+        val block2Test = pixels.averageValues(
                 xStart = testXStart + increment + 10,
                 xLength = increment - 20,
                 yStart = testYStart,
                 yLength = testHeight
         )
 
-        val block3Test = averageValues(
-                pixels = pixels,
+        val block3Test = pixels.averageValues(
                 xStart = testXStart + increment * 2 + 10,
                 xLength = increment - 20,
                 yStart = testYStart,
@@ -139,10 +110,12 @@ internal class FindSkystonesShare : LinearOpMode() {
 
         telemetry.addLine("close $closeTest   center $centerTest    far $farTest")
         telemetry.update()
+
+        // determine how tests work
+        return SkyStonePosition.ONE_FOUR
     }
 
-    private fun averageValues(
-            pixels: Array<Array<DoubleArray>>,
+    private fun Array<Array<DoubleArray>>.averageValues(
             xStart: Int,
             xLength: Int,
             yStart: Int,
@@ -159,9 +132,9 @@ internal class FindSkystonesShare : LinearOpMode() {
             for (i in xStart..xStart + xLength) {
                 //telemetry.addLine("j: " + j + " i: " + i + "Values: " + pixels[i][j][0] +","+ pixels[i][j][1]+","+ pixels[i][j][2]);
 
-                temp[RED] += pixels[i][j][RED]
-                temp[GREEN] += pixels[i][j][GREEN]
-                temp[BLUE] += pixels[i][j][BLUE]
+                temp[RED] += this[i][j][RED]
+                temp[GREEN] += this[i][j][GREEN]
+                temp[BLUE] += this[i][j][BLUE]
             }
         }
 
@@ -178,18 +151,19 @@ internal class FindSkystonesShare : LinearOpMode() {
                 //telemetry.addLine("j: " + j + " i: " + i + "Values: " + pixels[i][j][0] +","+ pixels[i][j][1]+","+ pixels[i][j][2]);
 
                 if (
-                        pixels[i][j][RED] > 90 &&
-                        pixels[i][j][GREEN] > 90 &&
-                        pixels[i][j][BLUE] < 120 &&
-                        pixels[i][j][RED] + pixels[i][j][GREEN] > pixels[i][j][BLUE] * 2.7
+                        this[i][j][RED] > 90 &&
+                        this[i][j][GREEN] > 90 &&
+                        this[i][j][BLUE] < 120 &&
+                        this[i][j][RED] + this[i][j][GREEN] > this[i][j][BLUE] * 2.7
                 ) {
                     yellows++
                 }
 
-                if (pixels[i][j][RED] < 100 &&
-                        pixels[i][j][GREEN] < 100 &&
-                        pixels[i][j][BLUE] < 100 &&
-                        (pixels[i][j][RED] + pixels[i][j][GREEN] + pixels[i][j][BLUE]) / 3 < 75
+                if (
+                        this[i][j][RED] < 100 &&
+                        this[i][j][GREEN] < 100 &&
+                        this[i][j][BLUE] < 100 &&
+                        (this[i][j][RED] + this[i][j][GREEN] + this[i][j][BLUE]) / 3 < 75
                 ) {
                     blacks++
                 }
