@@ -11,6 +11,12 @@ import kotlin.math.roundToInt
 @Autonomous(name = "Find Skystones Share", group = "Auto")
 internal class FindSkystonesShare : LinearOpMode() {
 
+    companion object {
+        const val RED = 0
+        const val GREEN = 1
+        const val BLUE = 2
+    }
+
     private var colorSide = 1
 
     private var vuforia: VuforiaLocalizer? = null
@@ -88,24 +94,21 @@ internal class FindSkystonesShare : LinearOpMode() {
 
         val increment = testWidth / 3
 
-        val block1Test = averageValues(
-                pixels = pixels,
+        val block1Test = pixels.averageValues(
                 xStart = testXStart + 10,
                 xLength = increment - 20,
                 yStart = testYStart,
                 yLength = testHeight
         )
 
-        val block2Test = averageValues(
-                pixels = pixels,
+        val block2Test = pixels.averageValues(
                 xStart = testXStart + increment + 10,
                 xLength = increment - 20,
                 yStart = testYStart,
                 yLength = testHeight
         )
 
-        val block3Test = averageValues(
-                pixels = pixels,
+        val block3Test = pixels.averageValues(
                 xStart = testXStart + increment * 2 + 10,
                 xLength = increment - 20,
                 yStart = testYStart,
@@ -141,8 +144,7 @@ internal class FindSkystonesShare : LinearOpMode() {
         telemetry.update()
     }
 
-    private fun averageValues(
-            pixels: Array<Array<DoubleArray>>,
+    private fun Array<Array<DoubleArray>>.averageValues(
             xStart: Int,
             xLength: Int,
             yStart: Int,
@@ -159,9 +161,9 @@ internal class FindSkystonesShare : LinearOpMode() {
             for (i in xStart..xStart + xLength) {
                 //telemetry.addLine("j: " + j + " i: " + i + "Values: " + pixels[i][j][0] +","+ pixels[i][j][1]+","+ pixels[i][j][2]);
 
-                temp[RED] += pixels[i][j][RED]
-                temp[GREEN] += pixels[i][j][GREEN]
-                temp[BLUE] += pixels[i][j][BLUE]
+                temp[RED] += this[i][j][RED]
+                temp[GREEN] += this[i][j][GREEN]
+                temp[BLUE] += this[i][j][BLUE]
             }
         }
 
@@ -178,18 +180,19 @@ internal class FindSkystonesShare : LinearOpMode() {
                 //telemetry.addLine("j: " + j + " i: " + i + "Values: " + pixels[i][j][0] +","+ pixels[i][j][1]+","+ pixels[i][j][2]);
 
                 if (
-                        pixels[i][j][RED] > 90 &&
-                        pixels[i][j][GREEN] > 90 &&
-                        pixels[i][j][BLUE] < 120 &&
-                        pixels[i][j][RED] + pixels[i][j][GREEN] > pixels[i][j][BLUE] * 2.7
+                        this[i][j][RED] > 90 &&
+                        this[i][j][GREEN] > 90 &&
+                        this[i][j][BLUE] < 120 &&
+                        this[i][j][RED] + this[i][j][GREEN] > this[i][j][BLUE] * 2.7
                 ) {
                     yellows++
                 }
 
-                if (pixels[i][j][RED] < 100 &&
-                        pixels[i][j][GREEN] < 100 &&
-                        pixels[i][j][BLUE] < 100 &&
-                        (pixels[i][j][RED] + pixels[i][j][GREEN] + pixels[i][j][BLUE]) / 3 < 75
+                if (
+                        this[i][j][RED] < 100 &&
+                        this[i][j][GREEN] < 100 &&
+                        this[i][j][BLUE] < 100 &&
+                        (this[i][j][RED] + this[i][j][GREEN] + this[i][j][BLUE]) / 3 < 75
                 ) {
                     blacks++
                 }

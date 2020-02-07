@@ -202,19 +202,17 @@ class VisionFromWallTest(var vuforia: VuforiaLocalizer) {
 
         return pos
     }
+    class Range(lower: Int, upper: Int) {
+        val lower = lower
+        val upper = upper
+        val range = upper - lower
+    }
 
-}
+    private infix fun Int.too(other: Int): Range {
+        return Range(lower = min(a = this, b = other), upper = max(a = this, b = other))
+    }
 
-class Range(lower: Int, upper: Int) {
-    val lower = lower
-    val upper = upper
-    val range = upper - lower
-}
-
-private infix fun Int.too(other: Int): Range {
-    return Range(lower = min(a = this, b = other), upper = max(a = this, b = other))
-}
-
-private fun Bitmap.compress(desiredWidth: Int, desiredHeight: Int, filter: Boolean): Bitmap {
-    return Bitmap.createScaledBitmap(this, desiredWidth, desiredHeight, filter)
+    private fun Bitmap.compress(desiredWidth: Int, desiredHeight: Int, filter: Boolean): Bitmap {
+        return Bitmap.createScaledBitmap(this, desiredWidth, desiredHeight, filter)
+    }
 }
