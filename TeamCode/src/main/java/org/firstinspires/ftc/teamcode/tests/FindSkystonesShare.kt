@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.tests
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -71,8 +72,7 @@ internal class FindSkystonesShare : LinearOpMode() {
         centerTest = false
         closeTest = false
 
-        val bitmap = vuforia!!.convertFrameToBitmap(vuforia!!.frameQueue.take())
-        bitmap!!
+        val bitmap: Bitmap = vuforia!!.convertFrameToBitmap(vuforia!!.frameQueue.take())!!
         val width = bitmap.width
         val height = bitmap.height
 
