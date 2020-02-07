@@ -4,14 +4,17 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.ClassFactory
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
 import org.firstinspires.ftc.teamcode.implementations.SkyStonePosition
+import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import java.util.*
 import kotlin.math.roundToInt
 
 @Autonomous(name = "Find Skystones Share", group = "Auto")
-internal class FindSkystonesShare : LinearOpMode() {
+internal class FindSkystonesShare(var opMode: OpModeIF) : OpModeIF {
 
     companion object {
         const val RED = 0
@@ -44,20 +47,21 @@ internal class FindSkystonesShare : LinearOpMode() {
     // to get the total x distance and using the fact that the camera is 100x720 to get
     //the partial x distance. This is repeated to get every number and then fine tuned.
 
-    @Throws(InterruptedException::class)
-    override fun runOpMode() {
-        initVuforia()
-        waitForStart()
-        while (opModeIsActive()) {
-            findSkystone()
-            telemetry.update()
-        }
-    }
+//    @Throws(InterruptedException::class)
+//    override fun runOpMode() {
+//        initVuforia()
+//        waitForStart()
+//        while (opModeIsActive()) {
+//            findSkystone()
+//            telemetry.update()
+//        }
+//    }
 
-    private fun initVuforia() {
+    init {
         val parameters = VuforiaLocalizer.Parameters()
 
-        parameters.vuforiaLicenseKey = "PASTE VUFORIA KEY HERE"
+        parameters.vuforiaLicenseKey =
+                "AZjnTyD/////AAABmWbY5Kf/tUDGlNmyg0to/Ocsr2x5NKR0bN0q9InlH4shr90xC/iovUPDBu+PWzwD2+F8moAWhCpUivQDuKp/j2IHVtyjoKOQvPkTaXAb1IgPtAM6pMDltXDTkQ8Olwds22Z97Wdx+RAPK8WrC809Hj+JDZJJ3/Lx3bqAwcR1TRJ4OejxkWVSAKvFX8rOp5gE82jPNEv1bQ5S+iTgFtToZNQTj2ldtYJjoSkyUHqfODyV3JUazYSu82UEak0My2Ks/zIXYrDEY0y5MgNzRr9pzg3AiA8pbUT3SVk3SSUYmjlml+H9HovgDuiGrnJnmNMSjQGfcGpliGW6fs61ePYuAHvN4+Rwa1esR/prFgYKrTTn"
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters)
@@ -204,5 +208,17 @@ internal class FindSkystonesShare : LinearOpMode() {
         temp[4] = blacks.toDouble()
 
         return temp
+    }
+
+    override fun getHardwareMap(): HardwareMap {
+        return opMode.hardwareMap
+    }
+
+    override fun getTelemetry(): Telemetry {
+        return opMode.telemetry
+    }
+
+    override fun opModeIsActive(): Boolean {
+        return opMode.opModeIsActive()
     }
 }
