@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.robotcore.external.ClassFactory
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
+import org.firstinspires.ftc.teamcode.implementations.SkyStonePosition
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -65,13 +66,14 @@ internal class FindSkystonesShare : LinearOpMode() {
     }
 
     @Throws(InterruptedException::class)
-    fun findSkystone() {
+    fun findSkystone(): SkyStonePosition {
         farTest = false
         centerTest = false
         closeTest = false
 
         val bitmap = vuforia!!.convertFrameToBitmap(vuforia!!.frameQueue.take())
-        val width = bitmap!!.width
+        bitmap!!
+        val width = bitmap.width
         val height = bitmap.height
 
         val rawColorArray = IntArray(bitmap.width * bitmap.height)
@@ -86,9 +88,9 @@ internal class FindSkystonesShare : LinearOpMode() {
 
                 val pixelValue: Int = rawColorArray[j * width + i]
 
-                pixels[i][j][RED] = Color.red(pixelValue) as Double // (rawColorArray[j * width + i] shr 16 and 0xFF).toDouble()  RED
-                pixels[i][j][GREEN] = Color.green(pixelValue) as Double // (rawColorArray[j * width + i] shr 8 and 0xFF).toDouble()  GREEN
-                pixels[i][j][BLUE] = Color.blue(pixelValue) as Double // (rawColorArray[j * width + i] and 0xFF).toDouble()  BLUE
+                pixels[i][j][RED] = Color.red(pixelValue).toDouble() // (rawColorArray[j * width + i] shr 16 and 0xFF).toDouble()  RED
+                pixels[i][j][GREEN] = Color.green(pixelValue).toDouble() // (rawColorArray[j * width + i] shr 8 and 0xFF).toDouble()  GREEN
+                pixels[i][j][BLUE] = Color.blue(pixelValue).toDouble() // (rawColorArray[j * width + i] and 0xFF).toDouble()  BLUE
             }
         }
 
@@ -127,11 +129,7 @@ internal class FindSkystonesShare : LinearOpMode() {
                 farTest = true
             }
         } else if (block2Test[3] < block1Test[3] && block2Test[3] < block3Test[3]) {
-            centerTest = if (colorSide == 1) {
-                true
-            } else {
-                true
-            }
+            centerTest = true
         } else if (block3Test[3] < block2Test[3] && block3Test[3] < block1Test[3]) {
             if (colorSide == 1) {
                 farTest = true
@@ -142,6 +140,9 @@ internal class FindSkystonesShare : LinearOpMode() {
 
         telemetry.addLine("close $closeTest   center $centerTest    far $farTest")
         telemetry.update()
+
+        // figure out tests
+        return SkyStonePosition.ONE_FOUR
     }
 
     private fun Array<Array<DoubleArray>>.averageValues(
