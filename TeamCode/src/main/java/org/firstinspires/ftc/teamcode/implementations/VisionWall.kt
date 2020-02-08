@@ -1,20 +1,18 @@
-package org.firstinspires.ftc.teamcode.tests
+package org.firstinspires.ftc.teamcode.implementations
 
 import android.graphics.Bitmap
 import android.graphics.Color
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.ClassFactory
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
-import org.firstinspires.ftc.teamcode.implementations.SkyStonePosition
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
-import java.util.*
 import kotlin.math.roundToInt
 
 @Autonomous(name = "Find Skystones Share", group = "Auto")
-internal class FindSkystonesShare(var opMode: OpModeIF) : OpModeIF {
+internal class VisionWall(opMode: OpModeIF, var alliance: Alliance, var name: String = "Webcam 1") {
 
     companion object {
         const val RED = 0
@@ -22,7 +20,11 @@ internal class FindSkystonesShare(var opMode: OpModeIF) : OpModeIF {
         const val BLUE = 2
     }
 
-    private var colorSide = 1
+    val opMode: OpModeIF? = opMode
+    val telemetry: Telemetry = opMode.telemetry
+    val hardwareMap: HardwareMap = opMode.hardwareMap
+
+    private var colorSide = if (alliance == Alliance.RED) { 1 } else { -1 }
 
     private var vuforia: VuforiaLocalizer? = null
 
@@ -47,22 +49,13 @@ internal class FindSkystonesShare(var opMode: OpModeIF) : OpModeIF {
     // to get the total x distance and using the fact that the camera is 100x720 to get
     //the partial x distance. This is repeated to get every number and then fine tuned.
 
-//    @Throws(InterruptedException::class)
-//    override fun runOpMode() {
-//        initVuforia()
-//        waitForStart()
-//        while (opModeIsActive()) {
-//            findSkystone()
-//            telemetry.update()
-//        }
-//    }
-
     init {
         val parameters = VuforiaLocalizer.Parameters()
 
         parameters.vuforiaLicenseKey =
                 "AZjnTyD/////AAABmWbY5Kf/tUDGlNmyg0to/Ocsr2x5NKR0bN0q9InlH4shr90xC/iovUPDBu+PWzwD2+F8moAWhCpUivQDuKp/j2IHVtyjoKOQvPkTaXAb1IgPtAM6pMDltXDTkQ8Olwds22Z97Wdx+RAPK8WrC809Hj+JDZJJ3/Lx3bqAwcR1TRJ4OejxkWVSAKvFX8rOp5gE82jPNEv1bQ5S+iTgFtToZNQTj2ldtYJjoSkyUHqfODyV3JUazYSu82UEak0My2Ks/zIXYrDEY0y5MgNzRr9pzg3AiA8pbUT3SVk3SSUYmjlml+H9HovgDuiGrnJnmNMSjQGfcGpliGW6fs61ePYuAHvN4+Rwa1esR/prFgYKrTTn"
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK
+        parameters.cameraName = hardwareMap.get(WebcamName::class.java, name)
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters)
 
@@ -146,8 +139,20 @@ internal class FindSkystonesShare(var opMode: OpModeIF) : OpModeIF {
         telemetry.update()
 
         // figure out tests
-        return SkyStonePosition.ONE_FOUR
-    }
+        return if (centerTest) {
+            SkyStonePosition.TWO_FIVE
+        } else if (colorSide == 1 && closeTest) {
+            SkyStonePosition.THREE_SIX
+        } else if (colorSide == 1 && farTest) {
+            SkyStonePosition.ONE_FOUR
+        } else if (closeTest) {
+            SkyStonePosition.ONE_FOUR
+        } else if (farTest) {
+            SkyStonePosition.THREE_SIX
+        } else {
+            SkyStonePosition.THREE_SIX
+        }
+}
 
     private fun Array<Array<DoubleArray>>.averageValues(
             xStart: Int,
@@ -208,17 +213,5 @@ internal class FindSkystonesShare(var opMode: OpModeIF) : OpModeIF {
         temp[4] = blacks.toDouble()
 
         return temp
-    }
-
-    override fun getHardwareMap(): HardwareMap {
-        return opMode.hardwareMap
-    }
-
-    override fun getTelemetry(): Telemetry {
-        return opMode.telemetry
-    }
-
-    override fun opModeIsActive(): Boolean {
-        return opMode.opModeIsActive()
     }
 }

@@ -58,6 +58,8 @@ public class Sursum {
     public DigitalChannel allianceSwitch;
     public Alliance alliance;
 
+    public VisionWall visionTest;
+
     /**
      * Creation of all systems of the bot
      * @param opMode import current opMode to get initialize
