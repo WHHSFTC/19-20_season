@@ -3,10 +3,7 @@ package org.firstinspires.ftc.teamcode.implementations
 import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
@@ -24,7 +21,8 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
         val DEFAULT_POWER: Double = 1.0
     }
 
-    var syncJob : Job? = null
+    var leftJob : Job? = null
+    var rightJob : Job? = null
 
     var motor1: DcMotor = opMode.hardwareMap.dcMotor.get(str1)
     var motor2: DcMotor = opMode.hardwareMap.dcMotor.get(str2)
@@ -54,25 +52,22 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
 
     fun run(): VerticalSlides {
         val dummyValue = state.calculateValue(method)
-        motor1.targetPosition = dummyValue
         motor1.mode = DcMotor.RunMode.RUN_TO_POSITION
-//
-//        motor2.targetPosition = dummyValue
-//        motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motor1.targetPosition = dummyValue
 
-        motor1.power = power
-        motor2.power = power
+        motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motor2.targetPosition = dummyValue
 
-        if(syncJob == null || syncJob!!.isCompleted)
-            syncJob = runBlocking {
-                launch {
-                    while (motor1.isBusy) {
-                        motor2.power = motor1.power
-                        delay(50)
-                    }
+        leftJob =
+                GlobalScope.launch {
+                    motor1.power = power
                 }
-            }
+        rightJob =
+                GlobalScope.launch {
+                    motor2.power = power
+                }
 
+        while(leftJob!!.isActive || rightJob!!.isActive) {}
         return this
     }
 
@@ -94,8 +89,8 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
         }
 
     override fun stop() {
-        motor1.power = 0.0
-        motor2.power = 0.0
+        motor1.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        motor2.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
     }
 
     class Level(var index: Int, var isPlacing: Boolean = false, var level: StoneLevels = StoneLevels.NULL) {
