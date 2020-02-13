@@ -80,7 +80,7 @@ public class VisionTF {
         // getUpdatedRecognitions() will return null if no new information is available since
         // the last time that call was made.
         tfod.activate();
-        Thread.sleep(1000);
+        Thread.sleep(1250);
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
 
         opMode.getTelemetry().addData("# Object Detected", updatedRecognitions.size());

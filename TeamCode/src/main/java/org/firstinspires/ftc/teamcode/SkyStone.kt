@@ -104,8 +104,8 @@ class SkyStone : Auto() {
         // turn so sidearm faces stones
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
-        // lines up sidearm
-        bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
+//        // lines up sidearm
+//        bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 

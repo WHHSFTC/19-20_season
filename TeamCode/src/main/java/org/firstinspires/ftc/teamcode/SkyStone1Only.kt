@@ -61,7 +61,7 @@ class SkyStone1Only : Auto() {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // lines up sidearm
-        bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
+//        bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
