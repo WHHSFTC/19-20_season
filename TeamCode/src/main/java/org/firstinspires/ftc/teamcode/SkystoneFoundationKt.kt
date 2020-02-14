@@ -45,18 +45,22 @@ class SkystoneFoundationKt : Auto() {
         intakeSkystone()
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(16.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(13.5, bot.our_side, .5)
 
         // goes 36 inches into building zone
-        bot.driveTrain.goAngle(skyStonePosition.distance + 65, DriveTrain.BUILDING_ZONE, .5)
+        bot.driveTrain.goAngle(skyStonePosition.distance + 45, DriveTrain.BUILDING_ZONE, .5)
 
         // moving the arm to hold position
         bot.sideArm.arm.state = SideArm.Arm.State.HOLD
 
+        sleep(200)
+
+        bot.driveTrain.goAngle(20.0, DriveTrain.BUILDING_ZONE, .5)
+
         // alignment
 //        bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 //        moving to side of foundation to drop stone on it
-        bot.driveTrain.goAngle(12.0, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(13.0, bot.opponents_side, .5)
 
         // drops stone
         bot.sideArm.arm.state = SideArm.Arm.State.DOWN
@@ -98,11 +102,13 @@ class SkystoneFoundationKt : Auto() {
         // releasing foundation hooks
         bot.shuttleGate.state = ShuttleGate.State.CLOSED
 
-        bot.driveTrain.goAngle(8.0, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(4.0, bot.opponents_side, .5)
 
-        bot.driveTrain.goAngle(11.0, DriveTrain.BUILDING_ZONE, .5)
+        bot.driveTrain.goAngle(14.0, DriveTrain.BUILDING_ZONE, .5)
 
-        bot.driveTrain.goAngle(45.0, DriveTrain.LOADING_ZONE, .5)
+        if (bot.alliance == Alliance.BLUE) bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+
+        bot.driveTrain.goAngle(48.0, DriveTrain.LOADING_ZONE, .5)
     }
 
     private fun intakeSkystone() {
@@ -111,7 +117,7 @@ class SkystoneFoundationKt : Auto() {
         // lines up sidearm
 //        bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
 
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+        if (bot.alliance != Alliance.BLUE) bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // moves forward to be line with stone
         bot.driveTrain.goAngle(13.0, bot.opponents_side, .75)

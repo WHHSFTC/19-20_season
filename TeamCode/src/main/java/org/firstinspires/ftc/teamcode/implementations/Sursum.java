@@ -170,11 +170,12 @@ public class Sursum {
 //            opMode.telemetry.addData("Confidence: ", "N/A");
 //            opMode.telemetry.update();
             if (visionTF.getStone()) {
-                driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5);
+                driveTrain.goAngle(3.25, DriveTrain.LOADING_ZONE, .25);
                 return position;
             }
             driveTrain.goAngle(8.0, DriveTrain.LOADING_ZONE, .25);
         }
+        driveTrain.goAngle(3.25, DriveTrain.LOADING_ZONE, .25);
         return SkyStonePosition.ONE_FOUR;
     }
 

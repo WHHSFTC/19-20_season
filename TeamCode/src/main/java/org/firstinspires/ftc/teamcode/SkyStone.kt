@@ -17,7 +17,9 @@ class SkyStone : Auto() {
         bot.sideArm.claw.state = SideArm.Claw.State.OPEN
 
         // preparing arm to grab
-        bot.driveTrain.goAngle(41 - Sursum.ROBOT_LENGTH, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(42 - Sursum.ROBOT_LENGTH, bot.opponents_side, .5)
+
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         bot.opMode.telemetry.addLine("Starting TensorFlow Search")
         bot.opMode.telemetry.update()
@@ -38,7 +40,7 @@ class SkyStone : Auto() {
         intakeSkystone()
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(10.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(12.0, bot.our_side, .5)
 
         // goes 36 inches into building zone
         bot.driveTrain.goAngle(skyStonePosition.distance + 40, DriveTrain.BUILDING_ZONE, .5)
@@ -54,7 +56,7 @@ class SkyStone : Auto() {
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
 
         // second cycle
-//        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         sleep(100)
 
@@ -69,14 +71,14 @@ class SkyStone : Auto() {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // driving to get the stone
-        bot.driveTrain.goAngle(10.0, bot.opponents_side, .25)
+        bot.driveTrain.goAngle(12.0, bot.opponents_side, .25)
 
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
 
         sleep(250)
 
         // heads back with stone
-        bot.driveTrain.goAngle(10.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(12.0, bot.our_side, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
@@ -102,9 +104,8 @@ class SkyStone : Auto() {
 
     private fun intakeSkystone() {
         // turn so sidearm faces stones
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
-
-//        // lines up sidearm
+        // bot.driveTrain.align(DriveTrain.LOADING_ZONE);
+        // lines up sidearm
 //        bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
@@ -112,7 +113,7 @@ class SkyStone : Auto() {
         // moves forward to be line with stone
         bot.driveTrain.goAngle(13.0, bot.opponents_side, .75)
 
-        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+        // bot.driveTrain.align(DriveTrain.LOADING_ZONE);
 
         // claw closes on stone
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
