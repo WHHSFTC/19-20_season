@@ -40,7 +40,7 @@ class SkyStone : Auto() {
         intakeSkystone()
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(12.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(13.5, bot.our_side, .5)
 
         // goes 36 inches into building zone
         bot.driveTrain.goAngle(skyStonePosition.distance + 40, DriveTrain.BUILDING_ZONE, .5)
@@ -71,14 +71,14 @@ class SkyStone : Auto() {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // driving to get the stone
-        bot.driveTrain.goAngle(12.0, bot.opponents_side, .25)
+        bot.driveTrain.goAngle(13.5, bot.opponents_side, .25)
 
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
 
         sleep(250)
 
         // heads back with stone
-        bot.driveTrain.goAngle(12.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(13.5, bot.our_side, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 

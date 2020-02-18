@@ -21,8 +21,8 @@ class FoundArc : Auto() {
         bot.shuttleGate.state = ShuttleGate.State.FOUNDATION
 
         when (bot.alliance) {
-            Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 0.75, 6.0)
-            Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 0.75, 6.0)
+            Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 1.0, 6.0)
+            Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 1.0, 6.0)
             null -> {}
         }
 

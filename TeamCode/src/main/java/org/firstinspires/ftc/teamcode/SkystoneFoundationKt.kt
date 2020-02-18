@@ -115,7 +115,7 @@ class SkystoneFoundationKt : Auto() {
         // turn so sidearm faces stones
         // bot.driveTrain.align(DriveTrain.LOADING_ZONE);
         // lines up sidearm
-//        bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
+        // bot.driveTrain.goAngle(2.0, DriveTrain.LOADING_ZONE, .5)
 
         if (bot.alliance != Alliance.BLUE) bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
