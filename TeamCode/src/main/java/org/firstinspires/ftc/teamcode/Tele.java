@@ -97,7 +97,7 @@ public class Tele extends LinearOpMode implements OpModeIF {
         if(gamepad2.b) bot.arm.setState(Arm.State.BELT);
         if(gamepad2.left_bumper) bot.claw.setState(Claw.State.CLOSED);
         if(gamepad2.right_bumper) bot.claw.setState(Claw.State.OPEN);
-        bot.outputSlides.setState(Math.abs(gamepad2.right_stick_y) >= DEADZONE ? (double) gamepad2.right_stick_y * .7 : 0);
+        bot.outputSlides.setState(Math.abs(gamepad2.right_stick_y) >= DEADZONE ? (double) gamepad2.right_stick_y : 0);
         ((OutputSlides) bot.outputSlides).dumpEncoders();
     }
 

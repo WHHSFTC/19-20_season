@@ -18,8 +18,8 @@ class FlyWheels(var opMode: OpModeIF, var left: String, var right: String) : DcM
 
     override fun setPower(power: Double) {
         if (abs(power) > 1.0) throw IllegalArgumentException("power is out of range (-1, 1)")
-        motorLeft.power = power
-        motorRight.power = -power
+        motorLeft.power = -power
+        motorRight.power = power
     }
 
     override fun resetDeviceConfigurationForOpMode() {
