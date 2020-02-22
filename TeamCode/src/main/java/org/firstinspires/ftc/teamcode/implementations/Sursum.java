@@ -42,6 +42,9 @@ public class Sursum {
     public VisionTF visionTF;
     public OpModeIF opMode;
     public Alliance alliance;
+    public VisionFTC visionFtc;
+
+    public VisionWall visionTest;
 
     private DigitalChannel allianceSwitch;
 
@@ -124,7 +127,7 @@ public class Sursum {
         driveTrain.goAngle(3.25, DriveTrain.LOADING_ZONE, .25);
         return SkyStonePosition.ONE_FOUR;
     }
-
+    
     public SkyStonePosition translateRelativePosition(VisionFromWall.Position val) {
         if (val == VisionFromWall.Position.NULL) {
             opMode.getTelemetry().addLine("[ERROR] Found Position.NULL, returning SkyStonePosition.ONE_FOUR");

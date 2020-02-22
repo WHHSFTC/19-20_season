@@ -200,7 +200,7 @@ class VisionFromWall(val opmode: OpModeIF) : OpenCvPipeline() {
             }
 
             POSITION = location
-            
+
         } catch (e: Exception) {
             opmode.telemetry.addData("[ERROR]", e.message)
             opmode.telemetry.update()
