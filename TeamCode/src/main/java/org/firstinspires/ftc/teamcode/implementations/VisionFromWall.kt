@@ -7,7 +7,7 @@ import org.opencv.imgproc.Imgproc
 
 class VisionFromWall(val opmode: OpModeIF, val name: String) : OpenCvPipeline() {
     enum class Position {
-        LEFT, RIGHT, MIDDLE, NULL
+        RIGHT, LEFT, MIDDLE, NULL
     }
 
     lateinit var matHSV: Mat
@@ -20,6 +20,9 @@ class VisionFromWall(val opmode: OpModeIF, val name: String) : OpenCvPipeline() 
         val lowerYellow: Scalar = Scalar(15.0, 100.0, 100.0)
         val upperYellow: Scalar = Scalar(30.0, 255.0, 255.0)
     }
+
+    var POSITION: Position = Position.NULL
+        private set
 
     override fun processFrame(input: Mat?): Mat {
         Imgproc.cvtColor(input, matHSV, Imgproc.COLOR_BGR2HSV)
@@ -87,10 +90,6 @@ class VisionFromWall(val opmode: OpModeIF, val name: String) : OpenCvPipeline() 
 
         Imgproc.drawContours(res, boxContours, 0, Scalar(0.0, 0.0, 255.0), 2)
 
-        var maxX = 0
-        var maxY = 0
-        var weight = 0
-
         boxContours.sortBy { it.toArray().sumBy { p: Point -> (p.x + p.y).toInt() } }
 
         val botRight = boxContours[-1].toArray()[0]
@@ -115,7 +114,13 @@ class VisionFromWall(val opmode: OpModeIF, val name: String) : OpenCvPipeline() 
                     Scalar(255.0, 0.0, 0.0),
                     5
             )
+
+            val avg = Core.mean(mask.rowRange(y - height, y).colRange(x - width, x))
+            location = if (avg === Scalar(0.0)) Position.values()[i] else location
+
         }
+
+        POSITION = location
 
         return input!!
     }

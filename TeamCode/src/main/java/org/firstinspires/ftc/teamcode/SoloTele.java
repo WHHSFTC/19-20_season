@@ -54,7 +54,7 @@ public class SoloTele extends LinearOpMode implements OpModeIF {
             turtle = !turtle;
         }
         turtleX = gamepad1.x;
-        telemetry.addData("turtle", turtle); 
+        telemetry.addData("turtle", turtle);
         */
         double xpow = gamepad1.left_stick_x;
         double ypow = -gamepad1.left_stick_y;
@@ -79,10 +79,10 @@ public class SoloTele extends LinearOpMode implements OpModeIF {
 //                power * (y+x) + zpower * z );
 
         ((DriveTrain) bot.driveTrain).setPowers(
-        power * -(y-x) + zpower * z,
-        power * -(-y-x) + zpower * z,
-        power * -(-y+x) + zpower * z,
-        power * -(y+x) + zpower * z );
+                power * -(y-x) + zpower * z,
+                power * -(-y-x) + zpower * z,
+                power * -(-y+x) + zpower * z,
+                power * -(y+x) + zpower * z );
 
         // offset of pi/4 makes wheels strafe correctly at cardinal and intermediate directions
 
@@ -94,17 +94,17 @@ public class SoloTele extends LinearOpMode implements OpModeIF {
 
     // drives the output
     private void driveOutput() {
-        
+
         if(gamepad1.left_bumper) bot.arm.setState(Arm.State.OUT);
         if(gamepad1.right_bumper) bot.arm.setState(Arm.State.RIGHT);
         if(gamepad1.dpad_left) bot.arm.setState(Arm.State.BELT);
-        
+
         // X toggles claw servos
         if(gamepad1.x && (bot.claw.getState() == Claw.State.OPEN)) bot.claw.setState(Claw.State.CLOSED);
         if(gamepad1.x && (bot.claw.getState() == Claw.State.CLOSED)) bot.claw.setState(Claw.State.OPEN);
-        
-        bot.outputSlides.setState(gamepad1.right_trigger);
-        bot.outputSlides.setState((-1) * gamepad1.left_trigger);
+
+        bot.outputSlides.setState((double) gamepad1.right_trigger);
+        bot.outputSlides.setState((-1.0) * gamepad1.left_trigger);
         ((OutputSlides) bot.outputSlides).dumpEncoders();
     }
 
