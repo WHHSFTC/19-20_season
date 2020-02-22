@@ -8,12 +8,13 @@ import com.qualcomm.robotcore.hardware.ServoController;
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
+@Deprecated
 // acts like a crservo but is actually two crservos in opposite directions
-public class Flywheels implements CRServo {
+public class FlywheelsServo implements CRServo {
     private CRServo servoLeft;
     private CRServo servoRight;
     private OpModeIF opMode;
-    public Flywheels(OpModeIF opMode, String leftStr, String rightStr) {
+    public FlywheelsServo(OpModeIF opMode, String leftStr, String rightStr) {
         this.opMode = opMode;
         servoLeft = opMode.getHardwareMap().crservo.get(leftStr);
         servoRight = opMode.getHardwareMap().crservo.get(rightStr);
@@ -31,7 +32,6 @@ public class Flywheels implements CRServo {
     @Override
     public void setDirection(Direction direction) {
         servoLeft.setDirection(direction);
-        //servoRight.setDirection(direction == Direction.FORWARD ? Direction.REVERSE : Direction.FORWARD);
         servoRight.setDirection(direction);
     }
 
