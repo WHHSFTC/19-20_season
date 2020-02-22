@@ -56,7 +56,7 @@ public class FarSkystone extends Auto {
         bot.sideArm.arm.setState(SideArm.Arm.State.HOLD);
 
         // goes 36 inches into building zone
-        bot.driveTrain.goAngle(skyStonePosition.getDistance() +115 , DriveTrain.BUILDING_ZONE, .5);
+        bot.driveTrain.goAngle(skyStonePosition.getDistance() +100 , DriveTrain.BUILDING_ZONE, .5);
 
 
 
