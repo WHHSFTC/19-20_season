@@ -40,6 +40,9 @@ public class Sursum {
     public VisionTF visionTF;
     public OpModeIF opMode;
     public Alliance alliance;
+    public VisionFTC visionFtc;
+
+    public VisionWall visionTest;
 
     private DigitalChannel allianceSwitch;
 
@@ -118,6 +121,17 @@ public class Sursum {
         }
         driveTrain.goAngle(3.25, DriveTrain.LOADING_ZONE, .25);
         return SkyStonePosition.ONE_FOUR;
+    }
+
+    public SkyStonePosition translateRelativePosition(VisionFTC.SkystonePosition val) {
+        if (val == VisionFTC.SkystonePosition.CENTER_STONE) {
+            return SkyStonePosition.TWO_FIVE;
+        }
+        if (alliance == Alliance.RED) {
+            return val == VisionFTC.SkystonePosition.LEFT_STONE ? SkyStonePosition.ONE_FOUR : SkyStonePosition.THREE_SIX;
+        } else {
+            return val == VisionFTC.SkystonePosition.LEFT_STONE ? SkyStonePosition.THREE_SIX : SkyStonePosition.ONE_FOUR;
+        }
     }
 
     /**
