@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.implementations.*
 
-@Autonomous(name = "SkyStone: Park near bridge", group = "Auto")
+@Autonomous(name = "2 SkyStone: Park near bridge", group = "Auto")
 class SkyStone : Auto() {
 
     override fun genesis() {

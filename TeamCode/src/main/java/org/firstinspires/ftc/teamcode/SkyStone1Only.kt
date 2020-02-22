@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.implementations.*
 
+@Disabled
 @Autonomous(group = "Auto", name = "One Sky Stone only: Park by Bridge")
 class SkyStone1Only : Auto() {
 

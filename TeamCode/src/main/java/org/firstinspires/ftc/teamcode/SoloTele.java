@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,8 +16,8 @@ import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.SideArm;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
-
-@TeleOp(group = "Tele", name = "Tele")
+@Disabled
+@TeleOp(group = "Tele", name = "SoloTele")
 public class SoloTele extends LinearOpMode implements OpModeIF {
 
     private static final double DEADZONE = 0.05;
@@ -95,16 +96,29 @@ public class SoloTele extends LinearOpMode implements OpModeIF {
     // drives the output
     private void driveOutput() {
 
-        if(gamepad1.left_bumper) bot.arm.setState(Arm.State.OUT);
-        if(gamepad1.right_bumper) bot.arm.setState(Arm.State.RIGHT);
-        if(gamepad1.dpad_left) bot.arm.setState(Arm.State.BELT);
+        if (gamepad1.left_bumper) bot.arm.setState(Arm.State.OUT);
+        if (gamepad1.right_bumper) bot.arm.setState(Arm.State.RIGHT);
+        if (gamepad1.dpad_left) bot.arm.setState(Arm.State.BELT);
 
         // X toggles claw servos
-        if(gamepad1.x && (bot.claw.getState() == Claw.State.OPEN)) bot.claw.setState(Claw.State.CLOSED);
-        if(gamepad1.x && (bot.claw.getState() == Claw.State.CLOSED)) bot.claw.setState(Claw.State.OPEN);
+        if (gamepad1.x && (bot.claw.getState() == Claw.State.OPEN))
+            bot.claw.setState(Claw.State.CLOSED);
+        if (gamepad1.x && (bot.claw.getState() == Claw.State.CLOSED))
+            bot.claw.setState(Claw.State.OPEN);
 
-        bot.outputSlides.setState((double) gamepad1.right_trigger);
-        bot.outputSlides.setState((-1.0) * gamepad1.left_trigger);
+        //Slides with left (down) and right (up) triggers
+        if (gamepad1.right_trigger >= 0.6) {
+            bot.outputSlides.setState(1.0);
+        } else if (gamepad1.right_trigger >= 0.2) {
+            bot.outputSlides.setState(0.5);
+        } else if (gamepad1.left_trigger >= 0.6) {
+            bot.outputSlides.setState(-1.0);
+        } else if (gamepad1.left_trigger >= 0.2) {
+            bot.outputSlides.setState(-0.5);
+        } else {
+            bot.outputSlides.setState (0.0);
+        }
+
         ((OutputSlides) bot.outputSlides).dumpEncoders();
     }
 

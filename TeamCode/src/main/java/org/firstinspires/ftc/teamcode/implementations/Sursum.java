@@ -9,6 +9,8 @@ import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism;
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 import org.firstinspires.ftc.teamcode.interfaces.StrafingDriveTrain;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 /**
  * Bot Class
@@ -43,6 +45,9 @@ public class Sursum {
 
     private DigitalChannel allianceSwitch;
 
+    public OpenCvCamera camera;
+
+    public VisionFromWall pipeline;
     /**
      * Creation of all systems of the bot
      * @param opMode import current opMode to get initialize
@@ -118,6 +123,22 @@ public class Sursum {
         }
         driveTrain.goAngle(3.25, DriveTrain.LOADING_ZONE, .25);
         return SkyStonePosition.ONE_FOUR;
+    }
+
+    public SkyStonePosition translateRelativePosition(VisionFromWall.Position val) {
+        if (val == VisionFromWall.Position.NULL) {
+            opMode.getTelemetry().addLine("[ERROR] Found Position.NULL, returning SkyStonePosition.ONE_FOUR");
+            opMode.getTelemetry().update();
+            return SkyStonePosition.ONE_FOUR;
+        }
+        if (val == VisionFromWall.Position.MIDDLE) {
+            return SkyStonePosition.TWO_FIVE;
+        }
+        if (alliance == Alliance.RED) {
+            return val == VisionFromWall.Position.LEFT ? SkyStonePosition.ONE_FOUR : SkyStonePosition.THREE_SIX;
+        } else {
+            return val == VisionFromWall.Position.LEFT ? SkyStonePosition.THREE_SIX : SkyStonePosition.ONE_FOUR;
+        }
     }
 
     /**
