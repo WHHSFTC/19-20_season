@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.SideArm;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
-@Disabled
 @TeleOp(group = "Tele", name = "SoloTele")
 public class SoloTele extends LinearOpMode implements OpModeIF {
 
@@ -25,6 +24,8 @@ public class SoloTele extends LinearOpMode implements OpModeIF {
     private Sursum bot;
     private boolean turtle;
     private boolean turtleX;
+    private double right_trigger;
+    private double left_trigger;
 
     @Override
     public void runOpMode() {
@@ -95,6 +96,11 @@ public class SoloTele extends LinearOpMode implements OpModeIF {
 
     // drives the output
     private void driveOutput() {
+
+        right_trigger = gamepad1.right_trigger;
+        left_trigger = gamepad1.left_trigger;
+        telemetry.addData("right_trigger", right_trigger);
+        telemetry.addData("left_trigger", left_trigger);
 
         if (gamepad1.left_bumper) bot.arm.setState(Arm.State.OUT);
         if (gamepad1.right_bumper) bot.arm.setState(Arm.State.RIGHT);

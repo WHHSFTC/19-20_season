@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import kotlin.math.roundToInt
 
-@Autonomous(name = "Find Skystones Share", group = "Auto")
 internal class VisionWall(opMode: OpModeIF, var alliance: Alliance, var name: String = "Webcam 1") {
 
     companion object {
