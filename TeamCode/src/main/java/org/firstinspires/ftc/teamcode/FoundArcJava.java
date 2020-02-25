@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.implementations.Auto;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.implementations.Summum;
 @Disabled
 @Autonomous(name = "FoundArc: Park by the wall", group = "Auto")
 public class FoundArcJava extends Auto {
@@ -20,7 +20,7 @@ public class FoundArcJava extends Auto {
 
         bot.driveTrain.align(bot.our_side);
 
-        bot.driveTrain.goAngle(54- Sursum.ROBOT_LENGTH, bot.opponents_side, 0.25); // Hard coded distance
+        bot.driveTrain.goAngle(54- Summum.ROBOT_LENGTH, bot.opponents_side, 0.25); // Hard coded distance
 
         bot.shuttleGate.setState(ShuttleGate.State.FOUNDATION);
 

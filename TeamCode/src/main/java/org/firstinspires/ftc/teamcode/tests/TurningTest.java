@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.implementations.Summum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 @Disabled
@@ -21,13 +21,13 @@ public class TurningTest extends LinearOpMode implements OpModeIF {
      * @return total distance of the number of tiles
      */
     public static double tile_distance(double number_of_tiles) {return TILE*number_of_tiles;}
-    private Sursum bot;
+    private Summum bot;
     public void runOpMode() {
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
         this.telemetry = dashboard.getTelemetry();
 
-        bot = new Sursum(this);
+        bot = new Summum(this);
 
         bot.init();
 

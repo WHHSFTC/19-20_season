@@ -15,6 +15,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 /**
  * Bot Class
  */
+@Deprecated
 public class Sursum {
 
     // fields that changed based on what side we start on
@@ -61,7 +62,7 @@ public class Sursum {
         shuttleGate = new ShuttleGate(opMode, "leftGate", "rightGate");
 
         // output {{{
-        outputSlides = new OutputSlides(opMode, "spool");
+        outputSlides = new OutputSlides(opMode, "spool1", "spool2");
         arm = new Arm(opMode, "elbow", "wrist");
         claw = new Claw(opMode, "inner", "outer");
         // }}}

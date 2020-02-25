@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.implementations.OutputSlides;
 import org.firstinspires.ftc.teamcode.implementations.RightSideArm;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.SideArm;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.implementations.Summum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 @TeleOp(group = "Tele", name = "Tele")
@@ -21,13 +21,13 @@ public class Tele extends LinearOpMode implements OpModeIF {
 
     private static final double DEADZONE = 0.05;
 
-    private Sursum bot;
+    private Summum bot;
     private boolean turtle;
     private boolean turtleX;
 
     @Override
     public void runOpMode() {
-        bot = new Sursum(this);
+        bot = new Summum(this);
         bot.leftArm.arm.setState(SideArm.Arm.State.UP);
         bot.rightArm.arm.setState(SideArm.Arm.State.UP);
         ((LeftSideArm.Claw) bot.leftArm.claw).servo.setPosition(1);

@@ -17,7 +17,7 @@ class SkyStone2 : Auto() {
         bot.sideArm.claw.state = SideArm.Claw.State.OPEN
 
         // preparing arm to grab
-        bot.driveTrain.goAngle(42 - Sursum.ROBOT_LENGTH, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(42 - Summum.ROBOT_LENGTH, bot.opponents_side, .5)
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         bot.opMode.telemetry.addLine("Starting TensorFlow Search")
@@ -39,7 +39,7 @@ class SkyStone2 : Auto() {
         intakeSkystone()
 
         // heads back to go under skybridge
-        bot.driveTrain.goAngle(57 - Sursum.ROBOT_LENGTH, bot.our_side, .5)
+        bot.driveTrain.goAngle(57 - Summum.ROBOT_LENGTH, bot.our_side, .5)
         bot.driveTrain.goAngle(2.0, bot.opponents_side, .5)
 
         // goes 36 inches into building zone
@@ -71,14 +71,14 @@ class SkyStone2 : Auto() {
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
         // driving to get the stone
-        bot.driveTrain.goAngle(54 - Sursum.ROBOT_LENGTH, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(54 - Summum.ROBOT_LENGTH, bot.opponents_side, .5)
 
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
 
         sleep(250)
 
         // heads back with stone
-        bot.driveTrain.goAngle(57 - Sursum.ROBOT_LENGTH, bot.our_side, .5)
+        bot.driveTrain.goAngle(57 - Summum.ROBOT_LENGTH, bot.our_side, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 

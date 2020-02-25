@@ -9,18 +9,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.implementations.Alliance;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.implementations.Summum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 @Disabled
 @Autonomous(group = "Auto", name = "DistanceTest")
 public class MovementTest extends LinearOpMode implements OpModeIF {
 
-    private Sursum bot;
+    private Summum bot;
 
     @Override
     public void runOpMode() {
-        bot = new Sursum(this);
+        bot = new Summum(this);
         // init
         bot.init(Alliance.RED);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);

@@ -16,7 +16,7 @@ class FoundArc : Auto() {
 
         bot.driveTrain.align(bot.our_side)
 
-        bot.driveTrain.goAngle(54 - Sursum.ROBOT_LENGTH, bot.opponents_side, 0.25) // Hard coded distance
+        bot.driveTrain.goAngle(54 - Summum.ROBOT_LENGTH, bot.opponents_side, 0.25) // Hard coded distance
 
         bot.shuttleGate.state = ShuttleGate.State.FOUNDATION
 

@@ -24,7 +24,7 @@ class Increment_Test : LinearOpMode(), OpModeIF{
      * class CurrentLevel
      * used to keep track of the current level as well as perform basic arm functionalities
      */
-    private class CurrentLevel(private var bot: Sursum, private var level: Int = 0) {
+    private class CurrentLevel(private var bot: Summum, private var level: Int = 0) {
 
         enum class StoneLevel(var above: List<Int>, var place: List<Int> = listOf()) {
             CLEAR(above = listOf(310, 320)),
@@ -94,7 +94,7 @@ class Increment_Test : LinearOpMode(), OpModeIF{
      */
     override fun runOpMode() {
         // creating the Sursum object
-        val bot = Sursum(this)
+        val bot = Summum(this)
 
         // creating CurrentLevel counter object
         val level = CurrentLevel(bot)

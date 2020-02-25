@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.implementations.*
 
 /**
@@ -24,7 +23,7 @@ class SkystoneFoundationKt : Auto() {
         bot.sideArm.claw.state = SideArm.Claw.State.OPEN
 
         // preparing arm to grab
-        bot.driveTrain.goAngle(42 - Sursum.ROBOT_LENGTH, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(42 - Summum.ROBOT_LENGTH, bot.opponents_side, .5)
 
         bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 

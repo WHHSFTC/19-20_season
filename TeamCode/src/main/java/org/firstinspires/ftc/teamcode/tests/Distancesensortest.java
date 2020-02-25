@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.implementations.Summum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 /**
@@ -13,12 +13,12 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
  */
 @Disabled
 public class Distancesensortest extends LinearOpMode implements OpModeIF {
-    private Sursum bot;
+    private Summum bot;
     public double distance;
 
     @Override
     public void runOpMode() {
-        bot = new Sursum(this);
+        bot = new Summum(this);
         bot.init();
         waitForStart();
         while (opModeIsActive()) {

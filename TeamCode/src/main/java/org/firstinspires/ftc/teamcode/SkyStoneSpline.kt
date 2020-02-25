@@ -58,7 +58,7 @@ class SkyStoneSpline : Auto() {
         bot.sideArm.claw.state = SideArm.Claw.State.OPEN
 
         // TODO(reason = "FINISH ALL POSE2D FOR ALLAINCE SPECIFIC SIDES")
-        val distance = 41 - Sursum.ROBOT_LENGTH
+        val distance = 41 - Summum.ROBOT_LENGTH
         val redPose: Pose2d = Pose2d(
                 x = 0.0,
                 y = 0.0,

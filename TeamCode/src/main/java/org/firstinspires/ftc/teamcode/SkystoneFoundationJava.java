@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
 import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.SideArm;
 import org.firstinspires.ftc.teamcode.implementations.SkyStonePosition;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.implementations.Summum;
 import org.firstinspires.ftc.teamcode.implementations.VisionTF;
 
 /**
@@ -31,7 +31,7 @@ public class SkystoneFoundationJava extends Auto {
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
 
         // preparing arm to grab
-        bot.driveTrain.goAngle(41 - Sursum.ROBOT_LENGTH, bot.opponents_side, .5);
+        bot.driveTrain.goAngle(41 - Summum.ROBOT_LENGTH, bot.opponents_side, .5);
 
         bot.opMode.getTelemetry().addLine("Starting TensorFlow Search");
         bot.opMode.getTelemetry().update();

@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import kotlin.math.roundToInt
 
-internal class VisionWall(opMode: OpModeIF, var alliance: Alliance, var name: String = "Webcam 1") {
+class VisionWall(opMode: OpModeIF, var alliance: Alliance, var name: String = "Webcam 1") {
 
     companion object {
         const val RED = 0

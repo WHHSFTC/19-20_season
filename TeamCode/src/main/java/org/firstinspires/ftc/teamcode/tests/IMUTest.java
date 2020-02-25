@@ -9,16 +9,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain;
-import org.firstinspires.ftc.teamcode.implementations.Sursum;
+import org.firstinspires.ftc.teamcode.implementations.Summum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 @Disabled
 @TeleOp(name = "IMUTest", group = "Test")
 public class IMUTest extends LinearOpMode implements OpModeIF {
-    private Sursum bot;
+    private Summum bot;
     @Override
     public void runOpMode() throws InterruptedException {
-        bot = new Sursum(this);
+        bot = new Summum(this);
         bot.init();
         bot.driveTrain.setHeading(DriveTrain.LOADING_ZONE);
         bot.driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);

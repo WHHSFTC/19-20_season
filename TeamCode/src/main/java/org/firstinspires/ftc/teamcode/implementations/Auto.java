@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -10,7 +9,7 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 public abstract class Auto extends LinearOpMode implements OpModeIF {
 
-    protected Sursum bot;
+    protected Summum bot;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,7 +28,7 @@ public abstract class Auto extends LinearOpMode implements OpModeIF {
     public void genesis() throws InterruptedException {
 //        FtcDashboard dashboard = FtcDashboard.getInstance();
 //        this.telemetry = dashboard.getTelemetry();
-        bot = new Sursum(this);
+        bot = new Summum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         bot.init();
         telemetry.update();

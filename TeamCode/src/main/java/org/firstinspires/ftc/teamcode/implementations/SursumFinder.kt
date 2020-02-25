@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import kotlin.math.roundToInt
 
-class SursumFinder(opMode: OpModeIF) : Sursum(opMode) {
+class SursumFinder(opMode: OpModeIF) : Summum(opMode) {
 
     companion object {
         private const val RED = 0

@@ -16,7 +16,7 @@ class DoubleFoundation : Auto() {
 
     override fun run() {
         // drive towards stones
-        bot.driveTrain.goAngle(41 - Sursum.ROBOT_LENGTH, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(41 - Summum.ROBOT_LENGTH, bot.opponents_side, .5)
 
         // preparing arm to grab
         bot.sideArm.arm.state = SideArm.Arm.State.DOWN
