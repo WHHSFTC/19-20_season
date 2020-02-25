@@ -23,123 +23,104 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
         private set
 
     override fun processFrame(input: Mat?): Mat {
+        val ret = Mat()
         try {
             val matHSV = Mat()
-
             Imgproc.cvtColor(input, matHSV, Imgproc.COLOR_BGR2HSV)
 
-            val dummyChannels: MutableList<Mat> = ArrayList()
-            for (i in 0..2) {
-                dummyChannels.add(Mat())
-            }
-            Core.split(matHSV, dummyChannels)
+            val channels = ArrayList<Mat>()
 
-            val h = dummyChannels[0]
-            val s = dummyChannels[1]
-            val v = dummyChannels[2]
+            for (i: Int in 0..2) {
+                channels.add(Mat())
+            }
+
+            Core.split(matHSV, channels)
+
+            val h: Mat = channels[0]
+            val s: Mat = channels[1]
+            val v: Mat = channels[2]
 
             Imgproc.equalizeHist(v, v)
 
-            Core.merge(listOf(h, s, v), matHSV)
+            val combined: MutableList<Mat> = ArrayList()
+            combined.add(h)
+            combined.add(s)
+            combined.add(v)
+
+            Core.merge(combined, matHSV)
 
             val mask = Mat()
             Core.inRange(matHSV, lowerYellow, upperYellow, mask)
 
-            val res = Mat()
-            Core.bitwise_and(input, input, res, mask)
+            Core.bitwise_and(input, input, ret, mask)
 
             val contours: List<MatOfPoint> = ArrayList()
             val hierarchy = Mat()
-
             Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
 
-            Imgproc.drawContours(res, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
+            Imgproc.drawContours(ret, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
 
-            val widths: MutableList<Double> = ArrayList()
-
+            val widths: MutableList<Int> = ArrayList()
             for (c: MatOfPoint in contours) {
-
                 val copy = MatOfPoint2f(*c.toArray())
-
                 val rect: RotatedRect = Imgproc.minAreaRect(copy)
 
-//                val box = MatOfPoint()
-//                Imgproc.boxPoints(rect, box)
-//
-//                val a: Core.MinMaxLocResult = Core.minMaxLoc(box)
-//
-//                widths.add(a.maxLoc.x - a.minLoc.x)
+                val box = MatOfPoint()
+                Imgproc.boxPoints(rect, box)
 
-                val vertices: Array<Point> = Array(size = 4) { Point() }
-
-                rect.points(vertices)
-                vertices.sortBy { it.x + it.y }
-                widths.add(vertices[-1].x - vertices[0].x)
+                val a: Core.MinMaxLocResult = Core.minMaxLoc(box)
+                widths.add((a.maxVal - a.minVal).toInt())
             }
 
-            var maxWidth = 0.0
+            var maxWidth = 0
             var maxI = 0
-            for (i in 0 until widths.size) {
+            for (i in widths.indices) {
                 if (widths[i] > maxWidth) {
                     maxWidth = widths[i]
                     maxI = i
                 }
             }
 
-//            val copy = MatOfPoint2f()
-//            contours[maxI].convertTo(copy, CvType.CV_32F)
-            val copy = MatOfPoint2f(*contours[maxI].toArray())
-            val rect: RotatedRect = Imgproc.minAreaRect(copy)
-
-//            val box: MatOfPoint = MatOfPoint()
-//            Imgproc.boxPoints(rect, box)
-//
-//            val boxes: ArrayList<MatOfPoint> = listOf(box) as ArrayList<MatOfPoint>
-//
-//            Imgproc.drawContours(input, boxes, 0, Scalar(0.0, 0.0, 255.0), 2)
-//
-//            boxes.sortWith(
-//                    Comparator {
-//                        mop1: MatOfPoint?, mop2: MatOfPoint? ->
-//                        Core.sumElems(mop1).`val`[0].toInt().compareTo(Core.sumElems(mop2).`val`[0].toInt())
-//                    }
-//            )
-//
+            val copy1 = MatOfPoint2f(*contours[maxI].toArray())
+            val rect1: RotatedRect = Imgproc.minAreaRect(copy1)
 
             val vertices: Array<Point> = Array(size = 4) { Point() }
-            rect.points(vertices)
+            rect1.points(vertices)
 
-            val boxContours: MutableList<MatOfPoint> = ArrayList()
-            boxContours.add(MatOfPoint(*vertices))
+            val boxes: MutableList<MatOfPoint> = ArrayList()
+            boxes.add(MatOfPoint(*vertices))
 
-            Imgproc.drawContours(res, boxContours, 0, Scalar(0.0, 0.0, 255.0), 2)
+            Imgproc.drawContours(ret, boxes, 0, Scalar(0.0, 0.0, 255.0), 2)
 
-            boxContours.sortBy { it.toArray().sumBy { p: Point -> (p.x + p.y).toInt() } }
+            val temp: Array<Point> = boxes[0].toArray()
+            temp.sortBy { p1: Point -> p1.x + p1.y }
 
-            val botRight = boxContours[-1].toArray()[0]
-            val topLeft = boxContours[0].toArray()[0]
-            val botLeft = boxContours[1].toArray()[0]
+            val botRight: Point = temp[temp.size - 1]
+            val topLeft: Point = temp[0]
+            val botLeft: Point = temp[1]
 
-            val m: Double = (botLeft.y - botRight.y) / (botLeft.x - botRight.y)
+            val m: Double = (botLeft.y - botRight.y) / (botLeft.x - botRight.x)
 
             val xOffSet = 50
-            val yOffSet = 25
+            val yOffset = 25
             val width = 25
             val height = 25
 
-            var location: Position = Position.NULL
+            var location = Position.NULL
 
-            for (i in 0 until 3) {
-                val x = (botRight.x - 175 * i - xOffSet).toInt()
-                val y = (m * (x - botRight.x) + botRight.y - yOffSet).toInt()
-                Imgproc.rectangle(input,
+            for (i: Int in 0..2) {
+                val x: Int = botRight.x.toInt() - 175 * i - xOffSet
+                val y: Int = (m * (x - botRight.x) + botRight.y - yOffset).toInt()
+                Imgproc.rectangle(
+                        ret,
                         Point((x - width).toDouble(), (y - height).toDouble()),
                         Point(x.toDouble(), y.toDouble()),
                         Scalar(255.0, 0.0, 0.0),
                         5
                 )
 
-                val avg = Core.mean(mask.rowRange(y - height, y).colRange(x - width, x))
+                val avg: Scalar = Core.mean(mask.rowRange(y - height, y).colRange(x - width, x))
+
                 location = if (avg.`val`.sum() == 0.0) Position.values()[i] else location
             }
 
@@ -150,7 +131,7 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
             telemetry.update()
         }
 
-        return input!!
+        return ret
     }
 
 }

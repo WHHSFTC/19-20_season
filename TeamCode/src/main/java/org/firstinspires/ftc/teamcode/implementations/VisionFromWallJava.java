@@ -15,6 +15,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.*;
 
+@Deprecated
 public class VisionFromWallJava extends OpenCvPipeline {
     enum PPosition {
         RIGHT, LEFT, MIDDLE, NULL;
@@ -23,7 +24,7 @@ public class VisionFromWallJava extends OpenCvPipeline {
     final Scalar lowerYellow = new Scalar(15, 100, 100);
     final Scalar upperYellow = new Scalar(30, 255, 255);
 
-    PPosition sky_stone_position = PPosition.NULL;
+    private PPosition skyStonePosition = PPosition.NULL;
 
     private Telemetry telemetry;
     private Mat matHSV;
@@ -33,8 +34,13 @@ public class VisionFromWallJava extends OpenCvPipeline {
         matHSV = new Mat();
     }
 
+    public PPosition getPosition() {
+        return skyStonePosition;
+    }
+
     @Override
     public Mat processFrame(Mat input) {
+        Mat ret = new Mat();
         try {
             Imgproc.cvtColor(input, matHSV, Imgproc.COLOR_BGR2HSV);
 
@@ -61,9 +67,7 @@ public class VisionFromWallJava extends OpenCvPipeline {
 
             Core.inRange(matHSV, lowerYellow, upperYellow, mask);
 
-            Mat res = new Mat();
-
-            Core.bitwise_and(input, input, res, mask);
+            Core.bitwise_and(input, input, ret, mask);
 
             List<MatOfPoint> contours = new ArrayList<>();
 
@@ -71,7 +75,7 @@ public class VisionFromWallJava extends OpenCvPipeline {
 
             Imgproc.findContours(mask, contours, heirarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
 
-            Imgproc.drawContours(res, contours, -1, new Scalar(0, 255, 0), 3);
+            Imgproc.drawContours(ret, contours, -1, new Scalar(0, 255, 0), 3);
 
             List<Integer> widths = new ArrayList<>();
 
@@ -84,7 +88,7 @@ public class VisionFromWallJava extends OpenCvPipeline {
 
                 Core.MinMaxLocResult a = Core.minMaxLoc(box);
 
-                widths.add((int)(a.maxLoc.x - a.minLoc.x));
+                widths.add((int)(a.maxVal - a.minVal));
             }
 
             int maxWidth = 0;
@@ -100,23 +104,23 @@ public class VisionFromWallJava extends OpenCvPipeline {
             MatOfPoint2f copy1 = new MatOfPoint2f(contours.get(maxI).toArray());
             RotatedRect rect1 = Imgproc.minAreaRect(copy1);
 
-            MatOfPoint box1 = new MatOfPoint();
-            Imgproc.boxPoints(rect1, box1);
+            Point[] vertices = new Point[4];
+            rect1.points(vertices);
 
-            ArrayList<MatOfPoint> boxes = (ArrayList<MatOfPoint>) Arrays.asList(box1);
+            List<MatOfPoint> boxes = new ArrayList<>();
+            boxes.add(new MatOfPoint(vertices));
 
-            Imgproc.drawContours(input, boxes, 0, new Scalar(0, 0, 255), 2);
+            Imgproc.drawContours(ret, boxes, 0, new Scalar(0, 0, 255), 2);
 
-            Collections.sort(
-                    boxes,
-                    (mop1, mop2) -> Integer.compare((int)Core.sumElems(mop1).val[0], (int)Core.sumElems(mop2).val[0])
-                    );
+            Point[] temp = boxes.get(0).toArray();
 
-            Point botRight = boxes.get(boxes.size() - 1).toArray()[0];
-            Point topLeft = boxes.get(0).toArray()[0];
-            Point botLeft = boxes.get(1).toArray()[0];
+            Arrays.sort(temp, (p1, p2) -> (int) ((p1.x + p1.y) - (p2.x + p2.y)));
 
-            double m = (botLeft.y - botRight.y) / (botLeft.y - botRight.y);
+            Point botRight = temp[temp.length - 1];
+            Point topLeft = temp[0];
+            Point botLeft = temp[1];
+
+            double m = (botLeft.y - botRight.y) / (botLeft.x - botRight.x);
 
             int xOffSet = 50;
             int yOffset = 25;
@@ -128,24 +132,24 @@ public class VisionFromWallJava extends OpenCvPipeline {
             for (int i = 0; i < 3; i++ ) {
                 int x = (int)botRight.x - 175 * i - xOffSet;
                 int y = (int)(m * (x - botRight.x) + botRight.y - yOffset);
-                Imgproc.rectangle(input,
+                Imgproc.rectangle(ret,
                         new Point((x-width), (y-height)),
                         new Point(x, y),
                         new Scalar(255, 0, 0),
                         5
-                        );
+                );
 
                 Scalar avg = Core.mean(mask.rowRange(y - height, y).colRange(x - width, x));
                 location = Arrays.stream(avg.val).sum() == 0 ? PPosition.values()[i] : location;
             }
 
-            sky_stone_position = location;
+            skyStonePosition = location;
 
         } catch (Exception e) {
-            telemetry.addData("[ERROR]", e);
+            telemetry.addLine("[ERROR] " + e);
             telemetry.update();
         }
 
-        return input;
+        return ret;
     }
 }
