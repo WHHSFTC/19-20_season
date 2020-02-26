@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.tests
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.implementations.*
 
+@Disabled
 @Autonomous(name = "Camera View Check", group = "Auto")
 class CameraViewCheck : Auto() {
     override fun genesis() {
