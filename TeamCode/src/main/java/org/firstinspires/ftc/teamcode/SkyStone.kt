@@ -118,7 +118,7 @@ class SkyStone : Auto() {
         // claw closes on stone
         bot.sideArm.claw.state = SideArm.Claw.State.CLOSED
 
-        sleep(250)
+        sleep(350)
     }
 
     @Throws(InterruptedException::class)
