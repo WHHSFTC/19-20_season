@@ -26,7 +26,7 @@ public class FarSkystone extends Auto {
 
         //moves the bot to the far skystones
         bot.driveTrain.goAngle(60,DriveTrain.LOADING_ZONE,0.5);
-        // servo calls
+        // servo call
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
 
