@@ -39,18 +39,16 @@ public class Sursum {
     public LeftSideArm leftArm;
     public RightSideArm rightArm;
     public SideArm sideArm;
-    public VisionTF visionTF;
     public OpModeIF opMode;
     public Alliance alliance;
-//    public VisionFTC visionFtc;
-
-  //  public VisionWall visionTest;
 
     private DigitalChannel allianceSwitch;
 
     public OpenCvCamera camera;
 
     public VisionFromWall pipeline;
+
+    public VisionTF visionTF;
     /**
      * Creation of all systems of the bot
      * @param opMode import current opMode to get initialize
@@ -127,7 +125,7 @@ public class Sursum {
         driveTrain.goAngle(3.25, DriveTrain.LOADING_ZONE, .25);
         return SkyStonePosition.ONE_FOUR;
     }
-/*
+
     public SkyStonePosition translateRelativePosition(VisionFromWall.Position val) {
         if (val == VisionFromWall.Position.NULL) {
             opMode.getTelemetry().addLine("[ERROR] Found Position.NULL, returning SkyStonePosition.ONE_FOUR");
@@ -144,17 +142,6 @@ public class Sursum {
         }
     }
 
-    public SkyStonePosition translateRelativePosition(VisionFTC.SkystonePosition val) {
-        if (val == VisionFTC.SkystonePosition.CENTER_STONE) {
-            return SkyStonePosition.TWO_FIVE;
-        }
-        if (alliance == Alliance.RED) {
-            return val == VisionFTC.SkystonePosition.LEFT_STONE ? SkyStonePosition.ONE_FOUR : SkyStonePosition.THREE_SIX;
-        } else {
-            return val == VisionFTC.SkystonePosition.LEFT_STONE ? SkyStonePosition.THREE_SIX : SkyStonePosition.ONE_FOUR;
-        }
-    }
-*/
     /**
      * Intake mechanisms
      * @throws InterruptedException
