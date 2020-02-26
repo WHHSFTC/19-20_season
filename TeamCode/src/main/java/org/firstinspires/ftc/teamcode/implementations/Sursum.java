@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 /**
  * Bot Class
  */
-@Deprecated
+//@Deprecated
 public class Sursum {
 
     // fields that changed based on what side we start on

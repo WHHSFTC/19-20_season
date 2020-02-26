@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
 public abstract class Auto extends LinearOpMode implements OpModeIF {
 
-    protected Summum bot;
+    protected Sursum bot;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -28,7 +28,7 @@ public abstract class Auto extends LinearOpMode implements OpModeIF {
     public void genesis() throws InterruptedException {
 //        FtcDashboard dashboard = FtcDashboard.getInstance();
 //        this.telemetry = dashboard.getTelemetry();
-        bot = new Summum(this);
+        bot = new Sursum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
         bot.init();
         telemetry.update();

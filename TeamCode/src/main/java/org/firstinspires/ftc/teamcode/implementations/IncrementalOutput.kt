@@ -71,8 +71,24 @@ class IncrementalOutput(opMode: OpModeIF, str1: String, str2: String, var curren
             reIndex()
         }
 
+        private operator fun plus(other: Int) {
+            return increment(other)
+        }
+
+        operator fun plusAssign(other: Int) {
+            return this + other
+        }
+
         fun decrement(numberOfDecrement: Int) {
             increment(numberOfIncrement = -numberOfDecrement)
+        }
+
+        private operator fun minus(other: Int) {
+            return decrement(other)
+        }
+
+        operator fun minusAssign(other: Int) {
+            return this - other
         }
     }
 
