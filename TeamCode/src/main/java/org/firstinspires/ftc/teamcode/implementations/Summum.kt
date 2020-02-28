@@ -28,9 +28,6 @@ open class Summum(var opMode: OpModeIF) {
     var outputSlides: ContinuousMechanism = IncrementalOutput(opMode, "spool1", "spool2")
 
     @JvmField
-    var arm: Mechanism<Arm.State> = Arm(opMode, "elbow", "wrist")
-
-    @JvmField
     var claw: Mechanism<Claw.State> = Claw(opMode, "inner", "outer")
 
     @JvmField
@@ -84,7 +81,6 @@ open class Summum(var opMode: OpModeIF) {
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER)
         // set servo positions
 //        shuttleGate.state = ShuttleGate.State.CLOSED
-        arm.state = Arm.State.BELT
         claw.state = Claw.State.OPEN
 //        leftArm.arm.state = SideArm.Arm.State.UP
 //        rightArm.arm.state = SideArm.Arm.State.UP
@@ -161,7 +157,6 @@ open class Summum(var opMode: OpModeIF) {
         driveTrain.stop()
 //        shuttleGate.stop()
         outputSlides.stop()
-        arm.stop()
         claw.stop()
         flywheels.power = 0.0
         belt.power = 0.0

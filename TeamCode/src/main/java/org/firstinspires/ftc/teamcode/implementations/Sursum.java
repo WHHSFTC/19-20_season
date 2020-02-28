@@ -15,7 +15,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 /**
  * Bot Class
  */
-//@Deprecated
+@Deprecated
 public class Sursum {
 
     // fields that changed based on what side we start on
@@ -33,7 +33,7 @@ public class Sursum {
     public StrafingDriveTrain driveTrain;
     public Mechanism<ShuttleGate.State> shuttleGate;
     public ContinuousMechanism outputSlides;
-    public Mechanism<Arm.State> arm;
+    //public Mechanism<Arm.State> arm;
     public Mechanism<Claw.State> claw;
     public DcMotorSimple flywheels;
     public DcMotor belt;
@@ -63,7 +63,7 @@ public class Sursum {
 
         // output {{{
         outputSlides = new OutputSlides(opMode, "spool1", "spool2");
-        arm = new Arm(opMode, "elbow", "wrist");
+        //arm = new Arm(opMode, "elbow", "wrist");
         claw = new Claw(opMode, "inner", "outer");
         // }}}
 
@@ -100,7 +100,7 @@ public class Sursum {
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER);
         // set servo positions
         shuttleGate.setState(ShuttleGate.State.CLOSED);
-        arm.setState(Arm.State.BELT);
+        //arm.setState(Arm.State.BELT);
         claw.setState(Claw.State.OPEN);
         leftArm.arm.setState(SideArm.Arm.State.UP);
         rightArm.arm.setState(SideArm.Arm.State.UP);
@@ -176,7 +176,7 @@ public class Sursum {
         driveTrain.stop();
         shuttleGate.stop();
         outputSlides.stop();
-        arm.stop();
+        //arm.stop();
         claw.stop();
         flywheels.setPower(0);
         belt.setPower(0);
