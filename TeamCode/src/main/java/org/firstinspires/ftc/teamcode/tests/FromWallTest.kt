@@ -29,7 +29,7 @@ class FromWallTest : Auto() {
 
         bot.camera.openCameraDevice()
 
-        bot.pipeline = VisionFromWall(telemetry)
+        bot.pipeline = VisionFromWall(bot, telemetry)
         bot.camera.setPipeline(bot.pipeline)
 
         bot.camera.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN)

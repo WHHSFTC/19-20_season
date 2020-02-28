@@ -13,6 +13,9 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 @Deprecated
@@ -147,6 +150,7 @@ public class VisionFromWallJava extends OpenCvPipeline {
 
         } catch (Exception e) {
             telemetry.addLine("[ERROR] " + e);
+            Arrays.stream(e.getStackTrace()).forEach(x -> telemetry.addLine(x.toString()));
             telemetry.update();
         }
 

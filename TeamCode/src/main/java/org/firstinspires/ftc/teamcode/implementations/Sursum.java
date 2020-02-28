@@ -48,6 +48,8 @@ public class Sursum {
 
     public VisionFromWall pipeline;
 
+    public VisionFromWall2 pipeline2;
+
     public VisionTF visionTF;
     /**
      * Creation of all systems of the bot
