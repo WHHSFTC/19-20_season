@@ -34,21 +34,42 @@ public class VisionTest extends Auto {
     public void run() throws InterruptedException {
         VisionFromWall.Position position = bot.pipeline.getPOSITION();
         SkyStonePosition pos = bot.translateRelativePosition(position);
+        bot.camera.stopStreaming();
+        bot.camera.closeCameraDevice();
+        telemetry.addData("Position", pos.toString());
         switch (pos) {
             case ONE_FOUR:
-                bot.driveTrain.goAngle(18, DriveTrain.LOADING_ZONE, 0.25);
+                bot.driveTrain.goAngle(16, DriveTrain.LOADING_ZONE, 0.25);
                 break;
             case TWO_FIVE:
-                bot.driveTrain.goAngle(10, DriveTrain.LOADING_ZONE, 0.25);
+                bot.driveTrain.goAngle(8, DriveTrain.LOADING_ZONE, 0.25);
                 break;
-            case THREE_SIX:
-                bot.driveTrain.goAngle(2, DriveTrain.LOADING_ZONE, 0.25);
+            default:
+                //do nothing
         }
+        // intake stone
+        intake(48 - Sursum.ROBOT_WIDTH, 8, bot.opponents_side);
+        bot.driveTrain.goAngle(pos.getDistance() + 84, DriveTrain.BUILDING_ZONE, 0.5);
+        // output stone onto foundation
+        output(8, 8, bot.opponents_side);
+
+    }
+    private void intake(double towards, double back, double direction) {
         bot.sideArm.arm.setState(SideArm.Arm.State.DOWN);
         bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
-        bot.driveTrain.goAngle(48 - Sursum.ROBOT_WIDTH, bot.opponents_side, 0.5);
+        bot.driveTrain.goAngle(towards, direction, 0.5);
+        sleep(500);
         bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
         sleep(500);
-        bot.driveTrain.goAngle(8, bot.our_side, 0.25);
+        bot.driveTrain.goAngle(-back, direction, 0.25);
+        bot.sideArm.arm.setState(SideArm.Arm.State.HOLD);
+    }
+    private void output(double towards, double back, double direction) {
+        bot.driveTrain.goAngle(towards, direction, 0.25);
+        bot.sideArm.claw.setState(SideArm.Claw.State.OPEN);
+        sleep(500);
+        bot.sideArm.arm.setState(SideArm.Arm.State.UP);
+        bot.sideArm.claw.setState(SideArm.Claw.State.CLOSED);
+        bot.driveTrain.goAngle(-back, direction, 0.5);
     }
 }
