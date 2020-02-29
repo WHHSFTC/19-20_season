@@ -32,7 +32,7 @@ public class VisionTest extends Auto {
 
     @Override
     public void run() throws InterruptedException {
-        VisionFromWall.Position position = bot.pipeline.getPOSITION();
+        VisionFromWall.Position position = bot.pipeline.getPosition();
         SkyStonePosition pos = bot.translateRelativePosition(position);
         bot.camera.stopStreaming();
         bot.camera.closeCameraDevice();
