@@ -2,11 +2,20 @@ package org.firstinspires.ftc.teamcode.implementations
 
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 
-class Output(val bot: Summum, opMode: OpModeIF) {
-    var height: Double = 0.0
-        set(value) {
+open class Output(
+        val opMode: OpModeIF,
+        slideMotor1: String,
+        slideMotor2: String,
+        horizontalServo: String,
+        innerClaw: String,
+        outerClaw: String
+) {
+    val slides = Slides(
+            opMode = opMode,
+            slideMotor1 = slideMotor1,
+            slideMotor2 = slideMotor2,
+            horizontalSlidesS = horizontalServo
+    )
 
-            field = value
-        }
-
+    val claw = Claw(opMode, innerClaw, outerClaw)
 }

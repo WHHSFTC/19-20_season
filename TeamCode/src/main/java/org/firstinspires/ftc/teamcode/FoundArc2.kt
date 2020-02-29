@@ -18,15 +18,14 @@ class FoundArc2 : Auto() {
 
         bot.driveTrain.goAngle(54 - Summum.ROBOT_LENGTH, bot.opponents_side, 0.25) // Hard coded distance
 
-        bot.shuttleGate.state = ShuttleGate.State.FOUNDATION
+        bot.foundation.state = FoundationHooks.State.DOWN
 
         when (bot.alliance) {
             Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 1.0, 6.0)
             Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 1.0, 6.0)
-            null -> {}
         }
 
-        bot.shuttleGate.state = ShuttleGate.State.CLOSED
+        bot.foundation.state = FoundationHooks.State.UP
 
         bot.driveTrain.goAngle(5.0, bot.opponents_side, .5)
 

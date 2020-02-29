@@ -4,13 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.implementations.DriveTrain
-import org.firstinspires.ftc.teamcode.implementations.IncrementalOutput
-import org.firstinspires.ftc.teamcode.implementations.OutputSlides
 import org.firstinspires.ftc.teamcode.implementations.Summum
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import kotlin.math.*
 
 class Tele_Summum : LinearOpMode(), OpModeIF {
+    private var prevInc: Boolean = false
+    private var prevDec: Boolean = false
+
     companion object {
         const val DEADZONE = .05
     }
@@ -25,7 +26,7 @@ class Tele_Summum : LinearOpMode(), OpModeIF {
     }
 
     override fun runOpMode() {
-
+        telemetry.update()
     }
 
     fun runDriveTrain() {
@@ -63,43 +64,41 @@ class Tele_Summum : LinearOpMode(), OpModeIF {
     fun runInput() {
         if (gamepad1.a) {
             bot.flywheels.power = -2.0/3.0
-            bot.belt.power = -1.0
         }
         if (gamepad1.y) {
             bot.flywheels.power = -2.0/3.0
-            bot.belt.power = -1.0
         }
         if (gamepad1.b) {
             bot.flywheels.power = 0.0
-            bot.belt.power = 0.0
         }
     }
 
     fun runOutput() {
-        if (gamepad2.dpad_up) {
-            (bot.outputSlides as IncrementalOutput).currentLevel += 1
+        if (gamepad2.right_bumper && !prevInc) {
+            bot.output.slides.height += 1
         }
-        if (gamepad2.dpad_down) {
-            (bot.outputSlides as IncrementalOutput).currentLevel -= 1
-        }
-        if (gamepad2.y) {
-            (bot.outputSlides as IncrementalOutput).goto(
-                    location = IncrementalOutput.Level.Location.ABOVE,
-                    encoderLocation = IncrementalOutput.Level.EncoderLocation.MIN
-            )
-        }
-        if (gamepad2.x) {
-            (bot.outputSlides as IncrementalOutput).goto(
-                    location = IncrementalOutput.Level.Location.PLACE,
-                    encoderLocation = IncrementalOutput.Level.EncoderLocation.MIN
-            )
+        if (gamepad2.left_bumper && !prevDec) {
+            bot.output.slides.height -= 1
         }
 
-        bot.outputSlides.state = if (abs(gamepad2.right_stick_x) >= DEADZONE)
+        prevInc = gamepad2.right_bumper
+        prevDec = gamepad2.left_bumper
+
+        if (gamepad2.y) {
+            bot.output.slides.isPlacing = false
+            bot.output.slides.runVerticalSlides()
+        }
+        if (gamepad2.x) {
+            bot.output.slides.isPlacing = true
+            bot.output.slides.runVerticalSlides()
+        }
+
+        bot.output.slides.vPower = if (abs(gamepad2.right_stick_x) >= DEADZONE)
             gamepad2.right_stick_x.toDouble()
         else
             0.0
-        (bot.outputSlides as OutputSlides).dumpEncoders()
+        telemetry.addData("[HEIGHT]", bot.output.slides.height)
+        bot.output.slides.dumpEncoders()
     }
 
     infix fun Double.max(other: Double): Double {
