@@ -26,7 +26,7 @@ public class VisionTest extends Auto {
         bot.pipeline = new VisionFromWall(bot, telemetry);
         bot.camera.setPipeline(bot.pipeline);
 
-        bot.camera.startStreaming(640, 480, OpenCvCameraRotation.UPSIDE_DOWN);
+        bot.camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
 
     }
 
