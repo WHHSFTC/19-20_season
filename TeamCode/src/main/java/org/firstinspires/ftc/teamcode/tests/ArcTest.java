@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.implementations.ShuttleGate;
 import org.firstinspires.ftc.teamcode.implementations.Sursum;
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
 
-@Disabled
+
 @Autonomous(name = "ArcTest", group = "Test")
 public class ArcTest extends LinearOpMode implements OpModeIF {
     private Sursum bot;
