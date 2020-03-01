@@ -129,12 +129,13 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
     }
 
 
-    public void stubify() {
+    public DriveTrain stubify() {
         motorRF = new DcMotorStub(opMode, "rf");
         motorLF = new DcMotorStub(opMode, "lf");
         motorLB = new DcMotorStub(opMode, "lb");
         motorRB = new DcMotorStub(opMode, "rb");
-        setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.BRAKE);
+        setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT);
+        return this;
     }
 
     @Override

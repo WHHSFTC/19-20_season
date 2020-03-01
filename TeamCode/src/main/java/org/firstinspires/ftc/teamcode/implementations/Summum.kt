@@ -31,7 +31,7 @@ open class Summum(var opMode: OpModeIF) {
     var foundation: FoundationHooks = FoundationHooks(opMode = opMode, leftStr = "LHook", rightStr = "RHook")
 
 //    @JvmField
-//    var capStone: capStone
+//    var capStone: CapStone = CapStone(opMode = opMode, str = "capMech")
 
 //    private val allianceSwitch: DigitalChannel = opMode.hardwareMap.digitalChannel["allianceSwitch"]
 
@@ -60,6 +60,7 @@ open class Summum(var opMode: OpModeIF) {
         // reset the motors
         driveTrain.setModes(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
         driveTrain.setModes(DcMotor.RunMode.RUN_USING_ENCODER)
+
         // set zero power behaviors to float so Kaden can turn the bot
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT)
         // tell Kaden the bot can now be pushed
@@ -87,7 +88,6 @@ open class Summum(var opMode: OpModeIF) {
      */
     fun stop() {
         driveTrain.stop()
-        camera.closeCameraDevice()
         flywheels.power = 0.0
     }
 

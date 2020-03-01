@@ -1,23 +1,26 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.teamcode.implementations.DriveTrain
-import org.firstinspires.ftc.teamcode.implementations.Summum
+import org.firstinspires.ftc.teamcode.implementations.*
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import kotlin.math.*
 
+@TeleOp(name = "Summum", group = "Tele")
 class Tele_Summum : LinearOpMode(), OpModeIF {
     private var prevInc: Boolean = false
     private var prevDec: Boolean = false
+    private var heightCounter: Int = 0
 
     companion object {
         const val DEADZONE = .05
     }
-    private val bot: Summum = Summum(this)
 
-    override fun getHardwareMap(): HardwareMap {
+    lateinit var bot: Summum
+
+    override fun getHardwareMap(): HardwareMap? {
         return this.hardwareMap
     }
 
@@ -26,7 +29,15 @@ class Tele_Summum : LinearOpMode(), OpModeIF {
     }
 
     override fun runOpMode() {
-        telemetry.update()
+        bot = Summum(this)
+        waitForStart()
+        while(opModeIsActive()) {
+            runDriveTrain()
+            runOutput()
+            runInput()
+            runFoundationHooks()
+            telemetry.update()
+        }
     }
 
     fun runDriveTrain() {
@@ -66,7 +77,7 @@ class Tele_Summum : LinearOpMode(), OpModeIF {
             bot.flywheels.power = -2.0/3.0
         }
         if (gamepad1.y) {
-            bot.flywheels.power = -2.0/3.0
+            bot.flywheels.power = 2.0/3.0
         }
         if (gamepad1.b) {
             bot.flywheels.power = 0.0
@@ -75,30 +86,69 @@ class Tele_Summum : LinearOpMode(), OpModeIF {
 
     fun runOutput() {
         if (gamepad2.right_bumper && !prevInc) {
-            bot.output.slides.height += 1
+            heightCounter++
         }
+
         if (gamepad2.left_bumper && !prevDec) {
-            bot.output.slides.height -= 1
+            heightCounter--
         }
 
         prevInc = gamepad2.right_bumper
         prevDec = gamepad2.left_bumper
 
-        if (gamepad2.y) {
-            bot.output.slides.isPlacing = false
-            bot.output.slides.runVerticalSlides()
-        }
-        if (gamepad2.x) {
-            bot.output.slides.isPlacing = true
-            bot.output.slides.runVerticalSlides()
+        bot.output.slides.height = heightCounter
+
+        when {
+            gamepad2.y -> {
+                bot.output.claw.state = Claw.State.CLOSED
+                bot.output.slides.isPlacing = false
+                bot.output.slides.runVerticalSlides()
+            }
+            gamepad2.b -> {
+                bot.output.slides.isPlacing = true
+                bot.output.slides.runVerticalSlides()
+            }
+            gamepad2.a -> {
+                bot.output.claw.state = Claw.State.OPEN
+
+                if (bot.output.slides.height != 0) {
+                    bot.output.slides.isPlacing = false
+                    bot.output.slides.runVerticalSlides()
+
+                    bot.output.slides.state = HorizontalSlides.State.IN
+
+                    bot.output.slides.height = 0
+                    bot.output.slides.runVerticalSlides()
+                }
+
+                bot.output.claw.state = Claw.State.INNER
+            }
         }
 
-        bot.output.slides.vPower = if (abs(gamepad2.right_stick_x) >= DEADZONE)
-            gamepad2.right_stick_x.toDouble()
+        when {
+            gamepad2.dpad_up -> bot.output.slides.state = HorizontalSlides.State.OUT
+            gamepad2.dpad_down -> bot.output.slides.state = HorizontalSlides.State.IN
+        }
+
+        when {
+            gamepad2.dpad_left -> bot.output.claw.state = Claw.State.OPEN
+            gamepad2.dpad_right -> bot.output.claw.state = Claw.State.CLOSED
+        }
+
+        bot.output.slides.vPower = if (abs(gamepad2.right_stick_y) >= DEADZONE)
+            gamepad2.right_stick_y.toDouble()
         else
             0.0
+
         telemetry.addData("[HEIGHT]", bot.output.slides.height)
         bot.output.slides.dumpEncoders()
+    }
+
+    fun runFoundationHooks() {
+        when {
+            gamepad1.left_bumper -> bot.foundation.state = FoundationHooks.State.UP
+            gamepad1.right_bumper -> bot.foundation.state = FoundationHooks.State.DOWN
+        }
     }
 
     infix fun Double.max(other: Double): Double {

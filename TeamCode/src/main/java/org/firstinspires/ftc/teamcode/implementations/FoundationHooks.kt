@@ -7,10 +7,13 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 class FoundationHooks(opMode: OpModeIF, leftStr: String, rightStr: String): Mechanism<FoundationHooks.State> {
     private val left: Servo = opMode.hardwareMap.servo[leftStr]
     private val right: Servo = opMode.hardwareMap.servo[rightStr]
+//    private val left: Servo = ServoStub()
+//    private val right: Servo = ServoStub()
+
 
     enum class State(val left: Double, val right: Double) {
-        UP(0.0, 0.0),
-        DOWN(1.0, 1.0)
+        UP(0.05, 0.84),
+        DOWN(.58, .32)
     }
 
     override var state: State = State.UP

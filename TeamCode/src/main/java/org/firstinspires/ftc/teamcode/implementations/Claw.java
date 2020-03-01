@@ -17,6 +17,8 @@ public class Claw implements Mechanism<Claw.State> {
     public Claw(OpModeIF opMode, String innerStr, String outerStr) {
         innerClaw = new InnerClaw(opMode.getHardwareMap().servo.get(innerStr));
         outerClaw = new OuterClaw(opMode.getHardwareMap().servo.get(outerStr));
+//        innerClaw = new InnerClaw(new ServoStub());
+//        outerClaw = new OuterClaw(new ServoStub());
     }
 
     public void setState(State state) throws IllegalArgumentException {
@@ -83,7 +85,7 @@ public class Claw implements Mechanism<Claw.State> {
         }
 
         enum State implements StatefulServo.State {
-            OPEN(0.61), CLOSED(0.5), FIT(0.0);
+            OPEN(0.2), CLOSED(0.56), FIT(.75);
             private double value;
             State(double value) {
                 this.value = value;

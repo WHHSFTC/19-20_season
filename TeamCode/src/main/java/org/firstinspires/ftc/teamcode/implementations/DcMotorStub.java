@@ -118,7 +118,6 @@ public class DcMotorStub implements com.qualcomm.robotcore.hardware.DcMotor {
     public void setPower(double power) {
         this.power = power;
         opMode.getTelemetry().addData(name, power);
-        opMode.getTelemetry().update();
     }
 
     @Override

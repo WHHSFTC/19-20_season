@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
+import kotlin.math.max
 
 class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechanism<VerticalSlides.Level> {
     @Config
@@ -64,6 +65,8 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
 
     var motorPower: Double = 0.0
         set(value) {
+            if (motor1.mode != DcMotor.RunMode.RUN_WITHOUT_ENCODER) motor1.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+            if (motor2.mode != DcMotor.RunMode.RUN_WITHOUT_ENCODER) motor2.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
             field = value
             motor1.power = value
             motor2.power = value
@@ -137,6 +140,7 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
         }
 
         fun reIndex() {
+            index = max(0, index)
             level = levels[index]
         }
 
