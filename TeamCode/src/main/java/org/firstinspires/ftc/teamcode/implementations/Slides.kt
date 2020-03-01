@@ -10,7 +10,7 @@ class Slides(opMode: OpModeIF, slideMotor1: String, slideMotor2: String, horizon
     
     var height: Int = verticalSlides.state.index
         set(value) {
-            verticalSlides.state = VerticalSlides.Level(max(0, value), isPlacing)
+            verticalSlides.state = VerticalSlides.Level(value, isPlacing)
             field = value
     }
 

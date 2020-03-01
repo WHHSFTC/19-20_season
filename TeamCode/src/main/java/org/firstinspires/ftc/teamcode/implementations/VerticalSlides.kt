@@ -86,7 +86,6 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
     }
 
     class Level(var index: Int, var isPlacing: Boolean = false, var level: StoneLevels = StoneLevels.NULL) {
-
         enum class StoneLevels(var above: List<Int>, var place: List<Int> = listOf(0, 0)) {
             // TODO get these locations
             NULL(listOf(0, 0)),
@@ -115,11 +114,13 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
                 }
         }
 
+
         companion object {
             private val levels: List<StoneLevels> = StoneLevels
                     .values()
                     .toList()
                     .subList(0, StoneLevels.values().toList().size)
+            val maxStackHeight = levels.size - 1
         }
 
         enum class Location {

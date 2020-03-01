@@ -96,6 +96,7 @@ class Tele_Summum : LinearOpMode(), OpModeIF {
         prevInc = gamepad2.right_bumper
         prevDec = gamepad2.left_bumper
 
+        heightCounter = heightCounter clip 0..VerticalSlides.Level.maxStackHeight
         bot.output.slides.height = heightCounter
 
         when {
@@ -153,5 +154,9 @@ class Tele_Summum : LinearOpMode(), OpModeIF {
 
     infix fun Double.max(other: Double): Double {
         return this.coerceAtLeast(other)
+    }
+
+    infix fun Int.clip(other: IntRange): Int {
+        return min(max(other.first, heightCounter), other.last)
     }
 }
