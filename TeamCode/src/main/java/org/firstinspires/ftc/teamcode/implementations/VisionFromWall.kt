@@ -19,7 +19,7 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
         val upperYellow: Scalar = Scalar(30.0, 255.0, 255.0)
     }
 
-    var POSITION: Position = Position.NULL
+    var skyStonePosition: Position = Position.NULL
         private set
 
     override fun processFrame(input: Mat?): Mat {
@@ -124,7 +124,7 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
                 location = if (avg.`val`.sum() == 0.0) Position.values()[i] else location
             }
 
-            POSITION = location
+            skyStonePosition = location
 
         } catch (e: Exception) {
             telemetry.addData("[ERROR]", e.message)

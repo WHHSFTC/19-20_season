@@ -283,10 +283,10 @@ public class DriveTrain extends MecanumDrive implements StrafingDriveTrain {
 
     @Override
     public void dumpMotors() {
-        opMode.getTelemetry().addData("motorRF", motorRF);
-        opMode.getTelemetry().addData("motorLF", motorLF);
-        opMode.getTelemetry().addData("motorLB", motorLB);
-        opMode.getTelemetry().addData("motorRB", motorRB);
+        opMode.getTelemetry().addData("motorRF", motorRF.getCurrentPosition());
+        opMode.getTelemetry().addData("motorLF", motorLF.getCurrentPosition());
+        opMode.getTelemetry().addData("motorLB", motorLB.getCurrentPosition());
+        opMode.getTelemetry().addData("motorRB", motorRB.getCurrentPosition());
     }
 
     public void setPowers(double rf, double lf, double lb, double rb) {

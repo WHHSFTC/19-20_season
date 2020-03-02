@@ -1,16 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.interfaces.OpModeIF;
-
-
-public abstract class Auto extends LinearOpMode implements OpModeIF {
-
-    protected Summum bot;
-
+public abstract class Auto extends OpModeRunner {
     @Override
     public void runOpMode() throws InterruptedException {
         // init
@@ -42,15 +32,5 @@ public abstract class Auto extends LinearOpMode implements OpModeIF {
 
     public void halt() throws InterruptedException {
         bot.stop();
-    }
-
-    @Override
-    public Telemetry getTelemetry() {
-        return telemetry;
-    }
-
-    @Override
-    public HardwareMap getHardwareMap() {
-        return hardwareMap;
     }
 }

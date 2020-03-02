@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode
+package org.firstinspires.ftc.teamcode.tests
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.implementations.*
 import kotlin.math.*
 
-@TeleOp(name = "Summum", group = "Tele")
-class Tele_Summum : Tele() {
+@TeleOp(name = "Encoder Tele", group = "Tele")
+class EncoderTele : Tele() {
     private var prevInc: Boolean = false
     private var prevDec: Boolean = false
     private var heightCounter: Int = 0
@@ -19,6 +19,8 @@ class Tele_Summum : Tele() {
         runOutput()
         runInput()
         runFoundationHooks()
+        bot.driveTrain.dumpMotors()
+        bot.output.slides.dumpEncoders()
         telemetry.update()
     }
 
