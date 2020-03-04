@@ -8,67 +8,92 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPipeline() {
-    private var telemetry: Telemetry = tl!!
+    var position: Position
+    var telemetry: Telemetry
+    var matHSV: Mat
 
+    /**
+     * Enum class of relative stone positions
+     */
     enum class Position {
-        RIGHT, LEFT, MIDDLE, NULL
+        RIGHT, MIDDLE, LEFT, NULL
     }
 
+    /**
+     * companion object holding const values for lower and upper bounds of yellow in HSV color space
+     */
     companion object {
-        val lowerYellow: Scalar = Scalar(15.0, 100.0, 100.0)
-        val upperYellow: Scalar = Scalar(30.0, 255.0, 255.0)
+        var lowerYellow: Scalar = Scalar(12.0, 100.0, 100.0)
+        var upperYellow: Scalar = Scalar(32.0, 255.0, 255.0)
     }
 
-    var skyStonePosition: Position = Position.NULL
-        private set
+    /**
+     * default init call, constructor
+     */
+    init {
+        position = Position.NULL
+        telemetry = tl!!
+        matHSV = Mat()
+    }
 
-    override fun processFrame(input: Mat?): Mat {
-        val ret = Mat()
+    /**
+     * process Frame that is called every tick by OpenCVPipeline
+     */
+    override fun processFrame(input: Mat): Mat {
+        /**accumulator variable**/
+        var ret = Mat()
         try {
-            val matHSV = Mat()
-            Imgproc.cvtColor(input, matHSV, Imgproc.COLOR_BGR2HSV)
+            /**converting from RGB color space to HSV color space**/
+            Imgproc.cvtColor(input, matHSV, Imgproc.COLOR_RGB2HSV_FULL)
 
-            val channels = ArrayList<Mat>()
+            var channels = ArrayList<Mat>()
 
             for (i: Int in 0..2) {
                 channels.add(Mat())
             }
 
+            /**splitting the HSV Mat into its separate channels H, S, V respectively**/
             Core.split(matHSV, channels)
 
-            val h: Mat = channels[0]
-            val s: Mat = channels[1]
-            val v: Mat = channels[2]
+            var h: Mat = channels[0]
+            var s: Mat = channels[1]
+            var v: Mat = channels[2]
 
+            /**equalization of the Value channel**/
             Imgproc.equalizeHist(v, v)
 
-            val combined: MutableList<Mat> = ArrayList()
+            var combined: MutableList<Mat> = ArrayList()
             combined.add(h)
             combined.add(s)
             combined.add(v)
 
+            /**re-merging equalized V with H, S, V**/
             Core.merge(combined, matHSV)
 
-            val mask = Mat()
+            /**checking if any pixel is within the yellow bounds to make a black and white mask**/
+            var mask = Mat(matHSV.rows(), matHSV.cols(), CvType.CV_8UC1)
             Core.inRange(matHSV, lowerYellow, upperYellow, mask)
 
+            /**applying to input and putting it on ret in black or yellow**/
             Core.bitwise_and(input, input, ret, mask)
 
-            val contours: List<MatOfPoint> = ArrayList()
-            val hierarchy = Mat()
+            /**finding contours on mask**/
+            var contours: List<MatOfPoint> = ArrayList()
+            var hierarchy = Mat()
             Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE)
 
             Imgproc.drawContours(ret, contours, -1, Scalar(0.0, 255.0, 0.0), 3)
 
-            val widths: MutableList<Int> = ArrayList()
+            /**finding widths of each contour**/
+            var widths: MutableList<Int> = ArrayList()
             for (c: MatOfPoint in contours) {
-                val copy = MatOfPoint2f(*c.toArray())
-                val rect: RotatedRect = Imgproc.minAreaRect(copy)
+                var copy = MatOfPoint2f(*c.toArray())
+                var rect: RotatedRect = Imgproc.minAreaRect(copy)
 
-                val box = MatOfPoint()
+                var box = MatOfPoint()
                 Imgproc.boxPoints(rect, box)
 
-                val a: Core.MinMaxLocResult = Core.minMaxLoc(box)
+                var a: Core.MinMaxLocResult = Core.minMaxLoc(box)
                 widths.add((a.maxVal - a.minVal).toInt())
             }
 
@@ -81,36 +106,40 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
                 }
             }
 
-            val copy1 = MatOfPoint2f(*contours[maxI].toArray())
-            val rect1: RotatedRect = Imgproc.minAreaRect(copy1)
+            /**finding biggest contours**/
+            var copy1 = MatOfPoint2f(*(contours[maxI].toArray()))
+            var rect1: RotatedRect = Imgproc.minAreaRect(copy1)
 
-            val vertices: Array<Point> = Array(size = 4) { Point() }
+            var vertices: Array<Point> = Array(size = 4) { Point() }
             rect1.points(vertices)
 
-            val boxes: MutableList<MatOfPoint> = ArrayList()
+            var boxes: MutableList<MatOfPoint> = ArrayList()
             boxes.add(MatOfPoint(*vertices))
 
             Imgproc.drawContours(ret, boxes, 0, Scalar(0.0, 0.0, 255.0), 2)
 
-            val temp: Array<Point> = boxes[0].toArray()
+            var temp: Array<Point> = boxes[0].toArray()
             temp.sortBy { p1: Point -> p1.x + p1.y }
 
-            val botRight: Point = temp[temp.size - 1]
-            val topLeft: Point = temp[0]
-            val botLeft: Point = temp[1]
+            /**getting bottom right and bottom left of the box**/
+            var botRight: Point = temp[temp.size - 1]
+            var topLeft: Point = temp[0]
+            var botLeft: Point = temp[1]
 
-            val m: Double = (botLeft.y - botRight.y) / (botLeft.x - botRight.x)
+            /**finding slope so testing locations will match this slope to always be in the center**/
+            var m: Double = (botLeft.y - botRight.y) / (botLeft.x - botRight.x)
 
-            val xOffSet = 50
-            val yOffset = 25
-            val width = 25
-            val height = 25
+            var xOffSet = 50
+            var yOffset = 35
+            var width = 25
+            var height = 25
 
             var location = Position.NULL
 
+            /**testing locations**/
             for (i: Int in 0..2) {
-                val x: Int = botRight.x.toInt() - 175 * i - xOffSet
-                val y: Int = (m * (x - botRight.x) + botRight.y - yOffset).toInt()
+                var x: Int = botRight.x.toInt() - 175 * i - xOffSet
+                var y: Int = (m * (x - botRight.x) + botRight.y - yOffset).toInt()
                 Imgproc.rectangle(
                         ret,
                         Point((x - width).toDouble(), (y - height).toDouble()),
@@ -119,18 +148,26 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
                         5
                 )
 
-                val avg: Scalar = Core.mean(mask.rowRange(y - height, y).colRange(x - width, x))
+                /**finding the average of each box**/
+                var avg: Scalar = Core.mean(mask.rowRange(y - height, y).colRange(x - width, x))
 
-                location = if (avg.`val`.sum() == 0.0) Position.values()[i] else location
+                telemetry.addData("[AVERAGE ${Position.values()[i]}]", avg.toString())
+
+                /**box with stone will have a sum of approximately 0.0**/
+                location = if (avg.`val`.sum() <= 10.0) Position.values()[i] else location
             }
 
-            skyStonePosition = location
+            position = location
+            telemetry.addData("[LOCATION]", position.toString())
 
         } catch (e: Exception) {
-            telemetry.addData("[ERROR]", e.message)
-            telemetry.update()
+            /**error handling, prints stack trace for specific debug**/
+            telemetry.addData("[ERROR]", e)
+            e.stackTrace.toList().stream().forEach { x -> telemetry.addLine(x.toString()) }
         }
+        telemetry.update()
 
+        /**returns the black and yellow mask with contours drawn to see logic in action**/
         return ret
     }
 
