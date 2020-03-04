@@ -11,11 +11,6 @@ class FlyWheels(var opMode: OpModeIF, var left: String, var right: String) : DcM
     var motorLeft: DcMotor = opMode.hardwareMap.dcMotor[left]
     var motorRight: DcMotor = opMode.hardwareMap.dcMotor[right]
 
-    init {
-        motorLeft.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        motorRight.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-    }
-
     override fun setDirection(direction: DcMotorSimple.Direction?) {
         motorLeft.direction = direction
         motorRight.direction = direction

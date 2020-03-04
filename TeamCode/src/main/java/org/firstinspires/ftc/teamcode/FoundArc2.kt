@@ -20,6 +20,8 @@ class FoundArc2 : Auto() {
 
         bot.foundation.state = FoundationHooks.State.DOWN
 
+        sleep(1000)
+
         when (bot.alliance) {
             Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 1.0, 6.0)
             Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 1.0, 6.0)

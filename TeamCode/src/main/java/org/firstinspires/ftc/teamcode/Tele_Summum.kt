@@ -8,6 +8,7 @@ import kotlin.math.*
 class Tele_Summum : Tele() {
     private var prevInc: Boolean = false
     private var prevDec: Boolean = false
+    private var prevCap: Boolean = false
     private var heightCounter: Int = 0
 
     companion object {
@@ -56,10 +57,10 @@ class Tele_Summum : Tele() {
 
     fun runInput() {
         if (gamepad1.a) {
-            bot.flywheels.power = -2.0/3.0
+            bot.flywheels.power = -1.0
         }
         if (gamepad1.y) {
-            bot.flywheels.power = 2.0/3.0
+            bot.flywheels.power = 1.0
         }
         if (gamepad1.b) {
             bot.flywheels.power = 0.0
@@ -106,6 +107,7 @@ class Tele_Summum : Tele() {
 
                 bot.output.claw.state = Claw.State.INNER
             }
+            gamepad2.x -> bot.output.claw.state = Claw.State.INNER
         }
 
         when {
@@ -122,6 +124,12 @@ class Tele_Summum : Tele() {
             gamepad2.right_stick_y.toDouble()
         else
             0.0
+
+//        if (gamepad2.left_stick_button && !prevCap) {
+//            bot.capStone.state = if (bot.capStone.state == CapStone.State.HOLD) CapStone.State.PLACE else CapStone.State.HOLD
+//        }
+//
+//        prevCap = gamepad2.left_stick_button
 
         telemetry.addData("[HEIGHT]", bot.output.slides.height)
         bot.output.slides.dumpEncoders()
