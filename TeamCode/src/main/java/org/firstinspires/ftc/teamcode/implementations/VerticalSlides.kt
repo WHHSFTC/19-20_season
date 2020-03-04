@@ -24,6 +24,8 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
     var motor2: DcMotor = opMode.hardwareMap.dcMotor.get(str2)
 
     fun dumpEncoders() {
+        opMode.telemetry.addData("[TARGET]", motor1.targetPosition)
+        opMode.telemetry.addData("[TARGET]", motor2.targetPosition)
         opMode.telemetry.addData("[MOTOR 1]", motor1.currentPosition)
         opMode.telemetry.addData("[MOTOR 2]", motor2.currentPosition)
     }
@@ -121,11 +123,6 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
                     .toList()
                     .subList(0, StoneLevels.values().toList().size)
             val maxStackHeight = levels.size - 1
-        }
-
-        enum class Location {
-            ABOVE,
-            PLACE;
         }
 
         enum class EncoderLocation {
