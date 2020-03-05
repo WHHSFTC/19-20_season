@@ -4,17 +4,17 @@ abstract class Tele: OpModeRunner() {
     override fun runOpMode() {
         genesis()
         waitForStart()
-        while (opModeIsActive()) run()
+        while (opModeIsActive()) runLoop()
         halt()
     }
 
-    abstract fun run()
+    abstract fun runLoop()
 
-    fun genesis() {
+    override fun genesis() {
         bot = Summum(this)
     }
 
-    fun halt() {
+    override fun halt() {
         bot.stop()
     }
 }

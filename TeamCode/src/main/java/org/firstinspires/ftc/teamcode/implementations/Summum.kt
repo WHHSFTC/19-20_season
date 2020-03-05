@@ -63,6 +63,9 @@ open class Summum(var opMode: OpModeIF) {
 
         // set zero power behaviors to float so Kaden can turn the bot
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT)
+        output.claw.state = Claw.State.INNER
+        output.slides.state = HorizontalSlides.State.IN
+        foundation.state = FoundationHooks.State.UP
         // tell Kaden the bot can now be pushed
         opMode.telemetry.addLine("Initialization DONE")
     }

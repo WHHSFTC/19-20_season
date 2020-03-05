@@ -15,7 +15,7 @@ class Tele_Summum : Tele() {
         const val DEADZONE = .05
     }
 
-    override fun run() {
+    override fun runLoop() {
         runDriveTrain()
         runOutput()
         runInput()
@@ -96,13 +96,16 @@ class Tele_Summum : Tele() {
                 bot.output.claw.state = Claw.State.OPEN
 
                 if (bot.output.slides.height != 0) {
-                    bot.output.slides.isPlacing = false
-                    bot.output.slides.runVerticalSlides()
+//                    bot.output.slides.isPlacing = false
+//                    bot.output.slides.runVerticalSlides()
+                    bot.output.slides.vPower = .5
+                    sleep(100)
 
                     bot.output.slides.state = HorizontalSlides.State.IN
-
-                    bot.output.slides.height = 0
-                    bot.output.slides.runVerticalSlides()
+                    bot.output.slides.vPower = .0
+//
+//                    bot.output.slides.height = 0
+//                    bot.output.slides.runVerticalSlides()
                 }
 
                 bot.output.claw.state = Claw.State.INNER
@@ -121,7 +124,7 @@ class Tele_Summum : Tele() {
         }
 
         bot.output.slides.vPower = if (abs(gamepad2.right_stick_y) >= DEADZONE)
-            gamepad2.right_stick_y.toDouble()
+            -gamepad2.right_stick_y.toDouble()
         else
             0.0
 

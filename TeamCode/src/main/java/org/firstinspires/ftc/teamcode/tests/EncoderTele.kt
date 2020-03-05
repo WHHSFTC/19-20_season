@@ -14,7 +14,7 @@ class EncoderTele : Tele() {
         const val DEADZONE = .05
     }
 
-    override fun run() {
+    override fun runLoop() {
         runDriveTrain()
         runOutput()
         runInput()
