@@ -91,12 +91,20 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
         enum class StoneLevels(var above: List<Int>, var place: List<Int> = listOf(0, 0)) {
             // TODO get these locations
             NULL(listOf(0, 0)),
-            ONE(above = listOf(310, 320)),
-            TWO(above = listOf(390, 400), place = listOf(300, 310)),
-            THREE(above = listOf(830, 840), place = listOf(570, 580)),
-            FOUR(above = listOf(1060, 1070), place = listOf(820, 830)),
-            FIVE(above = listOf(1320, 1330), place = listOf(1020, 1030)),
-            SIX(above = listOf(1630, 1640), place = listOf(1320, 1330));
+            ONE(above = listOf(141, 150), place = listOf(52,52)),
+
+            TWO(above = listOf(236, 245), place = listOf(141, 150)),
+
+            THREE(above = listOf(324, 333), place = listOf(236, 245)),
+
+            FOUR(above = listOf(419, 428), place = listOf(324, 333)),
+
+            FIVE(above = listOf(542, 556), place = listOf(419, 428)),
+
+            SIX(above = listOf(612, 636), place = listOf(542, 556)),
+
+            SEVEN(above = listOf(542, 556), place = listOf(612, 636));
+
             // TODO check how high we are able to go
 
             val clearRange: IntRange get() = above.range()
