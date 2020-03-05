@@ -34,7 +34,7 @@ class DoubleDelivery: Auto() {
 
         when(convertedPosition) {
             SkyStonePosition.ONE_FOUR -> bot.driveTrain.goAngle(
-                    if (bot.alliance == Alliance.BLUE) Summum.ROBOT_WIDTH - 10.5 else 0.0, DriveTrain.LOADING_ZONE, .5)
+                    if (bot.alliance == Alliance.BLUE) Summum.ROBOT_WIDTH - 10.5 else 0.0, DriveTrain.BUILDING_ZONE, .5)
             SkyStonePosition.TWO_FIVE -> bot.driveTrain.goAngle(
                     if (bot.alliance == Alliance.BLUE) Summum.ROBOT_WIDTH - 2.5 else 0.0, DriveTrain.BUILDING_ZONE, .5)
             SkyStonePosition.THREE_SIX -> bot.driveTrain.goAngle(

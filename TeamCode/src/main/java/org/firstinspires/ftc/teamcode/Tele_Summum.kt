@@ -137,7 +137,7 @@ class Tele_Summum : Tele() {
 //        prevCap = gamepad2.left_stick_button
 
         telemetry.addData("[HEIGHT]", bot.output.slides.height)
-        bot.output.slides.dumpEncoders()
+//        bot.output.slides.dumpEncoders()
     }
 
     fun runFoundationHooks() {
