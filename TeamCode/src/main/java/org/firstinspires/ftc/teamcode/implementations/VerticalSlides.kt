@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism
@@ -59,15 +60,18 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
 //        motor2.targetPosition = dummyValue
 //        motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
 
+        motor1.power = power
+        motor2.power = power
+
         if(syncJob == null || syncJob!!.isCompleted)
             syncJob = runBlocking {
                 launch {
-                    while (motor1.isBusy)
+                    while (motor1.isBusy) {
+                        motor2.power = motor1.power
+                        delay(50)
+                    }
                 }
             }
-
-        motor1.power = power
-        motor2.power = power
 
         return this
     }
