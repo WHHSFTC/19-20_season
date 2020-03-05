@@ -49,18 +49,18 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
     fun run(): VerticalSlides {
         val dummyValue = state.calculateValue(method)
         motor1.targetPosition = dummyValue
-        motor1.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motor1.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
         motor2.targetPosition = dummyValue
-        motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motor2.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
         motor1.power = power
         motor2.power = power
 
-        while(motor1.isBusy || motor2.isBusy) Thread.sleep(50)
-
-        motor1.power = 0.0
-        motor2.power = 0.0
+//        while(motor1.isBusy || motor2.isBusy) Thread.sleep(50)
+//
+//        motor1.power = 0.0
+//        motor2.power = 0.0
 
         return this
     }
