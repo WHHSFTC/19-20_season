@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.implementations
 import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.firstinspires.ftc.teamcode.interfaces.ContinuousMechanism
 import org.firstinspires.ftc.teamcode.interfaces.Mechanism
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
@@ -19,6 +22,8 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
         @JvmStatic
         val DEFAULT_POWER: Double = 1.0
     }
+
+    var syncJob : Job? = null
 
     var motor1: DcMotor = opMode.hardwareMap.dcMotor.get(str1)
     var motor2: DcMotor = opMode.hardwareMap.dcMotor.get(str2)
@@ -49,18 +54,20 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
     fun run(): VerticalSlides {
         val dummyValue = state.calculateValue(method)
         motor1.targetPosition = dummyValue
-        motor1.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        motor1.mode = DcMotor.RunMode.RUN_TO_POSITION
+//
+//        motor2.targetPosition = dummyValue
+//        motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
 
-        motor2.targetPosition = dummyValue
-        motor2.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        if(syncJob == null || syncJob!!.isCompleted)
+            syncJob = runBlocking {
+                launch {
+                    while (motor1.isBusy)
+                }
+            }
 
         motor1.power = power
         motor2.power = power
-
-//        while(motor1.isBusy || motor2.isBusy) Thread.sleep(50)
-//
-//        motor1.power = 0.0
-//        motor2.power = 0.0
 
         return this
     }
