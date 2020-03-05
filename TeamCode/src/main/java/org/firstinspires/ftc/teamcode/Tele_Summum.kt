@@ -12,7 +12,7 @@ class Tele_Summum : Tele() {
     private var heightCounter: Int = 0
 
     companion object {
-        const val DEADZONE = .05
+        const val DEADZONE = 0.05
     }
 
     override fun runLoop() {
@@ -98,14 +98,18 @@ class Tele_Summum : Tele() {
                 if (bot.output.slides.height != 0) {
 //                    bot.output.slides.isPlacing = false
 //                    bot.output.slides.runVerticalSlides()
-                    bot.output.slides.vPower = .5
-                    sleep(100)
+                    if (bot.output.slides.state == HorizontalSlides.State.OUT) {
+                        bot.output.slides.vPower = .5
+                        sleep(1000)
 
-                    bot.output.slides.state = HorizontalSlides.State.IN
-                    bot.output.slides.vPower = .0
+                        bot.output.slides.state = HorizontalSlides.State.IN
+                        sleep(750)
+
+                        bot.output.slides.vPower = .0
+                    }
 //
-//                    bot.output.slides.height = 0
-//                    bot.output.slides.runVerticalSlides()
+                    bot.output.slides.height = 0
+                    bot.output.slides.runVerticalSlides()
                 }
 
                 bot.output.claw.state = Claw.State.INNER
@@ -123,10 +127,8 @@ class Tele_Summum : Tele() {
             gamepad2.dpad_right -> bot.output.claw.state = Claw.State.CLOSED
         }
 
-        bot.output.slides.vPower = if (abs(gamepad2.right_stick_y) >= DEADZONE)
-            -gamepad2.right_stick_y.toDouble()
-        else
-            0.0
+        if (abs(gamepad2.right_stick_y) >= DEADZONE)
+            bot.output.slides.vPower = -gamepad2.right_stick_y.toDouble()
 
 //        if (gamepad2.left_stick_button && !prevCap) {
 //            bot.capStone.state = if (bot.capStone.state == CapStone.State.HOLD) CapStone.State.PLACE else CapStone.State.HOLD
