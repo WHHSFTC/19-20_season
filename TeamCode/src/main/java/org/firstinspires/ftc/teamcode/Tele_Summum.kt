@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.firstinspires.ftc.teamcode.implementations.*
 import kotlin.math.*
@@ -111,6 +112,7 @@ class Tele_Summum : Tele() {
                 gamepad2.a -> {
                     if (bot.output.slides.state == HorizontalSlides.State.OUT) {
                         bot.output.claw.state = Claw.State.OPEN
+                        sleep(500)
 
                         val slidejob = GlobalScope.launch {
                             bot.output.slides.isPlacing = false
@@ -118,9 +120,9 @@ class Tele_Summum : Tele() {
                             left.join()
 
                             bot.output.slides.state = HorizontalSlides.State.IN
-                            sleep(500)
+                            delay(500)
                             bot.output.claw.state = Claw.State.INNER
-                            sleep(250)
+                            delay(250)
 
                             bot.output.slides.height = 0
                             bot.output.slides.isPlacing = true

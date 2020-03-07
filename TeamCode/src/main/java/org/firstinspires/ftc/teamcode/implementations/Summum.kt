@@ -41,7 +41,7 @@ open class Summum(var opMode: OpModeIF) {
     lateinit var pipeline: VisionFromWall
 
     fun init() {
-        init(/* if (allianceSwitch.state) */ Alliance.BLUE /* else Alliance.RED */)
+        init(/* if (allianceSwitch.state)  Alliance.BLUE else */ Alliance.RED)
         opMode.telemetry.addData("Alliance", alliance.toString())
     }
 
