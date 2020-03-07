@@ -12,6 +12,7 @@ class Tele_Summum : Tele() {
     private var prevDec: Boolean = false
     private var prevCap: Boolean = false
     private var heightCounter: Int = 0
+    private var automatic: Boolean = true
 
     companion object {
         const val DEADZONE = 0.05
@@ -70,56 +71,6 @@ class Tele_Summum : Tele() {
     }
 
     fun runOutput() {
-        if (gamepad2.right_bumper && !prevInc) {
-            heightCounter++
-        }
-
-        if (gamepad2.left_bumper && !prevDec) {
-            heightCounter--
-        }
-
-        prevInc = gamepad2.right_bumper
-        prevDec = gamepad2.left_bumper
-
-        heightCounter = heightCounter clip 0..VerticalSlides.Level.maxStackHeight
-        bot.output.slides.height = heightCounter
-
-        when {
-            gamepad2.y -> {
-                bot.output.claw.state = Claw.State.CLOSED
-                bot.output.slides.isPlacing = false
-                bot.output.slides.runVerticalSlides()
-            }
-            gamepad2.b -> {
-                bot.output.slides.isPlacing = true
-                bot.output.slides.runVerticalSlides()
-            }
-            gamepad2.a -> {
-                if (bot.output.slides.state == HorizontalSlides.State.OUT) {
-                    bot.output.claw.state = Claw.State.OPEN
-
-                    val slidejob = GlobalScope.launch {
-                        bot.output.slides.isPlacing = true
-                        bot.output.slides.height += 2
-                        bot.output.slides.runVerticalSlides()
-
-                        sleep(1000)
-
-                        bot.output.slides.state = HorizontalSlides.State.IN
-                        bot.output.claw.state = Claw.State.INNER
-                        sleep(250)
-
-                        bot.output.slides.height = 0
-                        bot.output.slides.isPlacing = true
-                        bot.output.slides.runVerticalSlides()
-                    }
-                }
-
-                bot.output.claw.state = Claw.State.INNER
-            }
-            gamepad2.x -> bot.output.claw.state = Claw.State.INNER
-        }
-
         when {
             gamepad2.dpad_up -> bot.output.slides.state = HorizontalSlides.State.OUT
             gamepad2.dpad_down -> bot.output.slides.state = HorizontalSlides.State.IN
@@ -130,9 +81,60 @@ class Tele_Summum : Tele() {
             gamepad2.dpad_right -> bot.output.claw.state = Claw.State.CLOSED
         }
 
-        if (abs(gamepad2.right_stick_y) >= DEADZONE)
-            bot.output.slides.vPower = -gamepad2.right_stick_y.toDouble()
+        if (gamepad2.start) automatic = true
+        if (gamepad2.back) automatic = false
+        if (automatic){
+            if (gamepad2.right_bumper && !prevInc) {
+                heightCounter++
+            }
 
+            if (gamepad2.left_bumper && !prevDec) {
+                heightCounter--
+            }
+
+            prevInc = gamepad2.right_bumper
+            prevDec = gamepad2.left_bumper
+
+            heightCounter = heightCounter clip 0..VerticalSlides.Level.maxStackHeight
+            bot.output.slides.height = heightCounter
+
+            when {
+                gamepad2.y -> {
+                    bot.output.claw.state = Claw.State.CLOSED
+                    bot.output.slides.isPlacing = false
+                    bot.output.slides.runVerticalSlides()
+                }
+                gamepad2.b -> {
+                    bot.output.slides.isPlacing = true
+                    bot.output.slides.runVerticalSlides()
+                }
+                gamepad2.a -> {
+                    if (bot.output.slides.state == HorizontalSlides.State.OUT) {
+                        bot.output.claw.state = Claw.State.OPEN
+
+                        val slidejob = GlobalScope.launch {
+                            bot.output.slides.isPlacing = false
+                            val (left, right) = bot.output.slides.runVerticalSlides()
+                            left.join()
+
+                            bot.output.slides.state = HorizontalSlides.State.IN
+                            sleep(500)
+                            bot.output.claw.state = Claw.State.INNER
+                            sleep(250)
+
+                            bot.output.slides.height = 0
+                            bot.output.slides.isPlacing = true
+                            bot.output.slides.runVerticalSlides()
+                        }
+                    }
+
+                    bot.output.claw.state = Claw.State.INNER
+                }
+            }
+        } else {
+            bot.output.slides.vPower = -gamepad2.right_stick_y.toDouble()
+        }
+        if(gamepad2.x) bot.output.claw.state = Claw.State.INNER
 //        if (gamepad2.left_stick_button && !prevCap) {
 //            bot.capStone.state = if (bot.capStone.state == CapStone.State.HOLD) CapStone.State.PLACE else CapStone.State.HOLD
 //        }
@@ -140,7 +142,7 @@ class Tele_Summum : Tele() {
 //        prevCap = gamepad2.left_stick_button
 
         telemetry.addData("[HEIGHT]", bot.output.slides.height)
-//        bot.output.slides.dumpEncoders()
+        bot.output.slides.dumpEncoders()
     }
 
     fun runFoundationHooks() {

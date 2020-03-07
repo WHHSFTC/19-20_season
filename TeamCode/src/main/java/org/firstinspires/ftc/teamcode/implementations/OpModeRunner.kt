@@ -24,5 +24,4 @@ abstract class OpModeRunner: LinearOpMode(), OpModeIF {
     override fun getTelemetry(): Telemetry {
         return this.telemetry
     }
-
 }

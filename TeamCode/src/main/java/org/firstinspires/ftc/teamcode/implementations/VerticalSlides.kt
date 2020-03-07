@@ -50,37 +50,39 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
     /**number of blocks high**/
     override var state = Level(0)
 
-    fun run(): VerticalSlides {
+    fun run(): Pair<Job, Job> {
         val dummyValue = state.calculateValue(method)
 
-//        leftJob =
-//                GlobalScope.launch {
-//                    motor1.targetPosition = dummyValue
-//                    motor1.power = power
-//                }
-//        rightJob =
-//                GlobalScope.launch {
-//                    motor2.targetPosition = dummyValue
-//                    motor2.power = power
-//                }
+        leftJob =
+                GlobalScope.launch {
+                    motor1.targetPosition = dummyValue
+                    motor1.mode = DcMotor.RunMode.RUN_TO_POSITION
+                    motor1.power = power
+                }
+        rightJob =
+                GlobalScope.launch {
+                    motor2.targetPosition = dummyValue
+                    motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
+                    motor2.power = power
+                }
 
-        var left = Thread(Runnable {
-            motor1.targetPosition = dummyValue
-            motor1.mode = DcMotor.RunMode.RUN_TO_POSITION
-            motor1.power = power
-        })
+//        var left = Thread(Runnable {
+//            motor1.targetPosition = dummyValue
+//            motor1.mode = DcMotor.RunMode.RUN_TO_POSITION
+//            motor1.power = power
+//        })
+//
+//        var right = Thread(Runnable {
+//            motor2.targetPosition = dummyValue
+//            motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
+//            motor2.power = power
+//        })
 
-        var right = Thread(Runnable {
-            motor2.targetPosition = dummyValue
-            motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
-            motor2.power = power
-        })
-
-        left.start()
-        right.start()
+//        left.start()
+//        right.start()
 //        while(leftJob!!.isActive || rightJob!!.isActive) {}
-        while(left.isAlive || right.isAlive) {}
-        return this
+//        while(left.isAlive || right.isAlive) {}
+        return Pair(leftJob!!, rightJob!!)
     }
 
     var motorPower: Double = 0.0
@@ -107,21 +109,26 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
 
     class Level(var index: Int, var isPlacing: Boolean = false, var level: StoneLevels = StoneLevels.NULL) {
         enum class StoneLevels(var above: List<Int>, var place: List<Int> = listOf(0, 0)) {
-            // TODO get these locations
             NULL(listOf(0, 0)),
-            ONE(above = listOf(141, 150), place = listOf(52,52)),
+            ONE(above = listOf(195,194), place = listOf(98,97)),
 
-            TWO(above = listOf(236, 245), place = listOf(141, 150)),
+            TWO(above = listOf(294, 294), place = listOf(195,194)),
 
-            THREE(above = listOf(324, 333), place = listOf(236, 245)),
+            THREE(above = listOf(385, 385), place = listOf(294, 294)),
 
-            FOUR(above = listOf(419, 428), place = listOf(324, 333)),
+            FOUR(above = listOf(495, 495), place = listOf(385, 385)),
 
-            FIVE(above = listOf(542, 556), place = listOf(419, 428)),
+            FIVE(above = listOf(577, 577), place = listOf(495, 495)),
 
-            SIX(above = listOf(612, 636), place = listOf(542, 556)),
+            SIX(above = listOf(694, 693), place = listOf(577, 577)),
 
-            SEVEN(above = listOf(542, 556), place = listOf(612, 636));
+            SEVEN(above = listOf(782, 781), place = listOf(694, 693)),
+            //
+            EIGHT(above = listOf(864, 863), place = listOf(782, 781)),
+
+            NINE(above = listOf(936, 935), place = listOf(864, 863));
+
+//            TEN(above = , place = listOf(936, 935));
 
             // TODO check how high we are able to go
 

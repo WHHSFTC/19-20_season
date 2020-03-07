@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode
 
+import com.acmerobotics.roadrunner.drive.Drive
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -30,12 +31,13 @@ class SkyStoneFoundation: Auto() {
 
         val convertedPosition: SkyStonePosition = bot.translateRelativePosition(stonePosition)
 
+        //fancy switch statement
         when(convertedPosition) {
             SkyStonePosition.ONE_FOUR -> bot.driveTrain.goAngle(
                     if (bot.alliance == Alliance.BLUE) Summum.ROBOT_WIDTH - 10.5 else 0.0, DriveTrain.BUILDING_ZONE, .5)
             SkyStonePosition.TWO_FIVE -> bot.driveTrain.goAngle(
-                    if (bot.alliance == Alliance.BLUE) Summum.ROBOT_WIDTH - 2.5 else 0.0, DriveTrain.BUILDING_ZONE, .5)
-            SkyStonePosition.THREE_SIX -> bot.driveTrain.goAngle(
+                    if (bot.alliance == Alliance.BLUE) Summum.ROBOT_WIDTH - 1.5 else 0.0, DriveTrain.BUILDING_ZONE, .5)
+            SkyStonePosition.THREE_SIX -> bot.driveTrain.goAngle( // good
                     if (bot.alliance == Alliance.BLUE) 0.0 else 0.0, DriveTrain.LOADING_ZONE, .5)
         }
         when (convertedPosition) {
@@ -53,6 +55,7 @@ class SkyStoneFoundation: Auto() {
                 bot.flywheels.power = 0.0
                 // move out of quarry, 8 inches of leeway
                 bot.driveTrain.goAngle(Summum.ROBOT_WIDTH/2.0 + 10.0, bot.our_side, .5)
+                bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
             }
             SkyStonePosition.THREE_SIX -> {
@@ -67,7 +70,8 @@ class SkyStoneFoundation: Auto() {
                 bot.flywheels.power = 0.0
                 // move out of quarry, 8 inches of leeway
                 bot.driveTrain.goAngle(Summum.ROBOT_WIDTH/2.0 + 10.0, bot.our_side, .5)
-                bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+//                bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+                bot.driveTrain.align(DriveTrain.BUILDING_ZONE)
             }
         }
         // go to foundation
@@ -80,17 +84,16 @@ class SkyStoneFoundation: Auto() {
         runBlocking {
             val arcJob = GlobalScope.launch {
                 delay(500L)
+                bot.driveTrain.goAngle(8.0, bot.our_side, .75)
                 when (bot.alliance) {
                     Alliance.BLUE -> bot.driveTrain.goArc(15.0, 90.0, 90.0, 1.0, 6.0)
                     Alliance.RED -> bot.driveTrain.goArc(15.0, 90.0, -90.0, 1.0, 6.0)
                 }
                 bot.foundation.state = FoundationHooks.State.UP
                 bot.driveTrain.goAngle(14.0, DriveTrain.BUILDING_ZONE, .75)
-                bot.driveTrain.goAngle(6.0, bot.opponents_side, .75)
             }
-            sleep(500L)
             bot.output.claw.state = Claw.State.CLOSED
-            sleep(500L)
+            sleep(1000L)
             bot.output.slides.state = HorizontalSlides.State.OUT
             sleep(1000L)
             bot.output.claw.state = Claw.State.OPEN
@@ -99,8 +102,11 @@ class SkyStoneFoundation: Auto() {
             arcJob.join()
         }
         bot.output.claw.state = Claw.State.INNER
-        bot.driveTrain.goAngle(45.0, DriveTrain.LOADING_ZONE, .75)
+        bot.driveTrain.align(DriveTrain.LOADING_ZONE)
+        bot.driveTrain.goAngle(24.0, bot.our_side, .5)
+        bot.driveTrain.goAngle(27.0, bot.opponents_side, .5)
+        bot.driveTrain.goAngle(37.0, DriveTrain.LOADING_ZONE, .75)
 
-        bot.camera.stopStreaming()
+//        bot.camera.stopStreaming()
     }
 }

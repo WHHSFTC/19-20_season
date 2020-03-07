@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations
 
+import kotlinx.coroutines.Job
 import org.firstinspires.ftc.teamcode.interfaces.OpModeIF
 import kotlin.math.max
 
@@ -32,9 +33,8 @@ class Slides(opMode: OpModeIF, slideMotor1: String, slideMotor2: String, horizon
             field = value
         }
 
-    fun runVerticalSlides(): Slides {
-        verticalSlides.run()
-        return this
+    fun runVerticalSlides(): Pair<Job, Job> {
+        return verticalSlides.run()
     }
 
     fun dumpEncoders() {

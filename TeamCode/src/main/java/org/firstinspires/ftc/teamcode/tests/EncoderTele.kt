@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.tests
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.implementations.*
 import kotlin.math.*
 
-@TeleOp(name = "Encoder Tele", group = "Tele")
+@Disabled
+@TeleOp(name = "Encoder Test Tele", group = "Test")
 class EncoderTele : Tele() {
     private var prevInc: Boolean = false
     private var prevDec: Boolean = false
