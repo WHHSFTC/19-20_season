@@ -45,6 +45,16 @@ open class Summum(var opMode: OpModeIF) {
         opMode.telemetry.addData("Alliance", alliance.toString())
     }
 
+    fun initAuto() {
+        output.claw.state = Claw.State.INIT
+        init()
+    }
+
+    fun initTele() {
+        output.claw.state = Claw.State.INNER
+        init()
+    }
+
     fun init(alliance: Alliance?) {
         this.alliance = alliance!!
         when (this.alliance) {
@@ -63,7 +73,6 @@ open class Summum(var opMode: OpModeIF) {
 
         // set zero power behaviors to float so Kaden can turn the bot
         driveTrain.setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior.FLOAT)
-        output.claw.state = Claw.State.INNER
         output.slides.state = HorizontalSlides.State.IN
         foundation.state = FoundationHooks.State.UP
         // tell Kaden the bot can now be pushed

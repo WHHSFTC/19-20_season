@@ -34,7 +34,8 @@ public class Claw implements Mechanism<Claw.State> {
     public enum State {
         OPEN(InnerClaw.State.OPEN, OuterClaw.State.OPEN),
         CLOSED(InnerClaw.State.CLOSED, OuterClaw.State.CLOSED),
-        INNER(InnerClaw.State.OPEN, OuterClaw.State.CLOSED);
+        INNER(InnerClaw.State.OPEN, OuterClaw.State.CLOSED),
+        INIT(InnerClaw.State.OPEN, OuterClaw.State.FIT);
         private InnerClaw.State inner;
         private OuterClaw.State outer;
         State(InnerClaw.State inner, OuterClaw.State outer) {
@@ -63,7 +64,7 @@ public class Claw implements Mechanism<Claw.State> {
         }
 
         enum State implements StatefulServo.State {
-            OPEN(0.85), CLOSED(0.41);
+            OPEN(0.85), CLOSED(0.45);
             private double value;
             State(double value) {
                 this.value = value;

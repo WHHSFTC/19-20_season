@@ -14,6 +14,9 @@ abstract class OpModeRunner: LinearOpMode(), OpModeIF {
     @Throws(InterruptedException::class)
     abstract fun halt()
 
+    @Throws(InterruptedException::class)
+    abstract fun begin()
+
     override fun getHardwareMap(): HardwareMap? {
         return this.hardwareMap
     }

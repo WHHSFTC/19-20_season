@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.firstinspires.ftc.teamcode.implementations.*
 import kotlin.math.*
 
@@ -93,23 +95,24 @@ class Tele_Summum : Tele() {
                 bot.output.slides.runVerticalSlides()
             }
             gamepad2.a -> {
-                bot.output.claw.state = Claw.State.OPEN
+                if (bot.output.slides.state == HorizontalSlides.State.OUT) {
+                    bot.output.claw.state = Claw.State.OPEN
 
-                if (bot.output.slides.height != 0) {
-//                    bot.output.slides.isPlacing = false
-//                    bot.output.slides.runVerticalSlides()
-                    if (bot.output.slides.state == HorizontalSlides.State.OUT) {
-                        bot.output.slides.vPower = .5
+                    val slidejob = GlobalScope.launch {
+                        bot.output.slides.isPlacing = true
+                        bot.output.slides.height += 2
+                        bot.output.slides.runVerticalSlides()
+
                         sleep(1000)
 
                         bot.output.slides.state = HorizontalSlides.State.IN
-                        sleep(750)
+                        bot.output.claw.state = Claw.State.INNER
+                        sleep(250)
 
-                        bot.output.slides.vPower = .0
+                        bot.output.slides.height = 0
+                        bot.output.slides.isPlacing = true
+                        bot.output.slides.runVerticalSlides()
                     }
-//
-                    bot.output.slides.height = 0
-                    bot.output.slides.runVerticalSlides()
                 }
 
                 bot.output.claw.state = Claw.State.INNER

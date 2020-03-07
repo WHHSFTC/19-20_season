@@ -20,7 +20,7 @@ public abstract class Auto extends OpModeRunner {
 //        this.telemetry = dashboard.getTelemetry();
         bot = new Summum(this);
         bot.driveTrain.setHeading(DriveTrain.BLUE_SIDE);
-        bot.init();
+        bot.initAuto();
         telemetry.update();
     }
 

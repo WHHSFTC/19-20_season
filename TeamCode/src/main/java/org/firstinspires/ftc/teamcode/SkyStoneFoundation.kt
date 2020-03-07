@@ -95,6 +95,7 @@ class SkyStoneFoundation: Auto() {
             sleep(1000L)
             bot.output.claw.state = Claw.State.OPEN
             sleep(500L)
+            bot.output.slides.state = HorizontalSlides.State.IN
             arcJob.join()
         }
         bot.output.claw.state = Claw.State.INNER
