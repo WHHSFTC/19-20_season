@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.implementations
 
+import kotlinx.coroutines.awaitAll
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
@@ -7,9 +8,10 @@ import org.openftc.easyopencv.OpenCvPipeline
 import java.util.*
 import kotlin.collections.ArrayList
 
-class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPipeline() {
+class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null, al: Alliance) : OpenCvPipeline() {
     var position: Position
     var telemetry: Telemetry
+    var alliance: Alliance
     var matHSV: Mat
 
     /**
@@ -33,6 +35,7 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
     init {
         position = Position.NULL
         telemetry = tl!!
+        alliance = al
         matHSV = Mat()
     }
 
@@ -138,8 +141,18 @@ class VisionFromWall @JvmOverloads constructor(tl: Telemetry? = null) : OpenCvPi
 
             /**testing locations**/
             for (i: Int in 0..2) {
-                var x: Int = botRight.x.toInt() - 175 * i - xOffSet
-                var y: Int = (m * (x - botRight.x) + botRight.y - yOffset).toInt()
+                var x: Int
+                var y: Int
+                when(alliance) {
+                    Alliance.BLUE -> {
+                        x = botRight.x.toInt() - 175 * i - xOffSet
+                        y = (m * (x - botRight.x) + botRight.y - yOffset).toInt()
+                    }
+                    Alliance.RED -> {
+                        x = botLeft.x.toInt() + 175 * 3 - 175 * i - xOffSet
+                        y = (m * (x - botLeft.x) + botLeft.y - yOffset).toInt()
+                    }
+                }
                 Imgproc.rectangle(
                         ret,
                         Point((x - width).toDouble(), (y - height).toDouble()),

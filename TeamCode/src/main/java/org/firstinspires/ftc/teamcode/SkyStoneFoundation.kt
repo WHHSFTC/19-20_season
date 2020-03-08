@@ -20,7 +20,7 @@ class SkyStoneFoundation: Auto() {
 
         bot.camera.openCameraDevice()
 
-        bot.pipeline = VisionFromWall(telemetry)
+        bot.pipeline = VisionFromWall(telemetry, bot.alliance)
         bot.camera.setPipeline(bot.pipeline)
 
         bot.camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT)
@@ -40,7 +40,7 @@ class SkyStoneFoundation: Auto() {
                     Summum.ROBOT_WIDTH - 1.5 - (if (bot.alliance == Alliance.RED) 8.0 else 0.0),
                     DriveTrain.BUILDING_ZONE, .5)
             SkyStonePosition.THREE_SIX -> bot.driveTrain.goAngle( // good
-                    0.0 - (if (bot.alliance == Alliance.RED) - 8.0 else 0.0),
+                    0.0 - (if (bot.alliance == Alliance.RED) 8.0 else 0.0),
                     DriveTrain.BUILDING_ZONE, .5)
         }
         when (convertedPosition) {

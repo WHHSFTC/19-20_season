@@ -16,7 +16,7 @@ class FlywheelAuto : Auto() {
 
         bot.camera.openCameraDevice()
 
-        bot.pipeline = VisionFromWall(telemetry)
+        bot.pipeline = VisionFromWall(telemetry, bot.alliance)
         bot.camera.setPipeline(bot.pipeline)
 
         bot.camera.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT)
