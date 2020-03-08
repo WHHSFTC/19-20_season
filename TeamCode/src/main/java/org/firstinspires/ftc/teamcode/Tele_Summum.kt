@@ -14,6 +14,8 @@ class Tele_Summum : Tele() {
     private var prevCap: Boolean = false
     private var heightCounter: Int = 0
     private var automatic: Boolean = true
+    private var prevTurtle = false
+    private var turtle = false
 
     companion object {
         const val DEADZONE = 0.05
@@ -28,6 +30,8 @@ class Tele_Summum : Tele() {
     }
 
     fun runDriveTrain() {
+        if (gamepad1.x && !prevTurtle) turtle = !turtle
+        prevTurtle = gamepad1.x
         var xpow = gamepad1.left_stick_x.toDouble()
         var ypow = -gamepad1.left_stick_y.toDouble()
         var zpow = gamepad1.right_stick_x.toDouble()
@@ -41,9 +45,9 @@ class Tele_Summum : Tele() {
         ypow = if (abs(ypow) > DEADZONE) ypow else 0.0
         zpow = if (abs(zpow) > DEADZONE) zpow else 0.0
 
-        val zpower = abs(zpow).pow(2.0)
-        val x = cos(theta)
-        val y = sin(theta)
+        val zpower = abs(zpow).pow(2.0) / (if (turtle) 3.0 else 1.0)
+        val x = cos(theta) / (if (turtle) 3.0 else 1.0)
+        val y = sin(theta) / (if (turtle) 3.0 else 1.0)
         val z = sign(zpow)
 
         (bot.driveTrain as DriveTrain).setPowers(
@@ -101,7 +105,6 @@ class Tele_Summum : Tele() {
 
             when {
                 gamepad2.y -> {
-                    bot.output.claw.state = Claw.State.CLOSED
                     bot.output.slides.isPlacing = false
                     bot.output.slides.runVerticalSlides()
                 }
@@ -120,17 +123,23 @@ class Tele_Summum : Tele() {
                             left.join()
 
                             bot.output.slides.state = HorizontalSlides.State.IN
-                            delay(500)
+                            delay(2000)
                             bot.output.claw.state = Claw.State.INNER
-                            delay(250)
+                            delay(500)
 
                             bot.output.slides.height = 0
                             bot.output.slides.isPlacing = true
                             bot.output.slides.runVerticalSlides()
                         }
                     }
-
-                    bot.output.claw.state = Claw.State.INNER
+                    else {
+                        bot.output.claw.state = Claw.State.INNER
+                        var slidejob = GlobalScope.launch {
+                            bot.output.slides.isPlacing = true
+                            bot.output.slides.height = 0
+                            bot.output.slides.runVerticalSlides()
+                        }
+                    }
                 }
             }
         } else {

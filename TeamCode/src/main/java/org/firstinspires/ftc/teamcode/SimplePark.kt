@@ -7,6 +7,6 @@ import org.firstinspires.ftc.teamcode.implementations.DriveTrain
 @Autonomous(group = "Auto", name = "SimplePark")
 class SimplePark : Auto() {
     override fun run() { // park
-        bot.driveTrain.goAngle(12.0, DriveTrain.BUILDING_ZONE, 0.5)
+        bot.driveTrain.goAngle(12.0, DriveTrain.LOADING_ZONE, 0.5)
     }
 }

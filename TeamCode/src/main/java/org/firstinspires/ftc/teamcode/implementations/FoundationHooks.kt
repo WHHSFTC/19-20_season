@@ -12,8 +12,8 @@ class FoundationHooks(opMode: OpModeIF, leftStr: String, rightStr: String): Mech
 
 
     enum class State(val left: Double, val right: Double) {
-        UP(0.1, 0.86),
-        DOWN(.67, .3)
+        UP(0.07, 0.92),
+        DOWN(.67, .32)
     }
 
     override var state: State = State.UP

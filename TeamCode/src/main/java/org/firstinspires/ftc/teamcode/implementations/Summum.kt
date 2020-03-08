@@ -33,7 +33,7 @@ open class Summum(var opMode: OpModeIF) {
 //    @JvmField
 //    var capStone: CapStone = CapStone(opMode = opMode, str = "capMech")
 
-//    private val allianceSwitch: DigitalChannel = opMode.hardwareMap.digitalChannel["allianceSwitch"]
+    private val allianceSwitch: DigitalChannel = opMode.hardwareMap.digitalChannel["allianceSwitch"]
 
     lateinit var alliance: Alliance
 
@@ -41,7 +41,7 @@ open class Summum(var opMode: OpModeIF) {
     lateinit var pipeline: VisionFromWall
 
     fun init() {
-        init(/* if (allianceSwitch.state)  Alliance.BLUE else */ Alliance.RED)
+        init(if (allianceSwitch.state)  Alliance.BLUE else Alliance.RED)
         opMode.telemetry.addData("Alliance", alliance.toString())
     }
 
@@ -53,6 +53,7 @@ open class Summum(var opMode: OpModeIF) {
     fun initTele() {
         output.claw.state = Claw.State.INNER
         init()
+        driveTrain.setModes(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
     }
 
     fun init(alliance: Alliance?) {
@@ -121,6 +122,6 @@ open class Summum(var opMode: OpModeIF) {
      * @param opMode import current opMode to get initialize
      */
     init {
-//        allianceSwitch.mode = DigitalChannel.Mode.INPUT
+        allianceSwitch.mode = DigitalChannel.Mode.INPUT
     }
 }
