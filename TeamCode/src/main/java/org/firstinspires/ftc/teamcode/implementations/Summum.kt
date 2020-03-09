@@ -31,7 +31,7 @@ open class Summum(var opMode: OpModeIF) {
     var foundation: FoundationHooks = FoundationHooks(opMode = opMode, leftStr = "LHook", rightStr = "RHook")
 
 //    @JvmField
-//    var capStone: CapStone = CapStone(opMode = opMode, str = "capMech")
+//    var capStone: CapStone = CapStone(opMode = opMode, str = "Cap")
 
     private val allianceSwitch: DigitalChannel = opMode.hardwareMap.digitalChannel["allianceSwitch"]
 

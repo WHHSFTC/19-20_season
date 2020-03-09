@@ -17,7 +17,6 @@ class SkyStoneFoundation: Auto() {
         super.genesis()
         val cameraMonitorViewId = hardwareMap.appContext.resources.getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.packageName)
         bot.camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName::class.java, "Webcam 1"), cameraMonitorViewId)
-
         bot.camera.openCameraDevice()
 
         bot.pipeline = VisionFromWall(telemetry, bot.alliance)
@@ -32,7 +31,7 @@ class SkyStoneFoundation: Auto() {
         val convertedPosition: SkyStonePosition = bot.translateRelativePosition(stonePosition)
 
         //fancy switch statement
-        when(convertedPosition) {
+        when (convertedPosition) {
             SkyStonePosition.ONE_FOUR -> bot.driveTrain.goAngle(
                     Summum.ROBOT_WIDTH - 10.5 - (if (bot.alliance == Alliance.RED) 8.0 else 0.0),
                     DriveTrain.BUILDING_ZONE, .5)
@@ -48,7 +47,7 @@ class SkyStoneFoundation: Auto() {
                 // clear from wall for turn, then go to quarry
                 bot.driveTrain.goAngle(15.0, bot.opponents_side, .5)
                 bot.driveTrain.align(DriveTrain.LOADING_ZONE)
-                bot.driveTrain.goAngle(35.0-Summum.ROBOT_WIDTH/2.0, bot.opponents_side, .5)
+                bot.driveTrain.goAngle(35.0 - Summum.ROBOT_WIDTH / 2.0, bot.opponents_side, .5)
                 // intake
                 bot.flywheels.power = -1.0
                 bot.driveTrain.goAngle(6.0, DriveTrain.LOADING_ZONE, .25)
@@ -57,7 +56,7 @@ class SkyStoneFoundation: Auto() {
 //                    bot.driveTrain.goAngle(4.0, DriveTrain.BUILDING_ZONE, .75)
                 bot.flywheels.power = 0.0
                 // move out of quarry, 8 inches of leeway
-                bot.driveTrain.goAngle(Summum.ROBOT_WIDTH/2.0 + 10.0, bot.our_side, .5)
+                bot.driveTrain.goAngle(Summum.ROBOT_WIDTH / 2.0 + 10.0, bot.our_side, .5)
                 bot.driveTrain.align(DriveTrain.LOADING_ZONE)
 
             }
@@ -65,20 +64,20 @@ class SkyStoneFoundation: Auto() {
                 bot.driveTrain.goAngle(15.0, bot.opponents_side, .5)
                 bot.driveTrain.align(DriveTrain.BUILDING_ZONE)
                 bot.driveTrain.goAngle(6.0, DriveTrain.LOADING_ZONE, .75)
-                bot.driveTrain.goAngle(35.0-Summum.ROBOT_WIDTH/2, bot.opponents_side, .5)
+                bot.driveTrain.goAngle(35.0 - Summum.ROBOT_WIDTH / 2, bot.opponents_side, .5)
                 // intake
                 bot.flywheels.power = -1.0
                 bot.driveTrain.goAngle(14.0, DriveTrain.BUILDING_ZONE, .25)
                 sleep(1000L)
                 bot.flywheels.power = 0.0
                 // move out of quarry, 8 inches of leeway
-                bot.driveTrain.goAngle(Summum.ROBOT_WIDTH/2.0 + 10.0, bot.our_side, .5)
+                bot.driveTrain.goAngle(Summum.ROBOT_WIDTH / 2.0 + 10.0, bot.our_side, .5)
 //                bot.driveTrain.align(DriveTrain.LOADING_ZONE)
                 bot.driveTrain.align(DriveTrain.BUILDING_ZONE)
             }
         }
         // go to foundation
-        bot.driveTrain.goAngle(convertedPosition.distance + 24.0 - Summum.ROBOT_WIDTH/2 + 48.0, DriveTrain.BUILDING_ZONE, .75)
+        bot.driveTrain.goAngle(convertedPosition.distance + 24.0 - Summum.ROBOT_WIDTH / 2 + 48.0, DriveTrain.BUILDING_ZONE, .75)
         // clear from foundation for turn, then go to foundation
         bot.driveTrain.goAngle(5.0, bot.our_side, .75)
         bot.driveTrain.align(bot.our_side)
@@ -109,7 +108,10 @@ class SkyStoneFoundation: Auto() {
         bot.driveTrain.goAngle(24.0, bot.our_side, .5)
         bot.driveTrain.goAngle(27.0, bot.opponents_side, .5)
         bot.driveTrain.goAngle(37.0, DriveTrain.LOADING_ZONE, .75)
+    }
 
-//        bot.camera.stopStreaming()
+    override fun halt() {
+        super.halt()
+        bot.camera.stopStreaming()
     }
 }
