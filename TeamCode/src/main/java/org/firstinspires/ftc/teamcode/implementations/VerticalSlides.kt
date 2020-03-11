@@ -66,22 +66,6 @@ class VerticalSlides(val opMode: OpModeIF, str1: String, str2: String) : Mechani
                     motor2.power = power
                 }
 
-//        var left = Thread(Runnable {
-//            motor1.targetPosition = dummyValue
-//            motor1.mode = DcMotor.RunMode.RUN_TO_POSITION
-//            motor1.power = power
-//        })
-//
-//        var right = Thread(Runnable {
-//            motor2.targetPosition = dummyValue
-//            motor2.mode = DcMotor.RunMode.RUN_TO_POSITION
-//            motor2.power = power
-//        })
-
-//        left.start()
-//        right.start()
-//        while(leftJob!!.isActive || rightJob!!.isActive) {}
-//        while(left.isAlive || right.isAlive) {}
         return Pair(leftJob!!, rightJob!!)
     }
 

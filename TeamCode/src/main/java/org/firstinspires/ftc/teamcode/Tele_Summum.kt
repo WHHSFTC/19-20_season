@@ -130,6 +130,7 @@ class Tele_Summum : Tele() {
                             bot.output.slides.height = 0
                             bot.output.slides.isPlacing = true
                             bot.output.slides.runVerticalSlides()
+                            bot.output.slides.vPower = 0.0
                         }
                     }
                     else {
@@ -138,6 +139,7 @@ class Tele_Summum : Tele() {
                             bot.output.slides.isPlacing = true
                             bot.output.slides.height = 0
                             bot.output.slides.runVerticalSlides()
+                            bot.output.slides.vPower = 0.0
                         }
                     }
                 }
